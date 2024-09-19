@@ -1,0 +1,35 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+$bg-solid: #fafafa;
+$bg-overlay: #a3a3a3cc;
+$text-solid: #000;
+$border-solid: #000;
+$border-soft: #ddd;
+$bg-off-1: #eee;
+$bg-off-2: #ccc;
+
+$bg-solid-dark: #171717;
+$bg-overlay-dark: #262626cc;
+
+$text-solid-dark: #fafafa;
+$border-solid-dark: #aaa;
+$border-soft-dark: #333;
+$bg-off-1-dark: #2d2d2d;
+$bg-off-2-dark: #444;
+
+body {
+  color: $text-solid;
+  background-color: $bg-solid;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: $text-solid-dark;
+    background-color: $bg-solid-dark;
+  }
+}
