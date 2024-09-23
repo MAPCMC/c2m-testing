@@ -5,21 +5,25 @@ import {
   signOut,
   useSession,
 } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
 export default function SignIn() {
-  const { status } = useSession();
+  const { data, status } = useSession();
 
   if (status === "authenticated") {
     return (
-      <button onClick={() => signOut()}>Uitloggen</button>
+      <>
+        <span className="mr-3">{data.user?.email}</span>
+        <Button onClick={() => signOut()}>Uitloggen</Button>
+      </>
     );
   }
   return (
-    <button
+    <Button
       onClick={() => signIn("google")}
       disabled={status === "loading"}
     >
       Inloggen
-    </button>
+    </Button>
   );
 }
