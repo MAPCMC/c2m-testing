@@ -2,16 +2,16 @@ import SignIn from "../components/SignIn";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <div>
+    <div className="flex flex-col min-h-screen">
+      <div className="p-8 sm:px-20 border-b-2">
         <SignIn />
       </div>
-      <header>
+      <header className="space-y-8 p-8  sm:px-20 pb-20">
         <h1 className="text-2xl font-bold">
           Connect2Music testportaal
         </h1>
       </header>
-      <main className="space-y-8">
+      <main className="space-y-8 p-8 sm:p-20 pb-20 grow">
         <p>
           Vanaf het moment dat u start met het invullen van
           de vragenlijst worden uw antwoorden opgeslagen en
