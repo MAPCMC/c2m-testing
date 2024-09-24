@@ -20,7 +20,11 @@ const FormList = async () => {
       let newLink = Math.random()
         .toString(36)
         .substring(5, 15);
-      if (existingCodeLinks.includes(newLink)) {
+      if (
+        existingCodeLinks.find(
+          (code) => code.link === newLink
+        )
+      ) {
         newLink = generateCodeLink();
       }
       return newLink;
@@ -30,7 +34,7 @@ const FormList = async () => {
     await db
       .insert(codes)
       .values({
-        formId: data.get("formId"),
+        formId: data.get("formId")?.toString() ?? "",
         link: newCodeLink,
       })
       .returning();

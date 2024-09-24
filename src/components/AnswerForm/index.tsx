@@ -2,33 +2,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { onSubmit } from "./handleSubmit";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import answerSchema from "./answerSchema";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { onSubmit } from "./handleSubmit";
 import { useRouter } from "next/navigation";
 
 type Question = {
-  id: string;
-  text: string;
+  id: number;
+  text: string | null;
   description?: string;
   options?: string[];
 };
@@ -36,7 +16,7 @@ type Question = {
 // TODO - Add Answer type from drizzle
 type Answer = {
   id: string;
-  text: string;
+  text: string | null;
   description?: string;
   options?: string[];
 };
@@ -48,7 +28,7 @@ export default function AnswerForm({
   nextUrl,
   previousUrl,
 }: {
-  answer: Answer;
+  answer?: Answer;
   question: Question;
   code: string;
   nextUrl: any;

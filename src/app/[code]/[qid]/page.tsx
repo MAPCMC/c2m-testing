@@ -1,8 +1,6 @@
 import db from "@/db";
 import NavBar from "@/components/NavBar/index";
 import AnswerForm from "@/components/AnswerForm";
-import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 
 export default async function AnswerPage({
   params,

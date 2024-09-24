@@ -1,7 +1,7 @@
 "use server";
 // import db from '@/db';
-// import answerSchema from './answerSchema';
-// import { z } from "zod";
+import answerSchema from "./answerSchema";
+import { z } from "zod";
 
 import db from "@/db";
 import { eq, and } from "drizzle-orm";
@@ -12,17 +12,15 @@ export async function onSubmit(formData: FormData) {
     !formData.get("questionId") ||
     !formData.get("code")
   ) {
-    return;
+    throw new Error("Data error");
   }
 
-  const values = {
-    questionId: formData.get("questionId"),
-    code: formData.get("code"),
-    options: formData.get("options"),
-    text: formData.get("text"),
+  const values: z.infer<typeof answerSchema> = {
+    questionId: Number(formData.get("questionId")),
+    code: formData.get("code")?.toString() ?? "",
+    // options: formData.get("options"),
+    text: formData.get("text")?.toString() ?? undefined,
   };
-
-  if (!values.questionId) throw new Error("No questionId");
 
   const existingAnswer = await db.query.answers.findFirst({
     where: and(

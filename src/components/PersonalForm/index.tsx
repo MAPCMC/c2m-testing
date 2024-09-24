@@ -23,6 +23,8 @@ export default function PersonalForm() {
   const form = useForm({
     ...formOpts,
     transform: useTransform(
+      // TODO fix
+      // @ts-expect-error - Does not work; cannot find documentation as to why
       (baseForm) => mergeForm(baseForm, state!),
       [state]
     ),

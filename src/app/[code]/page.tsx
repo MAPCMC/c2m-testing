@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
 import NavBar from "@/components/NavBar/index";
-import { getUser } from "@/lib/getUser";
 
 export default async function Form({
   params,
@@ -12,7 +11,6 @@ export default async function Form({
 }) {
   const { code } = params;
 
-  const user = getUser();
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
   });

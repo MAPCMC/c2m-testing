@@ -30,7 +30,7 @@ export default async function handlePersonalFormSubmit(
     // TODO fix db query twice
     const code = await db.query.codes.findFirst({
       where: (c, { eq }) =>
-        eq(c.link, formData.get("link")),
+        eq(c.link, formData.get("link")?.toString() ?? ""),
     });
 
     if (code) redirect(`/${code.link}`);
