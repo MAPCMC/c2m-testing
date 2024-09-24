@@ -1,4 +1,5 @@
 import Forms from "@/components/Forms";
+import PersonalForm from "@/components/PersonalForm/index";
 import { Suspense } from "react";
 
 export default function Home() {
@@ -16,8 +17,8 @@ export default function Home() {
         </p>
         <h2 className="text-xl">
           Persoonlijke vragenlijst
+          <PersonalForm />
         </h2>
-        <h2 className="text-xl">Anonieme vragenlijsten</h2>
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
           <Forms />
         </Suspense>

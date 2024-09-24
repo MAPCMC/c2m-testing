@@ -15,6 +15,20 @@
       "when": 1727168259777,
       "tag": "0001_cooing_luminals",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727180965606,
+      "tag": "0002_modern_zombie",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1727181475074,
+      "tag": "0003_ancient_trauma",
+      "breakpoints": true
     }
   ]
 }
