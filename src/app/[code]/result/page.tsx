@@ -1,6 +1,5 @@
 import db from "@/db";
 import { Button } from "@/components/ui/button";
-import testQuestions from "@/data/questions";
 import Link from "next/link";
 
 export default async function Form({

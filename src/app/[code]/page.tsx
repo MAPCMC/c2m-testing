@@ -1,6 +1,6 @@
 import db from "@/db";
 import { Button } from "@/components/ui/button";
-import testQuestions from "@/data/questions";
+
 import Link from "next/link";
 import NavBar from "@/components/NavBar/index";
 import { getUser } from "@/lib/getUser";
@@ -29,6 +29,8 @@ export default async function Form({
   if (!form) {
     return <div>Formulier niet gevonden</div>;
   }
+
+  const testQuestions = await db.query.questions.findMany();
 
   return (
     <div className="flex flex-col min-h-screen">

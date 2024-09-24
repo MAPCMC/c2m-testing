@@ -1,5 +1,4 @@
 import {
-  char,
   pgTable,
   text,
   uuid,

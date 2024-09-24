@@ -1,6 +1,5 @@
 import db from "@/db";
 import NavBar from "@/components/NavBar/index";
-import testQuestions from "@/data/questions";
 import AnswerForm from "@/components/AnswerForm";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
@@ -28,16 +27,19 @@ export default async function AnswerPage({
     return <h2>Formulier niet gevonden</h2>;
   }
 
+  const testQuestions = await db.query.questions.findMany();
+
   const question = testQuestions.find(
-    (ques) => ques.id === qid
+    (ques) => ques.id.toString() === qid
   );
   const index = testQuestions.findIndex(
-    (ques) => ques.id === qid
+    (ques) => ques.id.toString() === qid
   );
 
   if (!question) {
     return <h2>Vraag niet gevonden</h2>;
   }
+
   const setNextUrl = () => {
     if (!!testQuestions[index + 1]) {
       return `/${code}/${testQuestions[index + 1].id}`;
@@ -57,6 +59,16 @@ export default async function AnswerPage({
   const next = setNextUrl();
   const previous = setPreviousUrl();
 
+  const currentAnswer = await db.query.answers.findFirst({
+    where: (ans, { and, eq }) =>
+      and(
+        eq(ans.code, code),
+        eq(ans.questionId, question.id)
+      ),
+  });
+
+  console.log(currentAnswer, question.id);
+
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar noLogout />
@@ -67,6 +79,7 @@ export default async function AnswerPage({
       </header>
       <main className="space-y-8 p-8 sm:p-20 pb-20 grow">
         <AnswerForm
+          answer={currentAnswer}
           question={question}
           code={code}
           nextUrl={next}

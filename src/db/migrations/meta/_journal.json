@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1727167643486,
-      "tag": "0000_easy_skin",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1727168259777,
-      "tag": "0001_cooing_luminals",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1727180965606,
-      "tag": "0002_modern_zombie",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1727181475074,
-      "tag": "0003_ancient_trauma",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1727193117733,
-      "tag": "0004_fancy_madelyne_pryor",
+      "when": 1727215649173,
+      "tag": "0000_bumpy_speedball",
       "breakpoints": true
     }
   ]
