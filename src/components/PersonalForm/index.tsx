@@ -21,6 +21,7 @@ export default function PersonalForm() {
   const form = useForm({
     ...formOpts,
     transform: useTransform(
+      // TODO: fix type
       (baseForm) => mergeForm(baseForm, state!),
       [state]
     ),

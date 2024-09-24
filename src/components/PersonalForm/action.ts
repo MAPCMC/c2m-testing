@@ -8,11 +8,13 @@ import formOpts from "./formOptions";
 import db from "@/db";
 import { redirect } from "next/navigation";
 
-// Create the server action that will infer the types of the form from `formOpts`
 const serverValidate = createServerValidate({
   ...formOpts,
-  onServerValidate: ({ value }) => {
-    if (value.codeLink.length < 10) {
+  onServerValidate: async ({ value }) => {
+    const code = await db.query.codes.findFirst({
+      where: (c, { eq }) => eq(c.link, value.codeLink),
+    });
+    if (!code) {
       return "Controleer je code";
     }
   },
@@ -25,16 +27,13 @@ export default async function handlePersonalFormSubmit(
   try {
     await serverValidate(formData);
 
+    // TODO fix db query twice
     const code = await db.query.codes.findFirst({
       where: (c, { eq }) =>
         eq(c.link, formData.get("codeLink")),
     });
 
-    if (!code) {
-      throw Error("Code niet gevonden");
-    } else {
-      redirect(`/${code.link}`);
-    }
+    if (code) redirect(`/${code.link}`);
   } catch (e) {
     if (e instanceof ServerValidateError) {
       return e.formState;
