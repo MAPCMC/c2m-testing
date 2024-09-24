@@ -1,6 +1,6 @@
 {
-  "id": "dbea3942-512d-4811-9726-edb94187f9b0",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "554ec31c-455a-446c-a705-8fd7cb3e8a7a",
+  "prevId": "dbea3942-512d-4811-9726-edb94187f9b0",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -243,12 +243,6 @@
         },
         "emailVerified": {
           "name": "emailVerified",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "email_approved": {
-          "name": "email_approved",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
