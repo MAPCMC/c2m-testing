@@ -2,6 +2,8 @@ import db from "@/db";
 import { Button } from "@/components/ui/button";
 import testQuestions from "@/data/questions";
 import Link from "next/link";
+import NavBar from "@/components/NavBar/index";
+import { getUser } from "@/lib/getUser";
 
 export default async function Form({
   params,
@@ -9,6 +11,8 @@ export default async function Form({
   params: { code: string };
 }) {
   const { code } = params;
+
+  const user = getUser();
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
   });
@@ -28,6 +32,7 @@ export default async function Form({
 
   return (
     <div className="flex flex-col min-h-screen">
+      <NavBar noLogout />
       <header className="space-y-8 p-8  sm:px-20 pb-20">
         <h1 className="text-2xl font-bold">
           Vragenlijst: {form?.title}

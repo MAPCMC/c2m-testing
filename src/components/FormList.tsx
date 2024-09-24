@@ -3,7 +3,7 @@ import { codes } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
 
-const Forms = async () => {
+const FormList = async () => {
   const forms = await db.query.forms.findMany();
 
   const handleFormStart = async (data: FormData) => {
@@ -39,17 +39,17 @@ const Forms = async () => {
   };
 
   return (
-    <section className="grid xl:grid-cols-4">
+    <section className="grid lg:grid-cols-4 gap-3">
       <h2 className="col-span-full text-xl">
         Anonieme vragenlijsten
       </h2>
       {forms.map((form) => (
         <article
           key={form.id}
-          className="border px-4 py-8 space-y-3"
+          className="border px-4 py-8 space-y-3 flex flex-col gap-3"
         >
           <h3 className="text-lg">{form.title}</h3>
-          <p>{form.description}</p>
+          <p className="grow">{form.description}</p>
           <form action={handleFormStart}>
             <input
               name="formId"
@@ -65,4 +65,4 @@ const Forms = async () => {
   );
 };
 
-export default Forms;
+export default FormList;

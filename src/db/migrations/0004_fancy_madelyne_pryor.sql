@@ -1,0 +1,1 @@
+ALTER TABLE "code" ADD PRIMARY KEY ("link");

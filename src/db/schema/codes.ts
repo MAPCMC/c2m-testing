@@ -9,7 +9,10 @@ const codes = pgTable("code", {
   formId: uuid("form_id")
     .notNull()
     .references(() => forms.id, { onDelete: "cascade" }),
-  link: char("link", { length: 10 }).notNull().unique(),
+  link: char("link", { length: 10 })
+    .notNull()
+    .unique()
+    .primaryKey(),
 });
 
 export default codes;

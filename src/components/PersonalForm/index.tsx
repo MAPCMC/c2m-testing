@@ -2,15 +2,17 @@
 
 import React from "react";
 import { useFormState } from "react-dom";
+import { initialFormState } from "@tanstack/react-form/nextjs";
 import {
   mergeForm,
   useForm,
   useTransform,
 } from "@tanstack/react-form";
-import { Button } from "../ui/button";
-import { initialFormState } from "@tanstack/react-form/nextjs";
+
 import handlePersonalFormSubmit from "./action";
 import formOpts from "./formOptions";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export default function PersonalForm() {
   const [state, action] = useFormState(
@@ -21,7 +23,6 @@ export default function PersonalForm() {
   const form = useForm({
     ...formOpts,
     transform: useTransform(
-      // TODO: fix type
       (baseForm) => mergeForm(baseForm, state!),
       [state]
     ),
@@ -35,11 +36,13 @@ export default function PersonalForm() {
     <form
       action={action as never}
       onSubmit={() => form.handleSubmit()}
+      className="flex flex-wrap gap-3 items-center"
     >
       <form.Field
-        name="codeLink"
+        name="link"
         children={(field) => (
-          <input
+          <Input
+            className="w-1/4"
             name={field.name}
             value={field.state.value}
             onBlur={field.handleBlur}
@@ -49,9 +52,22 @@ export default function PersonalForm() {
           />
         )}
       />
-      <Button type="submit">Ophalen</Button>
+      <form.Subscribe
+        selector={(formState) => [
+          formState.canSubmit,
+          formState.isSubmitting,
+        ]}
+      >
+        {([canSubmit, isSubmitting]) => (
+          <Button type="submit" disabled={!canSubmit}>
+            {isSubmitting ? "..." : "Ophalen"}
+          </Button>
+        )}
+      </form.Subscribe>
       {formErrors.map((error) => (
-        <p key={error as string}>{error}</p>
+        <p className="w-full" key={error as string}>
+          {error}
+        </p>
       ))}
     </form>
   );

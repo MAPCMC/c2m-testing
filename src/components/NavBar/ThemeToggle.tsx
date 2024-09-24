@@ -12,8 +12,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function ThemeToggle() {
+export function ThemeToggle({
+  profileTheme,
+}: {
+  profileTheme?: string;
+}) {
   const { setTheme } = useTheme();
+
+  React.useEffect(() => {
+    if (profileTheme) {
+      setTheme(profileTheme);
+    }
+  }, [profileTheme, setTheme]);
 
   return (
     <DropdownMenu>
@@ -30,11 +40,6 @@ export function ThemeToggle() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => setTheme("system")}
-        >
-          System
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

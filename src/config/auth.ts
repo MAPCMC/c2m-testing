@@ -11,6 +11,15 @@ const options: NextAuthOptions = {
     // @ts-expect-error - user uuid known error
     usersTable: users,
   }),
+  callbacks: {
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: token.sub,
+      },
+    }),
+  },
   session: {
     strategy: "jwt",
     maxAge: 86400, // 24 hours

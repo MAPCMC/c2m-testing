@@ -12,7 +12,7 @@ const serverValidate = createServerValidate({
   ...formOpts,
   onServerValidate: async ({ value }) => {
     const code = await db.query.codes.findFirst({
-      where: (c, { eq }) => eq(c.link, value.codeLink),
+      where: (c, { eq }) => eq(c.link, value.link),
     });
     if (!code) {
       return "Controleer je code";
@@ -30,7 +30,7 @@ export default async function handlePersonalFormSubmit(
     // TODO fix db query twice
     const code = await db.query.codes.findFirst({
       where: (c, { eq }) =>
-        eq(c.link, formData.get("codeLink")),
+        eq(c.link, formData.get("link")),
     });
 
     if (code) redirect(`/${code.link}`);

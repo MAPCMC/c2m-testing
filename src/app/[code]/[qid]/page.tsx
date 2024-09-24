@@ -1,9 +1,11 @@
 import db from "@/db";
-import { Button } from "@/components/ui/button";
+import NavBar from "@/components/NavBar/index";
 import testQuestions from "@/data/questions";
-import Link from "next/link";
+import AnswerForm from "@/components/AnswerForm";
+import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
-export default async function Form({
+export default async function AnswerPage({
   params,
 }: {
   params: { code: string; qid: string };
@@ -14,7 +16,7 @@ export default async function Form({
   });
 
   if (!currentCode) {
-    return <div>Code niet gevonden</div>;
+    return <h2>Code niet gevonden</h2>;
   }
 
   const form = await db.query.forms.findFirst({
@@ -23,7 +25,7 @@ export default async function Form({
   });
 
   if (!form) {
-    return <div>Formulier niet gevonden</div>;
+    return <h2>Formulier niet gevonden</h2>;
   }
 
   const question = testQuestions.find(
@@ -33,53 +35,43 @@ export default async function Form({
     (ques) => ques.id === qid
   );
 
-  if (!form) {
-    return <div>Form not found</div>;
-  }
-
   if (!question) {
-    return <div>Question not found</div>;
+    return <h2>Vraag niet gevonden</h2>;
   }
+  const setNextUrl = () => {
+    if (!!testQuestions[index + 1]) {
+      return `/${code}/${testQuestions[index + 1].id}`;
+    } else {
+      return `/${code}/result`;
+    }
+  };
+
+  const setPreviousUrl = () => {
+    if (!!testQuestions[index - 1]) {
+      return `/${code}/${testQuestions[index - 1].id}`;
+    } else {
+      return `/${code}`;
+    }
+  };
+
+  const next = setNextUrl();
+  const previous = setPreviousUrl();
 
   return (
     <div className="flex flex-col min-h-screen">
+      <NavBar noLogout />
       <header className="space-y-8 p-8  sm:px-20 pb-20">
         <h1 className="text-2xl font-bold">
           Vragenlijst: {form?.title}
         </h1>
       </header>
       <main className="space-y-8 p-8 sm:p-20 pb-20 grow">
-        <h2>{question?.title}</h2>
-        {!!testQuestions[index - 1] ? (
-          <Button asChild>
-            <Link
-              href={`/${code}/${
-                testQuestions[index - 1].id
-              }`}
-            >
-              Vorige
-            </Link>
-          </Button>
-        ) : (
-          <Button asChild>
-            <Link href={`/${code}`}>Vorige</Link>
-          </Button>
-        )}
-        {!!testQuestions[index + 1] ? (
-          <Button asChild>
-            <Link
-              href={`/${code}/${
-                testQuestions[index + 1].id
-              }`}
-            >
-              Volgende
-            </Link>
-          </Button>
-        ) : (
-          <Button asChild variant="destructive">
-            <Link href={`/${code}/result`}>Afronden</Link>
-          </Button>
-        )}
+        <AnswerForm
+          question={question}
+          code={code}
+          nextUrl={next}
+          previousUrl={previous}
+        />
       </main>
     </div>
   );
