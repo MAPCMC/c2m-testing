@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import Providers from "@/components/Providers";
 
 import "./globals.css";
+import NavBar from "@/components/NavBar";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -18,9 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl">
+    <html lang="nl" suppressHydrationWarning>
       <body className={`${openSans.className} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <NavBar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
