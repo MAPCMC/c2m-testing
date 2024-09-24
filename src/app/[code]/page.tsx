@@ -40,7 +40,7 @@ export default async function Form({
           Vragenlijst: {form?.title}
         </h1>
       </header>
-      <main className="space-y-8 p-8 sm:p-20 pb-20 grow">
+      <main className="space-y-8 p-8 sm:px-20 pb-20 grow">
         <p>{form?.description}</p>
         <p>
           Vanaf het moment dat u start met het invullen van

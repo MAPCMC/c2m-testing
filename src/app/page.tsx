@@ -16,7 +16,7 @@ export default async function Home() {
           Connect2Music testportaal
         </h1>
       </header>
-      <main className="space-y-8 p-8 sm:p-20 pb-20 grow">
+      <main className="space-y-8 p-8 sm:px-20 pb-20 grow">
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
           {!user && (
             <>

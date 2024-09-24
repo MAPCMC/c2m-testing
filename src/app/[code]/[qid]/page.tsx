@@ -77,7 +77,7 @@ export default async function AnswerPage({
           Vragenlijst: {form?.title}
         </h1>
       </header>
-      <main className="space-y-8 p-8 sm:p-20 pb-20 grow">
+      <main className="space-y-8 p-8 sm:px-20 pb-20 grow">
         <AnswerForm
           answer={currentAnswer}
           question={question}
