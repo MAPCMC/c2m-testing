@@ -28,3 +28,4 @@ Apply migrations to connected db with `npx drizzle-kit migrate`.
 ### Prerequisites
 
 - Add a google auth client to allow sign in: https://console.cloud.google.com. Follow instructions from https://next-auth.js.org/providers/google.
+- Integrate vercel & supabase?
