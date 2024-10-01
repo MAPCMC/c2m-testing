@@ -23,8 +23,6 @@ export default function PersonalForm() {
   const form = useForm({
     ...formOpts,
     transform: useTransform(
-      // TODO fix
-      // @ts-expect-error - Does not work; cannot find documentation as to why
       (baseForm) => mergeForm(baseForm, state!),
       [state]
     ),
@@ -37,23 +35,40 @@ export default function PersonalForm() {
   return (
     <form
       action={action as never}
-      onSubmit={() => form.handleSubmit()}
-      className="flex flex-wrap gap-3 items-center"
+      onSubmit={() => {
+        form.handleSubmit();
+      }}
+      className="flex flex-wrap gap-3"
     >
       <form.Field
         name="link"
-        children={(field) => (
-          <Input
-            className="w-1/4"
-            name={field.name}
-            value={field.state.value}
-            onBlur={field.handleBlur}
-            onChange={(e) =>
-              field.handleChange(e.target.value)
-            }
-          />
-        )}
-      />
+        validators={{
+          onChange: ({ value }) =>
+            (value.length > 0 && value.length < 10) ||
+            value.length > 10
+              ? "De code heeft 10 tekens"
+              : undefined,
+        }}
+      >
+        {(field) => {
+          if (field.state?.value === undefined) return null;
+          return (
+            <div className="w-1/4">
+              <Input
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) =>
+                  field.handleChange(e.target.value)
+                }
+              />
+              {field.state.meta.errors.map((error) => (
+                <p key={error as string}>{error}</p>
+              ))}
+            </div>
+          );
+        }}
+      </form.Field>
       <form.Subscribe
         selector={(formState) => [
           formState.canSubmit,

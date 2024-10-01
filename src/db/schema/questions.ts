@@ -16,7 +16,7 @@ const questions = pgTable("question", {
     .references(() => forms.id, {
       onDelete: "cascade",
     }),
-  text: text("text"),
+  label: text("label").notNull(),
   description: text("description"),
   type: text("type", {
     enum: [

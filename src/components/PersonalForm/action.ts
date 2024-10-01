@@ -27,7 +27,6 @@ export default async function handlePersonalFormSubmit(
   try {
     await serverValidate(formData);
 
-    // TODO fix db query twice
     const code = await db.query.codes.findFirst({
       where: (c, { eq }) =>
         eq(c.link, formData.get("link")?.toString() ?? ""),
@@ -41,6 +40,4 @@ export default async function handlePersonalFormSubmit(
 
     throw e;
   }
-
-  return formOpts?.defaultValues;
 }

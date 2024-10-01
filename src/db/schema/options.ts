@@ -6,7 +6,7 @@ import answersToOptions from "./answersToOptions";
 const options = pgTable("option", {
   id: serial("id").notNull().primaryKey(),
   text: text("text"),
-  value: text("value"),
+  value: text("value").notNull(),
 });
 
 export const optionsRelations = relations(
