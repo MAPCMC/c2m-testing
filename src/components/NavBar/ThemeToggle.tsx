@@ -11,19 +11,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UserWithProfile } from "@/lib/getUser";
+import { setProfileTheme } from "./actions/setProfileTheme";
 
 export function ThemeToggle({
-  profileTheme,
+  user,
 }: {
-  profileTheme?: string;
+  user?: UserWithProfile;
 }) {
   const { setTheme } = useTheme();
 
   React.useEffect(() => {
-    if (profileTheme) {
-      setTheme(profileTheme);
+    if (user && user.theme) {
+      setTheme(user.theme);
     }
-  }, [profileTheme, setTheme]);
+  }, [user, setTheme]);
 
   return (
     <DropdownMenu>
@@ -35,11 +37,21 @@ export function ThemeToggle({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+        <DropdownMenuItem
+          onClick={() => {
+            setProfileTheme(user, "light");
+            setTheme("light");
+          }}
+        >
+          Licht
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+        <DropdownMenuItem
+          onClick={() => {
+            setProfileTheme(user, "dark");
+            setTheme("dark");
+          }}
+        >
+          Donker
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

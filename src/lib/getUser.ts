@@ -8,9 +8,10 @@ type User = typeof users.$inferSelect;
 type UserBase = Omit<User, "emailVerified">;
 type Profile = typeof profiles.$inferSelect;
 type UserProfile = Omit<Profile, "id" | "userId">;
+export type UserWithProfile = UserProfile & UserBase;
 
 export const getUser = async (): Promise<
-  (UserProfile & UserBase) | false
+  UserWithProfile | false
 > => {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;

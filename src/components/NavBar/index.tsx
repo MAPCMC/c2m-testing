@@ -11,9 +11,7 @@ const NavBar = async ({
   return (
     <div className="py-2 px-8 sm:px-20 border-b-2 flex justify-end items-center gap-3 w-full">
       {user && <p>{user.email}</p>}
-      <ThemeToggle
-        profileTheme={user ? user.theme : undefined}
-      />
+      <ThemeToggle user={user} />
       <SignIn noLogout={noLogout} />
     </div>
   );
