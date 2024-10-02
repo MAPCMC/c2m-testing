@@ -26,7 +26,6 @@ import questions from "@/db/schema/questions";
 import questionsToOptions from "@/db/schema/questionsToOptions";
 import dbOptions from "@/db/schema/options";
 import answersToOptions from "../../db/schema/answersToOptions";
-import { revalidatePath } from "next/cache";
 
 export default function AnswerForm({
   question,

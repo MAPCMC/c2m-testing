@@ -8,7 +8,6 @@ import {
 import db from "@/db";
 import { eq } from "drizzle-orm";
 import { answers, answersToOptions } from "@/db/schema";
-import { revalidateTag } from "next/cache";
 
 const serverValidate = createServerValidate({
   onServerValidate: async ({

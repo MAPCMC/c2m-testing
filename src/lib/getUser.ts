@@ -1,15 +1,17 @@
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/config/auth";
 import db from "@/db";
+import users from "@/db/schema/users";
+import profiles from "@/db/schema/profiles";
 
-export type User = {
-  id: string;
-  email: string;
-  role: string;
-  theme?: string;
-};
+type User = typeof users.$inferSelect;
+type UserBase = Omit<User, "emailVerified">;
+type Profile = typeof profiles.$inferSelect;
+type UserProfile = Omit<Profile, "id" | "userId">;
 
-export const getUser = async (): Promise<User | false> => {
+export const getUser = async (): Promise<
+  (UserProfile & UserBase) | false
+> => {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
   if (!email) {
@@ -28,12 +30,29 @@ export const getUser = async (): Promise<User | false> => {
     where: (profile, { eq }) =>
       eq(profile.userId, existingUser?.id),
     columns: {
+      id: false,
       userId: false,
     },
   });
 
   if (!profile) {
+    const [newProfile] = await db
+      .insert(profiles)
+      .values({
+        userId: existingUser.id,
+      })
+      .returning({
+        textSize: profiles.textSize,
+        language: profiles.language,
+        theme: profiles.theme,
+        screenReaderOptimized:
+          profiles.screenReaderOptimized,
+        feedbackEnabled: profiles.feedbackEnabled,
+        readingEnabled: profiles.readingEnabled,
+      });
+
     return {
+      ...newProfile,
       id: existingUser.id,
       email: existingUser.email,
       role: existingUser.role,
@@ -41,9 +60,9 @@ export const getUser = async (): Promise<User | false> => {
   }
 
   return {
+    ...profile,
     id: existingUser.id,
     email: existingUser.email,
     role: existingUser.role,
-    ...profile,
   };
 };
