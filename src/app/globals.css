@@ -29,16 +29,16 @@ body {
 
 @layer base {
   :root {
-    --background: 0, 0%, 98%;
-    --foreground: 0, 0%, 0%;
-    --card: 0 0% 98%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 98%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --background: var(--chorista-bg-solid);
+    --foreground: var(--chorista-text-solid);
+    --card: var(--chorista-bg-solid);
+    --card-foreground: var(--chorista-text-solid);
+    --popover: var(--chorista-bg-solid);
+    --popover-foreground: var(--chorista-text-solid);
+    --primary: var(--chorista-bg-solid-dark);
+    --primary-foreground: var(--chorista-text-solid-dark);
+    --secondary: var(--chorista-bg-solid-dark);
+    --secondary-foreground: var(--chorista-text-solid-dark);
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 210 40% 96.1%;
@@ -56,14 +56,14 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 0, 0%, 9%;
-    --foreground: 0, 0%, 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --background: var(--chorista-bg-solid-dark);
+    --foreground: var(--chorista-text-solid-dark);
+    --card: var(--chorista-bg-solid-dark);
+    --card-foreground: var(--chorista-text-solid-dark);
+    --popover: var(--chorista-bg-solid-dark);
+    --popover-foreground: var(--chorista-text-solid-dark);
+    --primary: var(--chorista-bg-solid);
+    --primary-foreground: var(--chorista-text-solid);
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -80,14 +80,5 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

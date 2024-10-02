@@ -191,6 +191,7 @@ export default function AnswerForm({
             </Button>
             <Button
               type="submit"
+              variant="outline"
               disabled={!canSubmit}
               onClick={() => {
                 router.push(

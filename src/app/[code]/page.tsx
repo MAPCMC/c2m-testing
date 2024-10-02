@@ -55,10 +55,13 @@ export default async function Form({
           gebruikt worden voor het onderzoek, kunnen wij uw
           antwoorden verwijderen. [contactgegevens]
         </p>
-        <Button asChild>
+        <Button asChild className="w-full">
           <Link href={`/${code}/${testQuestions[0].id}`}>
             Volgende
           </Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/">Vragenlijst afsluiten</Link>
         </Button>
       </main>
     </div>
