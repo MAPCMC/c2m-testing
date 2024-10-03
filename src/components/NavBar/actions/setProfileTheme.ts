@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import { profiles } from "@/db/schema";
 
 export async function setProfileTheme(
-  user: UserWithProfile | undefined,
+  user: UserWithProfile | false | undefined,
   profileTheme: "light" | "dark"
 ) {
   if (!user) {

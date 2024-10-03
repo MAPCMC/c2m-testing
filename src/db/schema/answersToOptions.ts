@@ -2,6 +2,7 @@ import {
   integer,
   pgTable,
   primaryKey,
+  text,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import options from "./options";
@@ -16,6 +17,7 @@ export const answersToOptions = pgTable(
     optionId: integer("option_id")
       .notNull()
       .references(() => options.id),
+    explanation: text("explanation"),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.answerId, t.optionId] }),

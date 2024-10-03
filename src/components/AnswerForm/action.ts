@@ -8,14 +8,50 @@ import {
 import db from "@/db";
 import { eq } from "drizzle-orm";
 import { answers, answersToOptions } from "@/db/schema";
+import formOptions from "./formOptions";
 
 const serverValidate = createServerValidate({
-  onServerValidate: async ({
-    value,
-  }: {
-    value: typeof answers.$inferInsert;
-  }) => {
-    if (!value.questionId || !value.code) {
+  ...formOptions({
+    code: "fda",
+    question: {
+      id: 1,
+      description: "test",
+      formChapterId: 1,
+      order: 1,
+      label: "test",
+      type: "text",
+      key: "test",
+      score_high_description: null,
+      score_low_description: null,
+      questionsToOptions: [],
+    },
+    answer: {
+      id: 1,
+      code: "fda",
+      questionKey: "test",
+      text: null,
+      score: null,
+      profileId: null,
+      answersToOptions: [],
+    },
+  }),
+  onServerValidate: ({ value }) => {
+    if (
+      value.questionType === "multiple" &&
+      !value.optionsString
+    ) {
+      return "Opties worden niet gelezen. Neem contact op met de beheerder.";
+    }
+
+    if (
+      value.questionType === "score" &&
+      !!value.score &&
+      !["1", "2", "3", "4", "5"].includes(value.score)
+    ) {
+      return "Score moet tussen 1 en 5 liggen.";
+    }
+
+    if (!value.questionKey || !value.code) {
       return "Kan vraag niet beantwoorden. Neem contact op met de beheerder.";
     }
   },
@@ -38,26 +74,44 @@ export default async function handleAnswerFormSubmit(
 }
 
 export async function onSubmit(formData: FormData) {
+  const scoreValue =
+    formData.get("score")?.toString() ?? null;
+  const score: "1" | "2" | "3" | "4" | "5" | null =
+    scoreValue &&
+    ["1", "2", "3", "4", "5"].includes(scoreValue)
+      ? (scoreValue as "1" | "2" | "3" | "4" | "5")
+      : null;
+
   const values: typeof answers.$inferInsert = {
-    questionId: Number(formData.get("questionId")),
+    questionKey:
+      formData.get("questionKey")?.toString() ?? null,
     code: formData.get("code")?.toString() ?? "",
     text: formData.get("text")?.toString() ?? null,
-    score: formData.get("score")?.toString() ?? null,
+    score: score,
   };
 
   const currentAnswerId = formData.get("currentAnswerId");
 
   const addNewOptions = async (answerId: number) => {
-    const newOptions = formData.getAll("options");
+    const newOptionsString =
+      formData.get("optionsString")?.toString() ?? "";
+    const newOptions: Array<{
+      explanation: string;
+      value: string;
+    }> = newOptionsString
+      ? JSON.parse(newOptionsString)
+      : [];
+
     const newOption = formData.get("singleOption");
 
     if (newOptions.length || !!newOption) {
       if (formData.get("questionType") === "multiple") {
         // Add new options
         await db.insert(answersToOptions).values(
-          newOptions.map((optionId) => ({
+          newOptions.map((option) => ({
             answerId: answerId,
-            optionId: Number(optionId),
+            optionId: Number(option.value),
+            explanation: option.explanation,
           }))
         );
       }
@@ -122,7 +176,7 @@ export async function onSubmit(formData: FormData) {
     const newAnswer = await db
       .insert(answers)
       .values({
-        questionId: values.questionId,
+        questionKey: values.questionKey,
         code: values.code,
         text: values.text,
         score: values.score,

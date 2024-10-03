@@ -13,19 +13,21 @@ import { useRouter } from "next/navigation";
 
 import handleAnswerFormSubmit from "./action";
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   RadioGroup,
   RadioGroupItem,
-} from "../ui/radio-group";
+} from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import answers from "@/db/schema/answers";
-import questions from "@/db/schema/questions";
-import questionsToOptions from "@/db/schema/questionsToOptions";
 import dbOptions from "@/db/schema/options";
-import answersToOptions from "../../db/schema/answersToOptions";
+import answersToOptions from "@/db/schema/answersToOptions";
+import { QuestionFull } from "@/db/types";
+import formOpts from "./formOptions";
+import { Textarea } from "../ui/textarea";
 
 export default function AnswerForm({
   question,
@@ -39,14 +41,10 @@ export default function AnswerForm({
       option: typeof dbOptions.$inferSelect;
     })[];
   };
-  question: typeof questions.$inferSelect & {
-    questionsToOptions: (typeof questionsToOptions.$inferSelect & {
-      option: typeof dbOptions.$inferSelect;
-    })[];
-  };
+  question: QuestionFull;
   code: string;
-  nextQuestionId: number;
-  previousQuestionId: number;
+  nextQuestionId?: number;
+  previousQuestionId?: number;
 }) {
   const router = useRouter();
   const [state, action] = useFormState(
@@ -55,22 +53,11 @@ export default function AnswerForm({
   );
 
   const form = useForm({
-    defaultValues: {
-      code: code,
-      questionId: question.id,
-      questionType: question.type,
-      currentAnswerId: answer?.id ?? null,
-      text: answer?.text ?? "",
-      score: answer?.score ?? "",
-      singleOption: answer
-        ? answer.answersToOptions[0]?.optionId.toString()
-        : "",
-      options: answer
-        ? answer.answersToOptions?.map((a) =>
-            a.option.id.toString()
-          )
-        : [],
-    },
+    ...formOpts({
+      code,
+      question,
+      answer,
+    }),
     transform: useTransform(
       (baseForm) => mergeForm(baseForm, state!),
       [state]
@@ -87,85 +74,415 @@ export default function AnswerForm({
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-8 lg:w-1/2 mx-auto"
+      className="space-y-4"
     >
       <h2 className="text-2xl">{question.label}</h2>
+      <p className="text-sm">{question.description}</p>
       {formErrors.map((error) => (
         <p className="w-full" key={error as string}>
           {error}
         </p>
       ))}
-      {question.questionsToOptions?.length > 0 &&
-        (question.type === "multiple" ? (
-          <select
-            name="options"
-            multiple
-            // defaultValue={field.state.value}
-          >
-            {question.questionsToOptions?.map((qto) => (
-              <option
-                key={qto.option.id}
-                value={qto.option.id}
+      {(() => {
+        switch (question.type) {
+          case "number":
+            return (
+              <form.Field
+                name="text"
+                validators={{
+                  onChange: ({ value }) => {
+                    const isNumeric = (string: string) =>
+                      /^[+-]?\d+(\.\d+)?$/.test(string);
+                    if (!!value && !isNumeric(value))
+                      return "Vul een getal in";
+                    return undefined;
+                  },
+                }}
               >
-                {qto.option.text ?? qto.option.value}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <form.Field name="singleOption">
-            {(field) => {
-              return (
-                <RadioGroup
-                  name={field.name}
-                  onValueChange={(value) =>
-                    field.handleChange(value)
-                  }
-                  value={field.state.value}
-                >
-                  {question.questionsToOptions?.map(
-                    (qto) => (
-                      <div
-                        key={qto.option.id}
-                        className="flex items-center space-x-2"
-                      >
-                        <RadioGroupItem
-                          value={qto.option.id.toString()}
-                          id={qto.option.id.toString()}
-                        />
-                        <Label
-                          htmlFor={qto.option.id.toString()}
+                {(field) => {
+                  if (field.state?.value === undefined)
+                    return null;
+                  return (
+                    <>
+                      <Input
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) =>
+                          field.handleChange(e.target.value)
+                        }
+                      />
+                      {field.state.meta.errors.map(
+                        (error) => (
+                          <p key={error as string}>
+                            {error}
+                          </p>
+                        )
+                      )}
+                    </>
+                  );
+                }}
+              </form.Field>
+            );
+          case "text":
+            return (
+              <form.Field name="text">
+                {(field) => {
+                  if (field.state?.value === undefined)
+                    return null;
+                  return (
+                    <>
+                      <Input
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) =>
+                          field.handleChange(e.target.value)
+                        }
+                      />
+                      {field.state.meta.errors.map(
+                        (error) => (
+                          <p key={error as string}>
+                            {error}
+                          </p>
+                        )
+                      )}
+                    </>
+                  );
+                }}
+              </form.Field>
+            );
+          case "textarea":
+            return (
+              <form.Field name="text">
+                {(field) => {
+                  if (field.state?.value === undefined)
+                    return null;
+                  return (
+                    <>
+                      <Textarea
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) =>
+                          field.handleChange(e.target.value)
+                        }
+                      />
+                      {field.state.meta.errors.map(
+                        (error) => (
+                          <p key={error as string}>
+                            {error}
+                          </p>
+                        )
+                      )}
+                    </>
+                  );
+                }}
+              </form.Field>
+            );
+          case "selection":
+            return (
+              <>
+                <form.Field name="singleOption">
+                  {(field) => {
+                    if (field.state?.value === undefined)
+                      return null;
+
+                    return (
+                      <>
+                        <RadioGroup
+                          name={field.name}
+                          onValueChange={(value) =>
+                            field.handleChange(value)
+                          }
+                          value={field.state.value}
                         >
-                          {qto.option.text ??
-                            qto.option.value}
+                          {question.questionsToOptions?.map(
+                            (qto) => (
+                              <div
+                                key={qto.option.id}
+                                className="flex items-center space-x-2"
+                              >
+                                <RadioGroupItem
+                                  value={qto.option.id.toString()}
+                                  id={qto.option.id.toString()}
+                                />
+                                <Label
+                                  htmlFor={qto.option.id.toString()}
+                                >
+                                  {qto.option.text ??
+                                    qto.option.value}
+                                </Label>
+                              </div>
+                            )
+                          )}
+                        </RadioGroup>
+                        {field.state.meta.errors.map(
+                          (error) => (
+                            <p key={error as string}>
+                              {error}
+                            </p>
+                          )
+                        )}
+                      </>
+                    );
+                  }}
+                </form.Field>
+                <form.Field name="text">
+                  {(field) => {
+                    if (field.state?.value === undefined)
+                      return null;
+                    return (
+                      <div className="pb-6">
+                        <Label htmlFor={field.name}>
+                          extra toelichting
                         </Label>
+                        <Input
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) =>
+                            field.handleChange(
+                              e.target.value
+                            )
+                          }
+                        />
+                        {field.state.meta.errors.map(
+                          (error) => (
+                            <p key={error as string}>
+                              {error}
+                            </p>
+                          )
+                        )}
                       </div>
-                    )
-                  )}
-                </RadioGroup>
-              );
-            }}
-          </form.Field>
-        ))}
-      <form.Field name="text">
-        {(field) => {
-          if (field.state?.value === undefined) return null;
-          return (
-            <>
-              <Input
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) =>
-                  field.handleChange(e.target.value)
-                }
-              />
-              {field.state.meta.errors.map((error) => (
-                <p key={error as string}>{error}</p>
-              ))}
-            </>
-          );
-        }}
-      </form.Field>
+                    );
+                  }}
+                </form.Field>
+              </>
+            );
+          case "multiple":
+            return (
+              <form.Field name="options" mode="array">
+                {(field) => {
+                  if (field.state?.value === undefined)
+                    return null;
+
+                  return (
+                    <>
+                      {question.questionsToOptions?.map(
+                        (qto) => (
+                          <React.Fragment
+                            key={qto.option.id}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Checkbox
+                                checked={
+                                  !!field.state.value.find(
+                                    (v) =>
+                                      v.value ===
+                                      qto.option.id.toString()
+                                  )
+                                }
+                                onCheckedChange={(
+                                  checked
+                                ) => {
+                                  if (checked) {
+                                    field.handleChange([
+                                      ...field.state.value,
+                                      {
+                                        value:
+                                          qto.option.id.toString(),
+                                        explanation:
+                                          field.state.value.find(
+                                            (v) =>
+                                              v.value ===
+                                              qto.option.id.toString()
+                                          )?.explanation ??
+                                          "",
+                                      },
+                                    ]);
+                                  } else {
+                                    field.handleChange(
+                                      field.state.value.filter(
+                                        (v) =>
+                                          v.value !==
+                                          qto.option.id.toString()
+                                      )
+                                    );
+                                  }
+                                }}
+                                id={`${field.name}${qto.option.id}`}
+                              />
+                              <Label
+                                htmlFor={`${field.name}${qto.option.id}`}
+                              >
+                                {qto.option.text ??
+                                  qto.option.value}
+                              </Label>
+                            </div>
+                            {!!field.state.value.find(
+                              (v) =>
+                                v.value ===
+                                qto.option.id.toString()
+                            ) && (
+                              <div className="pb-6">
+                                <Label
+                                  htmlFor={`${field.name}${qto.option.id}explanation`}
+                                >
+                                  toelichting
+                                </Label>
+                                <Input
+                                  id={`${field.name}${qto.option.id}explanation`}
+                                  defaultValue={
+                                    field.state.value.find(
+                                      (v) =>
+                                        v.value ===
+                                        qto.option.id.toString()
+                                    )?.explanation ?? ""
+                                  }
+                                  onBlur={field.handleBlur}
+                                  onChange={(e) =>
+                                    field.handleChange(
+                                      field.state.value.map(
+                                        (v) =>
+                                          v.value ===
+                                          qto.option.id.toString()
+                                            ? {
+                                                ...v,
+                                                explanation:
+                                                  e.target
+                                                    .value,
+                                              }
+                                            : v
+                                      )
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+                          </React.Fragment>
+                        )
+                      )}
+                      {field.state.meta.errors.map(
+                        (error) => (
+                          <p key={error as string}>
+                            {error}
+                          </p>
+                        )
+                      )}
+                      <input
+                        type="hidden"
+                        name="optionsString"
+                        value={JSON.stringify(
+                          field.state.value
+                        )}
+                      />
+                    </>
+                  );
+                }}
+              </form.Field>
+            );
+          case "score":
+            return (
+              <>
+                <form.Field name="score">
+                  {(field) => {
+                    if (field.state?.value === undefined)
+                      return null;
+                    return (
+                      <>
+                        <RadioGroup
+                          name={field.name}
+                          onValueChange={(value) =>
+                            field.handleChange(value)
+                          }
+                          value={field.state.value}
+                          className="grid grid-cols-5 gap-2"
+                        >
+                          {["1", "2", "3", "4", "5"].map(
+                            (scoreValue) => (
+                              <div
+                                key={scoreValue}
+                                className="flex flex-col items-center gap-3 relative"
+                              >
+                                <RadioGroupItem
+                                  value={scoreValue}
+                                  id={scoreValue}
+                                />
+                                <Label
+                                  htmlFor={scoreValue}
+                                  className="after:w-full after:h-full after:absolute after:content-[''] after:inset-0"
+                                >
+                                  {scoreValue}
+                                </Label>
+                                {scoreValue === "1" && (
+                                  <p className="text-sm text-center">
+                                    {
+                                      question.score_low_description
+                                    }
+                                  </p>
+                                )}
+                                {scoreValue === "5" && (
+                                  <p className="text-sm text-center">
+                                    {
+                                      question.score_high_description
+                                    }
+                                  </p>
+                                )}
+                              </div>
+                            )
+                          )}
+                        </RadioGroup>
+                        {field.state.meta.errors.map(
+                          (error) => (
+                            <p key={error as string}>
+                              {error}
+                            </p>
+                          )
+                        )}
+                      </>
+                    );
+                  }}
+                </form.Field>
+                <form.Field name="text">
+                  {(field) => {
+                    if (field.state?.value === undefined)
+                      return null;
+                    return (
+                      <>
+                        <Label
+                          htmlFor={field.name}
+                          className="pt-8 block"
+                        >
+                          toelichting
+                        </Label>
+                        <Input
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) =>
+                            field.handleChange(
+                              e.target.value
+                            )
+                          }
+                        />
+                        {field.state.meta.errors.map(
+                          (error) => (
+                            <p key={error as string}>
+                              {error}
+                            </p>
+                          )
+                        )}
+                      </>
+                    );
+                  }}
+                </form.Field>
+              </>
+            );
+          default:
+            return null;
+        }
+      })()}
       <form.Subscribe
         selector={(formState) => [
           formState.canSubmit,
@@ -211,8 +528,8 @@ export default function AnswerForm({
       </form.Subscribe>
       <input
         type="hidden"
-        name="questionId"
-        value={question.id}
+        name="questionKey"
+        value={question.key}
       />
       <input
         type="hidden"

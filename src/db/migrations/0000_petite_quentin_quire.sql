@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS "account" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "answer" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"question_id" integer NOT NULL,
+	"question_key" text,
 	"profile_id" integer,
 	"code" text NOT NULL,
 	"text" text,
@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS "answer" (
 CREATE TABLE IF NOT EXISTS "answers_to_options" (
 	"answer_id" integer NOT NULL,
 	"option_id" integer NOT NULL,
+	"explanation" text,
 	CONSTRAINT "answers_to_options_answer_id_option_id_pk" PRIMARY KEY("answer_id","option_id")
 );
 --> statement-breakpoint
@@ -33,6 +34,14 @@ CREATE TABLE IF NOT EXISTS "code" (
 	"form_id" uuid NOT NULL,
 	"link" char(10) PRIMARY KEY NOT NULL,
 	CONSTRAINT "code_link_unique" UNIQUE("link")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "form_chapter" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"form_id" uuid,
+	"title" text NOT NULL,
+	"description" varchar(2048),
+	"add_questions_to_profile" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "form" (
@@ -44,7 +53,7 @@ CREATE TABLE IF NOT EXISTS "form" (
 CREATE TABLE IF NOT EXISTS "option" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"text" text,
-	"value" text
+	"value" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "profile" (
@@ -61,13 +70,13 @@ CREATE TABLE IF NOT EXISTS "profile" (
 CREATE TABLE IF NOT EXISTS "question" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"key" text NOT NULL,
-	"form_id" uuid NOT NULL,
-	"text" text,
+	"form_chapter_id" integer NOT NULL,
+	"label" text NOT NULL,
 	"description" text,
+	"order" integer DEFAULT 1 NOT NULL,
 	"type" text DEFAULT 'text' NOT NULL,
-	"score" text,
 	"score_high_description" text,
-	"grade_low_description" text,
+	"score_low_description" text,
 	CONSTRAINT "question_key_unique" UNIQUE("key")
 );
 --> statement-breakpoint
@@ -92,13 +101,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "answer" ADD CONSTRAINT "answer_question_id_question_id_fk" FOREIGN KEY ("question_id") REFERENCES "public"."question"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "answer" ADD CONSTRAINT "answer_question_key_question_key_fk" FOREIGN KEY ("question_key") REFERENCES "public"."question"("key") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "answer" ADD CONSTRAINT "answer_profile_id_profile_id_fk" FOREIGN KEY ("profile_id") REFERENCES "public"."profile"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "answer" ADD CONSTRAINT "answer_profile_id_profile_id_fk" FOREIGN KEY ("profile_id") REFERENCES "public"."profile"("id") ON DELETE set null ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -134,13 +143,19 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "form_chapter" ADD CONSTRAINT "form_chapter_form_id_form_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."form"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "profile" ADD CONSTRAINT "profile_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "question" ADD CONSTRAINT "question_form_id_form_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."form"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "question" ADD CONSTRAINT "question_form_chapter_id_form_chapter_id_fk" FOREIGN KEY ("form_chapter_id") REFERENCES "public"."form_chapter"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

@@ -1,5 +1,5 @@
 {
-  "id": "5dd58f72-962a-4f78-8576-0ff0a54d0758",
+  "id": "ea840e79-45bc-489a-b1f2-db66bcf67c33",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -112,11 +112,11 @@
           "primaryKey": true,
           "notNull": true
         },
-        "question_id": {
-          "name": "question_id",
-          "type": "integer",
+        "question_key": {
+          "name": "question_key",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "profile_id": {
           "name": "profile_id",
@@ -145,15 +145,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "answer_question_id_question_id_fk": {
-          "name": "answer_question_id_question_id_fk",
+        "answer_question_key_question_key_fk": {
+          "name": "answer_question_key_question_key_fk",
           "tableFrom": "answer",
           "tableTo": "question",
           "columnsFrom": [
-            "question_id"
+            "question_key"
           ],
           "columnsTo": [
-            "id"
+            "key"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -168,7 +168,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         },
         "answer_code_code_link_fk": {
@@ -203,6 +203,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "explanation": {
+          "name": "explanation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -308,6 +314,61 @@
         }
       }
     },
+    "public.form_chapter": {
+      "name": "form_chapter",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "form_id": {
+          "name": "form_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(2048)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "add_questions_to_profile": {
+          "name": "add_questions_to_profile",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "form_chapter_form_id_form_id_fk": {
+          "name": "form_chapter_form_id_form_id_fk",
+          "tableFrom": "form_chapter",
+          "tableTo": "form",
+          "columnsFrom": [
+            "form_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.form": {
       "name": "form",
       "schema": "",
@@ -357,7 +418,7 @@
           "name": "value",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -459,23 +520,30 @@
           "primaryKey": false,
           "notNull": true
         },
-        "form_id": {
-          "name": "form_id",
-          "type": "uuid",
+        "form_chapter_id": {
+          "name": "form_chapter_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "text": {
-          "name": "text",
+        "label": {
+          "name": "label",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
         },
         "type": {
           "name": "type",
@@ -484,20 +552,14 @@
           "notNull": true,
           "default": "'text'"
         },
-        "score": {
-          "name": "score",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "score_high_description": {
           "name": "score_high_description",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "grade_low_description": {
-          "name": "grade_low_description",
+        "score_low_description": {
+          "name": "score_low_description",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -505,12 +567,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "question_form_id_form_id_fk": {
-          "name": "question_form_id_form_id_fk",
+        "question_form_chapter_id_form_chapter_id_fk": {
+          "name": "question_form_chapter_id_form_chapter_id_fk",
           "tableFrom": "question",
-          "tableTo": "form",
+          "tableTo": "form_chapter",
           "columnsFrom": [
-            "form_id"
+            "form_chapter_id"
           ],
           "columnsTo": [
             "id"

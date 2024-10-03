@@ -17,7 +17,7 @@ import { setProfileTheme } from "./actions/setProfileTheme";
 export function ThemeToggle({
   user,
 }: {
-  user?: UserWithProfile;
+  user?: UserWithProfile | false;
 }) {
   const { setTheme } = useTheme();
 

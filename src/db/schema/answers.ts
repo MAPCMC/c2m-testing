@@ -12,15 +12,16 @@ import answersToOptions from "./answersToOptions";
 
 const answers = pgTable("answer", {
   id: serial("id").primaryKey(),
-  questionId: integer("question_id")
-    .notNull()
-    .references(() => questions.id, {
+  questionKey: text("question_key").references(
+    () => questions.key,
+    {
       onDelete: "no action",
-    }),
+    }
+  ),
   profileId: integer("profile_id").references(
     () => profiles.id,
     {
-      onDelete: "no action",
+      onDelete: "set null",
     }
   ),
   code: text("code")
@@ -29,12 +30,16 @@ const answers = pgTable("answer", {
       onDelete: "no action",
     }),
   text: text("text"),
-  score: text("score"),
+  score: text("score", { enum: ["1", "2", "3", "4", "5"] }),
 });
 
 export const answersRelations = relations(
   answers,
   ({ many, one }) => ({
+    question: one(questions, {
+      fields: [answers.questionKey],
+      references: [questions.key],
+    }),
     profile: one(profiles, {
       fields: [answers.profileId],
       references: [profiles.id],

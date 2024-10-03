@@ -1,24 +1,30 @@
 import { formOptions } from "@tanstack/react-form/nextjs";
-import answers from "@/db/schema/answers";
+import { AnswerFull, QuestionFull } from "@/db/types";
 
-const formOpts = (
-  data: typeof answers.$inferInsert & {
-    questionType: string;
-    singleOption?: string;
-    options?: string[];
-    answer?: string;
-  }
-) =>
+const formOpts = (data: {
+  code: string;
+  question: QuestionFull;
+  answer?: AnswerFull;
+}) =>
   formOptions({
     defaultValues: {
       code: data.code,
-      questionId: data.questionId,
-      questionType: data.questionType,
-      text: data.text ?? "",
-      score: data.score ?? "",
-      singleOption: data.singleOption ?? "",
-      options: data.options ?? [],
-      answer: data.answer ?? "",
+      questionKey: data.question.key,
+      questionType: data.question.type,
+      currentAnswerId: data.answer?.id ?? null,
+      text: data.answer?.text ?? "",
+      score: data.answer?.score ?? "",
+      singleOption: data.answer
+        ? data.answer.answersToOptions[0]?.optionId.toString() ??
+          ""
+        : "",
+      options: data.answer
+        ? data.answer.answersToOptions?.map((ato) => ({
+            explanation: ato.explanation,
+            value: ato.optionId.toString(),
+          }))
+        : [],
+      optionsString: "",
     },
   });
 

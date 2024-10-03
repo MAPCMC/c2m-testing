@@ -5,7 +5,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import questions from "./questions";
+import formChapters from "./formChapters";
 
 const forms = pgTable("form", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -16,7 +16,7 @@ const forms = pgTable("form", {
 export const formsRelations = relations(
   forms,
   ({ many }) => ({
-    questions: many(questions),
+    formChapters: many(formChapters),
   })
 );
 

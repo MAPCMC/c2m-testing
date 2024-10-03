@@ -2,22 +2,23 @@ import {
   pgTable,
   serial,
   text,
-  uuid,
+  integer,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import questionsToOptions from "./questionsToOptions";
-import forms from "./forms";
+import formChapters from "./formChapters";
 
 const questions = pgTable("question", {
   id: serial("id").notNull().primaryKey(),
   key: text("key").notNull().unique(),
-  formId: uuid("form_id")
+  formChapterId: integer("form_chapter_id")
     .notNull()
-    .references(() => forms.id, {
+    .references(() => formChapters.id, {
       onDelete: "cascade",
     }),
   label: text("label").notNull(),
   description: text("description"),
+  order: integer("order").notNull().default(1),
   type: text("type", {
     enum: [
       "text",
@@ -25,21 +26,21 @@ const questions = pgTable("question", {
       "score",
       "selection",
       "multiple",
+      "number",
     ],
   })
     .notNull()
     .default("text"),
-  score: text("score", { enum: ["1", "2", "3", "4", "5"] }),
   score_high_description: text("score_high_description"),
-  score_low_description: text("grade_low_description"),
+  score_low_description: text("score_low_description"),
 });
 
 export const questionsRelations = relations(
   questions,
   ({ many, one }) => ({
-    form: one(forms, {
-      fields: [questions.formId],
-      references: [forms.id],
+    formChapter: one(formChapters, {
+      fields: [questions.formChapterId],
+      references: [formChapters.id],
     }),
     questionsToOptions: many(questionsToOptions),
   })

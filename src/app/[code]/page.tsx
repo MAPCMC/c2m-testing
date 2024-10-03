@@ -22,13 +22,18 @@ export default async function Form({
   const form = await db.query.forms.findFirst({
     where: (form, { eq }) =>
       eq(form.id, currentCode.formId),
+    with: {
+      formChapters: {
+        with: {
+          questions: true,
+        },
+      },
+    },
   });
 
   if (!form) {
     return <div>Formulier niet gevonden</div>;
   }
-
-  const testQuestions = await db.query.questions.findMany();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -56,7 +61,9 @@ export default async function Form({
           antwoorden verwijderen. [contactgegevens]
         </p>
         <Button asChild className="w-full">
-          <Link href={`/${code}/${testQuestions[0].id}`}>
+          <Link
+            href={`/${code}/${form.formChapters[0].questions[0].id}`}
+          >
             Volgende
           </Link>
         </Button>
