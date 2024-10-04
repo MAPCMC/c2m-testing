@@ -3,7 +3,8 @@ import NavBar from "@/components/NavBar/index";
 import AnswerForm from "@/components/AnswerForm";
 import { Suspense } from "react";
 import { revalidatePath } from "next/cache";
-import { ChapterFull } from "@/db/types";
+import { ChapterFull, QuestionFull } from "@/db/types";
+import { getFullForm } from "@/lib/getFullForm";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,6 @@ export default async function AnswerPage({
 }: {
   params: { code: string; qid: string };
 }) {
-  revalidatePath("/[code]/[qid]", "page");
   const { code, qid } = params;
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
@@ -22,31 +22,13 @@ export default async function AnswerPage({
     return <h2>Code niet gevonden</h2>;
   }
 
-  const form = await db.query.forms.findFirst({
-    where: (form, { eq }) =>
-      eq(form.id, currentCode.formId),
-    with: {
-      formChapters: {
-        orderBy: (formChapters, { asc }) => [
-          asc(formChapters.order),
-        ],
-        with: {
-          questions: {
-            orderBy: (questions, { asc }) => [
-              asc(questions.order),
-            ],
-            with: {
-              questionsToOptions: {
-                with: {
-                  option: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
+  // refresh
+  revalidatePath("/[code]/[qid]", "page");
+
+  const form = await getFullForm(
+    currentCode.formId,
+    currentCode.link
+  );
 
   if (!form) {
     return <h2>Formulier niet gevonden</h2>;
@@ -76,45 +58,30 @@ export default async function AnswerPage({
     return <h2>Hoofdstuk niet gevonden</h2>;
   }
 
-  const currentQuestion = currentChapter.questions.find(
-    (ques) => ques.id.toString() === qid
-  );
-  const currentIndex = currentChapter.questions.findIndex(
-    (ques) => ques.id.toString() === qid
-  );
+  const { currentQuestion, currentQuestionIndex } =
+    currentChapter.questions.reduce<{
+      currentQuestion: QuestionFull | null;
+      currentQuestionIndex: number;
+    }>(
+      (result, question, index) => {
+        if (
+          !result.currentQuestion &&
+          question.id.toString() === qid
+        ) {
+          result.currentQuestion = question;
+          result.currentQuestionIndex = index;
+        }
+        return result;
+      },
+      { currentQuestion: null, currentQuestionIndex: -1 }
+    );
 
-  if (!currentQuestion || currentIndex === undefined) {
+  if (
+    !currentQuestion ||
+    currentQuestionIndex === undefined
+  ) {
     return <h2>Vraag niet gevonden</h2>;
   }
-
-  const nextQuestionId = () => {
-    if (
-      currentChapter.questions.length >
-      currentIndex + 1
-    ) {
-      return currentChapter?.questions[currentIndex + 1]
-        ?.id;
-    }
-    if (
-      form.formChapters.length >
-      currentChapterIndex + 1
-    ) {
-      return form.formChapters[currentChapterIndex + 1]
-        .questions[0]?.id;
-    }
-  };
-
-  const previousQuestionId = () => {
-    if (currentIndex > 0) {
-      return currentChapter?.questions[currentIndex - 1]
-        ?.id;
-    }
-    if (currentChapterIndex > 0) {
-      return form.formChapters[
-        currentChapterIndex - 1
-      ].questions.slice(-1)[0]?.id;
-    }
-  };
 
   const currentAnswer = await db.query.answers.findFirst({
     where: (ans, { and, eq }) =>
@@ -147,21 +114,20 @@ export default async function AnswerPage({
               {currentChapter.title}
             </h2>
             <p className="text-sm text-right">
-              Vraag {currentIndex + 1} van{" "}
+              Vraag {currentQuestionIndex + 1} van{" "}
               {currentChapter.questions.length}
             </p>
-            {currentIndex === 0 && (
+            {currentQuestionIndex === 0 && (
               <p className="col-span-2">
                 {currentChapter.description}
               </p>
             )}
           </article>
           <AnswerForm
+            formId={form.id}
             code={code}
             answer={currentAnswer}
             question={currentQuestion}
-            nextQuestionId={nextQuestionId()}
-            previousQuestionId={previousQuestionId()}
           />
         </Suspense>
       </main>

@@ -1,6 +1,6 @@
 {
-  "id": "9a49ff52-e224-450c-9006-26507dfbdae1",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "10c26418-ce44-421f-b069-49f069fba42d",
+  "prevId": "affb2248-7ff6-4c7a-9aa8-0eac0c374f52",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -126,7 +126,7 @@
         },
         "code": {
           "name": "code",
-          "type": "text",
+          "type": "char(10)",
           "primaryKey": false,
           "notNull": true
         },
@@ -527,11 +527,11 @@
           "primaryKey": false,
           "notNull": false
         },
-        "answer_key": {
-          "name": "answer_key",
+        "key": {
+          "name": "key",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "field": {
           "name": "field",
@@ -567,12 +567,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "question_conditions_answer_key_question_key_fk": {
-          "name": "question_conditions_answer_key_question_key_fk",
+        "question_conditions_key_question_key_fk": {
+          "name": "question_conditions_key_question_key_fk",
           "tableFrom": "question_conditions",
           "tableTo": "question",
           "columnsFrom": [
-            "answer_key"
+            "key"
           ],
           "columnsTo": [
             "key"

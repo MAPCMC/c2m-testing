@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS "form_chapter" (
 	"form_id" uuid,
 	"title" text NOT NULL,
 	"description" varchar(2048),
-	"add_questions_to_profile" boolean DEFAULT false NOT NULL
+	"add_questions_to_profile" boolean DEFAULT false NOT NULL,
+	"order" integer DEFAULT 1 NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "form" (
@@ -65,6 +66,15 @@ CREATE TABLE IF NOT EXISTS "profile" (
 	"screen_reader_optimized" boolean DEFAULT false NOT NULL,
 	"feedback_enabled" boolean DEFAULT false NOT NULL,
 	"reading_enabled" boolean DEFAULT false NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "question_conditions" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"question_id" integer,
+	"answer_key" text,
+	"field" text,
+	"operator" text,
+	"requirement" text
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question" (
@@ -150,6 +160,18 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "profile" ADD CONSTRAINT "profile_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "question_conditions" ADD CONSTRAINT "question_conditions_question_id_question_id_fk" FOREIGN KEY ("question_id") REFERENCES "public"."question"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "question_conditions" ADD CONSTRAINT "question_conditions_answer_key_question_key_fk" FOREIGN KEY ("answer_key") REFERENCES "public"."question"("key") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

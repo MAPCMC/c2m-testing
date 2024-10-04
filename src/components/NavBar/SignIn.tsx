@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   signIn,
   signOut,
@@ -18,12 +19,14 @@ export default function SignIn({
   if (status === "authenticated") {
     return (
       <>
-        <Button
-          onClick={() => signOut()}
-          disabled={noLogout}
-        >
-          Uitloggen
-        </Button>
+        {!noLogout && (
+          <Button
+            onClick={() => signOut()}
+            disabled={noLogout}
+          >
+            Uitloggen
+          </Button>
+        )}
       </>
     );
   }

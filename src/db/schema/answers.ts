@@ -3,6 +3,7 @@ import {
   pgTable,
   serial,
   text,
+  char,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import codes from "./codes";
@@ -24,7 +25,7 @@ const answers = pgTable("answer", {
       onDelete: "set null",
     }
   ),
-  code: text("code")
+  code: char("code", { length: 10 })
     .notNull()
     .references(() => codes.link, {
       onDelete: "no action",
@@ -45,6 +46,10 @@ export const answersRelations = relations(
     profile: one(profiles, {
       fields: [answers.profileId],
       references: [profiles.id],
+    }),
+    code: one(codes, {
+      fields: [answers.code],
+      references: [codes.link],
     }),
     answersToOptions: many(answersToOptions),
   })

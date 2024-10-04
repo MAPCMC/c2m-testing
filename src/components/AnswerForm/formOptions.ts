@@ -3,12 +3,14 @@ import { AnswerFull, QuestionFull } from "@/db/types";
 
 const formOpts = (data: {
   code: string;
+  formId: string;
   question: QuestionFull;
   answer?: AnswerFull;
 }) =>
   formOptions({
     defaultValues: {
       code: data.code,
+      formId: data.formId,
       questionKey: data.question.key,
       questionType: data.question.type,
       currentAnswerId: data.answer?.id ?? null,

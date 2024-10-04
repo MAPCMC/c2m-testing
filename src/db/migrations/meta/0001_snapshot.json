@@ -1,6 +1,6 @@
 {
-  "id": "cd229341-97b6-4398-bbb0-8e4eb9a5f30c",
-  "prevId": "ea840e79-45bc-489a-b1f2-db66bcf67c33",
+  "id": "affb2248-7ff6-4c7a-9aa8-0eac0c374f52",
+  "prevId": "9a49ff52-e224-450c-9006-26507dfbdae1",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -505,6 +505,79 @@
             "id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.question_conditions": {
+      "name": "question_conditions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "question_id": {
+          "name": "question_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "field": {
+          "name": "field",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operator": {
+          "name": "operator",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "requirement": {
+          "name": "requirement",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "question_conditions_question_id_question_id_fk": {
+          "name": "question_conditions_question_id_question_id_fk",
+          "tableFrom": "question_conditions",
+          "tableTo": "question",
+          "columnsFrom": [
+            "question_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "question_conditions_key_question_key_fk": {
+          "name": "question_conditions_key_question_key_fk",
+          "tableFrom": "question_conditions",
+          "tableTo": "question",
+          "columnsFrom": [
+            "key"
+          ],
+          "columnsTo": [
+            "key"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },

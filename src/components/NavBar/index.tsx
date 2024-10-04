@@ -4,7 +4,9 @@ import { getUser } from "@/lib/getUser";
 
 const NavBar = async ({
   noLogout,
+  children,
 }: {
+  children?: React.ReactNode;
   noLogout?: boolean;
 }) => {
   const user = await getUser();
@@ -15,6 +17,7 @@ const NavBar = async ({
       )}
 
       <ThemeToggle user={user} />
+      {children}
       <SignIn noLogout={noLogout} />
     </div>
   );

@@ -7,6 +7,7 @@ import {
 import { relations } from "drizzle-orm";
 import questionsToOptions from "./questionsToOptions";
 import formChapters from "./formChapters";
+import questionConditions from "./questionConditions";
 
 const questions = pgTable("question", {
   id: serial("id").notNull().primaryKey(),
@@ -43,6 +44,9 @@ export const questionsRelations = relations(
       references: [formChapters.id],
     }),
     questionsToOptions: many(questionsToOptions),
+    questionConditions: many(questionConditions, {
+      relationName: "question",
+    }),
   })
 );
 

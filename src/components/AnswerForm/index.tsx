@@ -8,8 +8,6 @@ import {
   useForm,
   useTransform,
 } from "@tanstack/react-form";
-import type { Route } from "next";
-import { useRouter } from "next/navigation";
 
 import handleAnswerFormSubmit from "./action";
 
@@ -32,9 +30,8 @@ import { Textarea } from "../ui/textarea";
 export default function AnswerForm({
   question,
   code,
+  formId,
   answer,
-  nextQuestionId,
-  previousQuestionId,
 }: {
   answer?: typeof answers.$inferSelect & {
     answersToOptions: (typeof answersToOptions.$inferSelect & {
@@ -43,10 +40,10 @@ export default function AnswerForm({
   };
   question: QuestionFull;
   code: string;
+  formId: string;
   nextQuestionId?: number;
   previousQuestionId?: number;
 }) {
-  const router = useRouter();
   const [state, action] = useFormState(
     handleAnswerFormSubmit,
     initialFormState
@@ -55,6 +52,7 @@ export default function AnswerForm({
   const form = useForm({
     ...formOpts({
       code,
+      formId,
       question,
       answer,
     }),
@@ -507,14 +505,6 @@ export default function AnswerForm({
               type="submit"
               className="float-right"
               disabled={!canSubmit}
-              onClick={() => {
-                router.push(
-                  `/${code}/${
-                    nextQuestionId ?? "result"
-                  }` as Route
-                );
-                router.refresh();
-              }}
             >
               {isSubmitting ? "..." : "Volgende"}
             </Button>
@@ -523,14 +513,13 @@ export default function AnswerForm({
               variant="outline"
               disabled={!canSubmit}
               onClick={() => {
-                router.push(
-                  `/${code}${
-                    previousQuestionId
-                      ? `/${previousQuestionId}`
-                      : ""
-                  }` as Route
-                );
-                router.refresh();
+                const submitDirection =
+                  document.querySelector(
+                    'input[name="direction"]'
+                  ) as HTMLInputElement | null;
+                if (submitDirection) {
+                  submitDirection.value = "previous";
+                }
               }}
             >
               {isSubmitting ? "..." : "Vorige"}
@@ -538,6 +527,12 @@ export default function AnswerForm({
           </>
         )}
       </form.Subscribe>
+      <input type="hidden" name="direction" value="next" />
+      <input
+        type="hidden"
+        name="formId"
+        value={formId}
+      ></input>
       <input
         type="hidden"
         name="questionKey"

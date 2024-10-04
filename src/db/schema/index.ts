@@ -15,6 +15,10 @@ export {
   questionsRelations,
 } from "./questions";
 export {
+  default as questionConditions,
+  questionConditionsRelations,
+} from "./questionConditions";
+export {
   default as answers,
   answersRelations,
 } from "./answers";

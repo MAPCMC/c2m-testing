@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
 import NavBar from "@/components/NavBar/index";
+import { getFullForm } from "@/lib/getFullForm";
 
 export default async function Form({
   params,
@@ -19,17 +20,10 @@ export default async function Form({
     return <div>Code niet gevonden</div>;
   }
 
-  const form = await db.query.forms.findFirst({
-    where: (form, { eq }) =>
-      eq(form.id, currentCode.formId),
-    with: {
-      formChapters: {
-        with: {
-          questions: true,
-        },
-      },
-    },
-  });
+  const form = await getFullForm(
+    currentCode.formId,
+    currentCode.link
+  );
 
   if (!form) {
     return <div>Formulier niet gevonden</div>;
@@ -37,7 +31,11 @@ export default async function Form({
 
   return (
     <div className="flex flex-col min-h-screen">
-      <NavBar noLogout />
+      <NavBar noLogout>
+        <Button asChild variant="outline">
+          <Link href="/">Vragenlijst afsluiten</Link>
+        </Button>
+      </NavBar>
       <header className="space-y-8 p-8  sm:px-20 pb-20">
         <h1 className="text-2xl font-bold">
           Vragenlijst: {form?.title}
@@ -58,17 +56,15 @@ export default async function Form({
           vragenlijst, blijven uw antwoorden bewaard. Als u
           na het invullen toch niet wilt dat uw antwoorden
           gebruikt worden voor het onderzoek, kunnen wij uw
-          antwoorden verwijderen. [contactgegevens]
+          antwoorden verwijderen. Neem hiervoor contact op
+          met de stichting.
         </p>
-        <Button asChild className="w-full">
+        <Button asChild className="mr-3">
           <Link
             href={`/${code}/${form.formChapters[0].questions[0].id}`}
           >
             Volgende
           </Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href="/">Vragenlijst afsluiten</Link>
         </Button>
       </main>
     </div>
