@@ -46,7 +46,9 @@ const serverValidate = createServerValidate({
     if (
       value.questionType === "score" &&
       !!value.score &&
-      !["1", "2", "3", "4", "5"].includes(value.score)
+      !["1", "2", "3", "4", "5", "nvt"].includes(
+        value.score
+      )
     ) {
       return "Score moet tussen 1 en 5 liggen.";
     }
@@ -76,10 +78,10 @@ export default async function handleAnswerFormSubmit(
 export async function onSubmit(formData: FormData) {
   const scoreValue =
     formData.get("score")?.toString() ?? null;
-  const score: "1" | "2" | "3" | "4" | "5" | null =
+  const score: "1" | "2" | "3" | "4" | "5" | "nvt" | null =
     scoreValue &&
-    ["1", "2", "3", "4", "5"].includes(scoreValue)
-      ? (scoreValue as "1" | "2" | "3" | "4" | "5")
+    ["1", "2", "3", "4", "5", "nvt"].includes(scoreValue)
+      ? (scoreValue as "1" | "2" | "3" | "4" | "5" | "nvt")
       : null;
 
   const values: typeof answers.$inferInsert = {

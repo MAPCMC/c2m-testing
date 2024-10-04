@@ -399,39 +399,51 @@ export default function AnswerForm({
                           value={field.state.value}
                           className="grid grid-cols-5 gap-2"
                         >
-                          {["1", "2", "3", "4", "5"].map(
-                            (scoreValue) => (
-                              <div
-                                key={scoreValue}
-                                className="flex flex-col items-center gap-3 relative"
+                          {[
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "nvt",
+                          ].map((scoreValue) => (
+                            <div
+                              key={scoreValue}
+                              className={
+                                "flex flex-col items-center gap-3 relative" +
+                                (scoreValue === "nvt"
+                                  ? " col-span-5"
+                                  : "")
+                              }
+                            >
+                              <RadioGroupItem
+                                value={scoreValue}
+                                id={scoreValue}
+                              />
+                              <Label
+                                htmlFor={scoreValue}
+                                className="after:w-full after:h-full after:absolute after:content-[''] after:inset-0"
                               >
-                                <RadioGroupItem
-                                  value={scoreValue}
-                                  id={scoreValue}
-                                />
-                                <Label
-                                  htmlFor={scoreValue}
-                                  className="after:w-full after:h-full after:absolute after:content-[''] after:inset-0"
-                                >
-                                  {scoreValue}
-                                </Label>
-                                {scoreValue === "1" && (
-                                  <p className="text-sm text-center">
-                                    {
-                                      question.score_low_description
-                                    }
-                                  </p>
-                                )}
-                                {scoreValue === "5" && (
-                                  <p className="text-sm text-center">
-                                    {
-                                      question.score_high_description
-                                    }
-                                  </p>
-                                )}
-                              </div>
-                            )
-                          )}
+                                {scoreValue === "nvt"
+                                  ? "geen mening"
+                                  : scoreValue}
+                              </Label>
+                              {scoreValue === "1" && (
+                                <p className="text-sm text-center">
+                                  {
+                                    question.score_low_description
+                                  }
+                                </p>
+                              )}
+                              {scoreValue === "5" && (
+                                <p className="text-sm text-center">
+                                  {
+                                    question.score_high_description
+                                  }
+                                </p>
+                              )}
+                            </div>
+                          ))}
                         </RadioGroup>
                         {field.state.meta.errors.map(
                           (error) => (

@@ -30,7 +30,9 @@ const answers = pgTable("answer", {
       onDelete: "no action",
     }),
   text: text("text"),
-  score: text("score", { enum: ["1", "2", "3", "4", "5"] }),
+  score: text("score", {
+    enum: ["1", "2", "3", "4", "5", "nvt"],
+  }),
 });
 
 export const answersRelations = relations(
