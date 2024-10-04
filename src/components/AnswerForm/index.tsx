@@ -74,8 +74,6 @@ export default function AnswerForm({
       }}
       className="space-y-4"
     >
-      <h2 className="text-2xl">{question.label}</h2>
-      <p className="text-sm">{question.description}</p>
       {formErrors.map((error) => (
         <p className="w-full" key={error as string}>
           {error}
@@ -101,8 +99,20 @@ export default function AnswerForm({
                   if (field.state?.value === undefined)
                     return null;
                   return (
-                    <>
+                    <fieldset>
+                      <Label
+                        htmlFor={field.name}
+                        className="text-2xl"
+                      >
+                        {question.label}
+                      </Label>
+                      {question.description && (
+                        <p className="text-sm">
+                          {question.description}
+                        </p>
+                      )}
                       <Input
+                        id={field.name}
                         name={field.name}
                         value={field.state.value}
                         onBlur={field.handleBlur}
@@ -117,7 +127,7 @@ export default function AnswerForm({
                           </p>
                         )
                       )}
-                    </>
+                    </fieldset>
                   );
                 }}
               </form.Field>
@@ -130,7 +140,19 @@ export default function AnswerForm({
                     return null;
                   return (
                     <>
+                      <Label
+                        htmlFor={field.name}
+                        className="text-2xl"
+                      >
+                        {question.label}
+                      </Label>
+                      {question.description && (
+                        <p className="text-sm">
+                          {question.description}
+                        </p>
+                      )}
                       <Input
+                        id={field.name}
                         name={field.name}
                         value={field.state.value}
                         onBlur={field.handleBlur}
@@ -158,7 +180,19 @@ export default function AnswerForm({
                     return null;
                   return (
                     <>
+                      <Label
+                        htmlFor={field.name}
+                        className="text-2xl"
+                      >
+                        {question.label}
+                      </Label>
+                      {question.description && (
+                        <p className="text-sm">
+                          {question.description}
+                        </p>
+                      )}
                       <Textarea
+                        id={field.name}
                         name={field.name}
                         value={field.state.value}
                         onBlur={field.handleBlur}
@@ -187,8 +221,17 @@ export default function AnswerForm({
                       return null;
 
                     return (
-                      <>
+                      <fieldset>
+                        <legend className="text-2xl pb-6">
+                          {question.label}
+                        </legend>
+                        {question.description && (
+                          <p className="text-sm">
+                            {question.description}
+                          </p>
+                        )}
                         <RadioGroup
+                          id={field.name}
                           name={field.name}
                           onValueChange={(value) =>
                             field.handleChange(value)
@@ -208,8 +251,7 @@ export default function AnswerForm({
                                 <Label
                                   htmlFor={qto.option.id.toString()}
                                 >
-                                  {qto.option.text ??
-                                    qto.option.value}
+                                  {qto.option.text}
                                 </Label>
                               </div>
                             )
@@ -222,7 +264,7 @@ export default function AnswerForm({
                             </p>
                           )
                         )}
-                      </>
+                      </fieldset>
                     );
                   }}
                 </form.Field>
@@ -231,11 +273,12 @@ export default function AnswerForm({
                     if (field.state?.value === undefined)
                       return null;
                     return (
-                      <div className="pb-6">
+                      <fieldset className="pb-6">
                         <Label htmlFor={field.name}>
                           extra toelichting
                         </Label>
                         <Input
+                          id={field.name}
                           name={field.name}
                           value={field.state.value}
                           onBlur={field.handleBlur}
@@ -252,7 +295,7 @@ export default function AnswerForm({
                             </p>
                           )
                         )}
-                      </div>
+                      </fieldset>
                     );
                   }}
                 </form.Field>
@@ -267,12 +310,20 @@ export default function AnswerForm({
 
                   return (
                     <>
+                      <h2 className="text-2xl pb-6">
+                        {question.label}
+                      </h2>
+                      {question.description && (
+                        <p className="text-sm">
+                          {question.description}
+                        </p>
+                      )}
                       {question.questionsToOptions?.map(
                         (qto) => (
                           <React.Fragment
                             key={qto.option.id}
                           >
-                            <div className="flex items-center gap-2">
+                            <fieldset className="flex items-center gap-2">
                               <Checkbox
                                 checked={
                                   !!field.state.value.find(
@@ -314,20 +365,20 @@ export default function AnswerForm({
                               <Label
                                 htmlFor={`${field.name}${qto.option.id}`}
                               >
-                                {qto.option.text ??
-                                  qto.option.value}
+                                {qto.option.text}
                               </Label>
-                            </div>
+                            </fieldset>
                             {!!field.state.value.find(
                               (v) =>
                                 v.value ===
                                 qto.option.id.toString()
                             ) && (
-                              <div className="pb-6">
+                              <fieldset className="pb-6">
                                 <Label
                                   htmlFor={`${field.name}${qto.option.id}explanation`}
                                 >
-                                  toelichting
+                                  toelichting bij{" "}
+                                  {qto.option.text}
                                 </Label>
                                 <Input
                                   id={`${field.name}${qto.option.id}explanation`}
@@ -356,7 +407,7 @@ export default function AnswerForm({
                                     )
                                   }
                                 />
-                              </div>
+                              </fieldset>
                             )}
                           </React.Fragment>
                         )
@@ -389,7 +440,19 @@ export default function AnswerForm({
                       return null;
                     return (
                       <>
+                        <Label
+                          htmlFor={field.name}
+                          className="text-2xl"
+                        >
+                          {question.label}
+                        </Label>
+                        {question.description && (
+                          <p className="text-sm">
+                            {question.description}
+                          </p>
+                        )}
                         <RadioGroup
+                          id={field.name}
                           name={field.name}
                           onValueChange={(value) =>
                             field.handleChange(value)
@@ -467,6 +530,7 @@ export default function AnswerForm({
                           toelichting
                         </Label>
                         <Input
+                          id={field.name}
                           name={field.name}
                           value={field.state.value}
                           onBlur={field.handleBlur}
