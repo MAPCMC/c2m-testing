@@ -27,8 +27,14 @@ export default async function AnswerPage({
       eq(form.id, currentCode.formId),
     with: {
       formChapters: {
+        orderBy: (formChapters, { asc }) => [
+          asc(formChapters.order),
+        ],
         with: {
           questions: {
+            orderBy: (questions, { asc }) => [
+              asc(questions.order),
+            ],
             with: {
               questionsToOptions: {
                 with: {
@@ -133,7 +139,7 @@ export default async function AnswerPage({
           Vragenlijst: {form?.title}
         </h1>
       </header>
-      <main className="space-y-12 lg:w-1/2 mx-auto px-6 sm:px-20 pb-20 grow">
+      <main className="space-y-12 w-full md:max-w-3xl mx-auto px-6 sm:px-20 pb-20 grow">
         <Suspense fallback={<p>Aan het laden...</p>}>
           <article className="gap-4 grid grid-cols-2">
             <h2 className="font-bold">

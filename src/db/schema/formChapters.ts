@@ -5,6 +5,7 @@ import {
   serial,
   uuid,
   varchar,
+  integer,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import questions from "./questions";
@@ -20,6 +21,7 @@ const formChapters = pgTable("form_chapter", {
   addAnswersToProfile: boolean("add_questions_to_profile")
     .notNull()
     .default(false),
+  order: integer("order").notNull().default(1),
 });
 
 export const formChaptersRelations = relations(
