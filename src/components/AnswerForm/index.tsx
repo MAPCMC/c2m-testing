@@ -26,6 +26,7 @@ import answersToOptions from "@/db/schema/answersToOptions";
 import { QuestionFull } from "@/db/types";
 import formOpts from "./formOptions";
 import { Textarea } from "../ui/textarea";
+import InnerField from "./components/InnerField";
 
 export default function AnswerForm({
   question,
@@ -95,121 +96,59 @@ export default function AnswerForm({
                   },
                 }}
               >
-                {(field) => {
-                  if (field.state?.value === undefined)
-                    return null;
-                  return (
-                    <fieldset>
-                      <Label
-                        htmlFor={field.name}
-                        className="text-2xl"
-                      >
-                        {question.label}
-                      </Label>
-                      {question.description && (
-                        <p className="text-sm">
-                          {question.description}
-                        </p>
-                      )}
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
-                      />
-                      {field.state.meta.errors.map(
-                        (error) => (
-                          <p key={error as string}>
-                            {error}
-                          </p>
-                        )
-                      )}
-                    </fieldset>
-                  );
-                }}
+                {(field) => (
+                  <InnerField
+                    label={question.label}
+                    description={question.description}
+                    value={field.state.value}
+                    name={field.name}
+                    errors={field.state.meta.errors}
+                    question={question}
+                    onBlur={field.handleBlur}
+                    onChange={(e) =>
+                      field.handleChange(e.target.value)
+                    }
+                  />
+                )}
               </form.Field>
             );
           case "text":
             return (
               <form.Field name="text">
-                {(field) => {
-                  if (field.state?.value === undefined)
-                    return null;
-                  return (
-                    <>
-                      <Label
-                        htmlFor={field.name}
-                        className="text-2xl"
-                      >
-                        {question.label}
-                      </Label>
-                      {question.description && (
-                        <p className="text-sm">
-                          {question.description}
-                        </p>
-                      )}
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
-                      />
-                      {field.state.meta.errors.map(
-                        (error) => (
-                          <p key={error as string}>
-                            {error}
-                          </p>
-                        )
-                      )}
-                    </>
-                  );
-                }}
+                {(field) => (
+                  <InnerField
+                    label={question.label}
+                    description={question.description}
+                    value={field.state.value}
+                    name={field.name}
+                    errors={field.state.meta.errors}
+                    question={question}
+                    onBlur={field.handleBlur}
+                    onChange={(e) =>
+                      field.handleChange(e.target.value)
+                    }
+                  />
+                )}
               </form.Field>
             );
           case "textarea":
             return (
               <form.Field name="text">
-                {(field) => {
-                  if (field.state?.value === undefined)
-                    return null;
-                  return (
-                    <>
-                      <Label
-                        htmlFor={field.name}
-                        className="text-2xl"
-                      >
-                        {question.label}
-                      </Label>
-                      {question.description && (
-                        <p className="text-sm">
-                          {question.description}
-                        </p>
-                      )}
-                      <Textarea
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) =>
-                          field.handleChange(e.target.value)
-                        }
-                      />
-                      {field.state.meta.errors.map(
-                        (error) => (
-                          <p key={error as string}>
-                            {error}
-                          </p>
-                        )
-                      )}
-                    </>
-                  );
-                }}
+                {(field) => (
+                  <InnerField
+                    label={question.label}
+                    description={question.description}
+                    as={Textarea}
+                    value={field.state.value}
+                    name={field.name}
+                    errors={field.state.meta.errors}
+                    question={question}
+                    onBlur={field.handleBlur}
+                    onChange={(e) =>
+                      field.handleChange(e.target.value)
+                    }
+                  />
+                )}
               </form.Field>
             );
           case "selection":
@@ -269,35 +208,19 @@ export default function AnswerForm({
                   }}
                 </form.Field>
                 <form.Field name="text">
-                  {(field) => {
-                    if (field.state?.value === undefined)
-                      return null;
-                    return (
-                      <fieldset className="pb-6">
-                        <Label htmlFor={field.name}>
-                          extra toelichting
-                        </Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(
-                              e.target.value
-                            )
-                          }
-                        />
-                        {field.state.meta.errors.map(
-                          (error) => (
-                            <p key={error as string}>
-                              {error}
-                            </p>
-                          )
-                        )}
-                      </fieldset>
-                    );
-                  }}
+                  {(field) => (
+                    <InnerField
+                      label="extra toelichting"
+                      value={field.state.value}
+                      name={field.name}
+                      errors={field.state.meta.errors}
+                      question={question}
+                      onBlur={field.handleBlur}
+                      onChange={(e) =>
+                        field.handleChange(e.target.value)
+                      }
+                    />
+                  )}
                 </form.Field>
               </>
             );
