@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --chorista-bg-solid: 0, 0%, 98%;
-  --chorista-bg-overlay: 0, 0%, 64%, 0.8;
-  --chorista-text-solid: 0, 0%, 0%;
-  --chorista-border-solid: 0, 0%, 0%;
-  --chorista-border-soft: 0, 12%, 27%;
-  --chorista-bg-off-1: 0, 0%, 93%;
-  --chorista-bg-off-2: 0, 0%, 80%;
+  --chorista-bg-solid: 0 0% 98%;
+  --chorista-bg-overlay: 0 0% 64% 0.8;
+  --chorista-text-solid: 0 0% 0%;
+  --chorista-border-solid: 0 0% 0%;
+  --chorista-border-soft: 0 12% 27%;
+  --chorista-bg-off-1: 0 0% 93%;
+  --chorista-bg-off-2: 0 0% 80%;
 
-  --chorista-bg-solid-dark: 0, 0%, 9%;
-  --chorista-bg-overlay-dark: 0, 0%, 15%, 0.8;
+  --chorista-bg-solid-dark: 0 0% 9%;
+  --chorista-bg-overlay-dark: 0 0% 15% 0.8;
 
-  --chorista-text-solid-dark: 0, 0%, 98%;
-  --chorista-border-solid-dark: 0, 0%, 67%;
-  --chorista-border-soft-dark: 0, 0%, 20%;
-  --chorista-bg-off-1-dark: 0, 0%, 18%;
-  --chorista-bg-off-2-dark: 0, 0%, 27%;
+  --chorista-text-solid-dark: 0 0% 98%;
+  --chorista-border-solid-dark: 0 0% 67%;
+  --chorista-border-soft-dark: 0 0% 20%;
+  --chorista-bg-off-1-dark: 0 0% 18%;
+  --chorista-bg-off-2-dark: 0 0% 27%;
 }
 
 body {
@@ -37,17 +37,17 @@ body {
     --popover-foreground: var(--chorista-text-solid);
     --primary: var(--chorista-bg-solid-dark);
     --primary-foreground: var(--chorista-text-solid-dark);
-    --secondary: var(--chorista-bg-solid-dark);
+    --secondary: var(--chorista-bg-overlay-dark);
     --secondary-foreground: var(--chorista-text-solid-dark);
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: var(--chorista-bg-off-1);
+    --muted-foreground: var(--chorista-bg-solid-dark);
+    --accent: var(--chorista-bg-off-1);
+    --accent-foreground: var(--chorista-bg-overlay-dark);
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive-foreground: var(--chorista-bg-off-1);
+    --border: var(--chorista-border-soft);
+    --input: var(--chorista-bg-off-1);
+    --ring: var(--chorista-border-solid);
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -64,17 +64,17 @@ body {
     --popover-foreground: var(--chorista-text-solid-dark);
     --primary: var(--chorista-bg-solid);
     --primary-foreground: var(--chorista-text-solid);
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --secondary: var(--chorista-bg-overlay);
+    --secondary-foreground: var(--chorista-text-solid);
+    --muted: var(--chorista-bg-overlay-dark);
+    --muted-foreground: var(--chorista-border-solid-dark);
+    --accent: var(--chorista-bg-off-1-dark);
+    --accent-foreground: var(--chorista-bg-off-1);
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --destructive-foreground: var(--chorista-bg-off-2);
+    --border: var(--chorista-border-soft-dark);
+    --input: var(--chorista-bg-overlay-dark);
+    --ring: var(--chorista-text-solid-dark);
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
