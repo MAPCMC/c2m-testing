@@ -14,10 +14,6 @@ import handleAnswerFormSubmit from "./action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import answers from "@/db/schema/answers";
@@ -27,6 +23,8 @@ import { QuestionFull } from "@/db/types";
 import formOpts from "./formOptions";
 import { Textarea } from "../ui/textarea";
 import InnerField from "./components/InnerField";
+import InnerChoiceField from "./components/InnerChoiceField";
+import InnerScoreField from "./components/InnerScoreField";
 
 export default function AnswerForm({
   question,
@@ -155,57 +153,25 @@ export default function AnswerForm({
             return (
               <>
                 <form.Field name="singleOption">
-                  {(field) => {
-                    if (field.state?.value === undefined)
-                      return null;
-
-                    return (
-                      <fieldset>
-                        <legend className="text-2xl pb-6">
-                          {question.label}
-                        </legend>
-                        {question.description && (
-                          <p className="text-sm">
-                            {question.description}
-                          </p>
-                        )}
-                        <RadioGroup
-                          id={field.name}
-                          name={field.name}
-                          onValueChange={(value) =>
-                            field.handleChange(value)
-                          }
-                          value={field.state.value}
-                        >
-                          {question.questionsToOptions?.map(
-                            (qto) => (
-                              <div
-                                key={qto.option.id}
-                                className="flex items-center space-x-2"
-                              >
-                                <RadioGroupItem
-                                  value={qto.option.id.toString()}
-                                  id={qto.option.id.toString()}
-                                />
-                                <Label
-                                  htmlFor={qto.option.id.toString()}
-                                >
-                                  {qto.option.text}
-                                </Label>
-                              </div>
-                            )
-                          )}
-                        </RadioGroup>
-                        {field.state.meta.errors.map(
-                          (error) => (
-                            <p key={error as string}>
-                              {error}
-                            </p>
-                          )
-                        )}
-                      </fieldset>
-                    );
-                  }}
+                  {(field) => (
+                    <InnerChoiceField
+                      label={question.label}
+                      description={question.description}
+                      value={field.state.value}
+                      name={field.name}
+                      errors={field.state.meta.errors}
+                      options={question.questionsToOptions?.map(
+                        (qto) => ({
+                          id: qto.option.id,
+                          text: qto.option.text ?? "",
+                        })
+                      )}
+                      onBlur={field.handleBlur}
+                      onChange={(value) =>
+                        field.handleChange(value)
+                      }
+                    />
+                  )}
                 </form.Field>
                 <form.Field name="text">
                   {(field) => (
@@ -232,108 +198,127 @@ export default function AnswerForm({
                     return null;
 
                   return (
-                    <>
-                      <h2 className="text-2xl pb-6">
+                    <div
+                      role="group"
+                      aria-labelledby={`${name}-label`}
+                      className="space-y-2"
+                    >
+                      <h2
+                        id={`${field.name}-label`}
+                        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-2xl"
+                      >
                         {question.label}
                       </h2>
+                      {question.questionsToOptions?.map(
+                        (qto) => {
+                          const optionChecked =
+                            !!field.state.value.find(
+                              (v) =>
+                                v.value ===
+                                qto.option.id.toString()
+                            );
+                          return (
+                            <fieldset
+                              key={qto.option.id}
+                              className="space-y-2"
+                            >
+                              <legend className="sr-only">
+                                {qto.option.text} (selecteer
+                                en licht toe)
+                              </legend>
+
+                              <div className="flex items-center space-x-2 border border-input rounded-md p-4 relative">
+                                <Checkbox
+                                  aria-expanded={
+                                    optionChecked
+                                  }
+                                  checked={optionChecked}
+                                  onCheckedChange={(
+                                    checked
+                                  ) => {
+                                    if (checked) {
+                                      field.handleChange([
+                                        ...field.state
+                                          .value,
+                                        {
+                                          value:
+                                            qto.option.id.toString(),
+                                          explanation:
+                                            field.state.value.find(
+                                              (v) =>
+                                                v.value ===
+                                                qto.option.id.toString()
+                                            )
+                                              ?.explanation ??
+                                            "",
+                                        },
+                                      ]);
+                                    } else {
+                                      field.handleChange(
+                                        field.state.value.filter(
+                                          (v) =>
+                                            v.value !==
+                                            qto.option.id.toString()
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  id={`${field.name}${qto.option.id}-check`}
+                                />
+                                <Label
+                                  htmlFor={`${field.name}${qto.option.id}-check`}
+                                  className="after:content-[''] after:absolute after:inset-0"
+                                >
+                                  {qto.option.text}
+                                </Label>
+                              </div>
+                              {optionChecked && (
+                                <div>
+                                  <Label
+                                    className="text-xl"
+                                    htmlFor={`${field.name}${qto.option.id}-explanation`}
+                                  >
+                                    namelijk:
+                                  </Label>
+                                  <Input
+                                    id={`${field.name}${qto.option.id}-explanation`}
+                                    defaultValue={
+                                      field.state.value.find(
+                                        (v) =>
+                                          v.value ===
+                                          qto.option.id.toString()
+                                      )?.explanation ?? ""
+                                    }
+                                    onBlur={
+                                      field.handleBlur
+                                    }
+                                    onChange={(e) =>
+                                      field.handleChange(
+                                        field.state.value.map(
+                                          (v) =>
+                                            v.value ===
+                                            qto.option.id.toString()
+                                              ? {
+                                                  ...v,
+                                                  explanation:
+                                                    e.target
+                                                      .value,
+                                                }
+                                              : v
+                                        )
+                                      )
+                                    }
+                                  />
+                                </div>
+                              )}
+                            </fieldset>
+                          );
+                        }
+                      )}
                       {question.description && (
                         <p className="text-sm">
                           {question.description}
                         </p>
-                      )}
-                      {question.questionsToOptions?.map(
-                        (qto) => (
-                          <React.Fragment
-                            key={qto.option.id}
-                          >
-                            <fieldset className="flex items-center gap-2">
-                              <Checkbox
-                                checked={
-                                  !!field.state.value.find(
-                                    (v) =>
-                                      v.value ===
-                                      qto.option.id.toString()
-                                  )
-                                }
-                                onCheckedChange={(
-                                  checked
-                                ) => {
-                                  if (checked) {
-                                    field.handleChange([
-                                      ...field.state.value,
-                                      {
-                                        value:
-                                          qto.option.id.toString(),
-                                        explanation:
-                                          field.state.value.find(
-                                            (v) =>
-                                              v.value ===
-                                              qto.option.id.toString()
-                                          )?.explanation ??
-                                          "",
-                                      },
-                                    ]);
-                                  } else {
-                                    field.handleChange(
-                                      field.state.value.filter(
-                                        (v) =>
-                                          v.value !==
-                                          qto.option.id.toString()
-                                      )
-                                    );
-                                  }
-                                }}
-                                id={`${field.name}${qto.option.id}`}
-                              />
-                              <Label
-                                htmlFor={`${field.name}${qto.option.id}`}
-                              >
-                                {qto.option.text}
-                              </Label>
-                            </fieldset>
-                            {!!field.state.value.find(
-                              (v) =>
-                                v.value ===
-                                qto.option.id.toString()
-                            ) && (
-                              <fieldset className="pb-6">
-                                <Label
-                                  htmlFor={`${field.name}${qto.option.id}explanation`}
-                                >
-                                  toelichting bij{" "}
-                                  {qto.option.text}
-                                </Label>
-                                <Input
-                                  id={`${field.name}${qto.option.id}explanation`}
-                                  defaultValue={
-                                    field.state.value.find(
-                                      (v) =>
-                                        v.value ===
-                                        qto.option.id.toString()
-                                    )?.explanation ?? ""
-                                  }
-                                  onBlur={field.handleBlur}
-                                  onChange={(e) =>
-                                    field.handleChange(
-                                      field.state.value.map(
-                                        (v) =>
-                                          v.value ===
-                                          qto.option.id.toString()
-                                            ? {
-                                                ...v,
-                                                explanation:
-                                                  e.target
-                                                    .value,
-                                              }
-                                            : v
-                                      )
-                                    )
-                                  }
-                                />
-                              </fieldset>
-                            )}
-                          </React.Fragment>
-                        )
                       )}
                       {field.state.meta.errors.map(
                         (error) => (
@@ -349,7 +334,7 @@ export default function AnswerForm({
                           field.state.value
                         )}
                       />
-                    </>
+                    </div>
                   );
                 }}
               </form.Field>
@@ -358,121 +343,40 @@ export default function AnswerForm({
             return (
               <>
                 <form.Field name="score">
-                  {(field) => {
-                    if (field.state?.value === undefined)
-                      return null;
-                    return (
-                      <>
-                        <Label
-                          htmlFor={field.name}
-                          className="text-2xl"
-                        >
-                          {question.label}
-                        </Label>
-                        {question.description && (
-                          <p className="text-sm">
-                            {question.description}
-                          </p>
-                        )}
-                        <RadioGroup
-                          id={field.name}
-                          name={field.name}
-                          onValueChange={(value) =>
-                            field.handleChange(value)
-                          }
-                          value={field.state.value}
-                          className="grid grid-cols-5 gap-2"
-                        >
-                          {[
-                            "1",
-                            "2",
-                            "3",
-                            "4",
-                            "5",
-                            "nvt",
-                          ].map((scoreValue) => (
-                            <div
-                              key={scoreValue}
-                              className={
-                                "flex flex-col items-center gap-3 relative" +
-                                (scoreValue === "nvt"
-                                  ? " col-span-5"
-                                  : "")
-                              }
-                            >
-                              <RadioGroupItem
-                                value={scoreValue}
-                                id={scoreValue}
-                              />
-                              <Label
-                                htmlFor={scoreValue}
-                                className="after:w-full after:h-full after:absolute after:content-[''] after:inset-0"
-                              >
-                                {scoreValue === "nvt"
-                                  ? "geen mening"
-                                  : scoreValue}
-                              </Label>
-                              {scoreValue === "1" && (
-                                <p className="text-sm text-center">
-                                  {
-                                    question.score_low_description
-                                  }
-                                </p>
-                              )}
-                              {scoreValue === "5" && (
-                                <p className="text-sm text-center">
-                                  {
-                                    question.score_high_description
-                                  }
-                                </p>
-                              )}
-                            </div>
-                          ))}
-                        </RadioGroup>
-                        {field.state.meta.errors.map(
-                          (error) => (
-                            <p key={error as string}>
-                              {error}
-                            </p>
-                          )
-                        )}
-                      </>
-                    );
-                  }}
+                  {(field) => (
+                    <InnerScoreField
+                      label={question.label}
+                      description={question.description}
+                      lowText={
+                        question.score_low_description ?? ""
+                      }
+                      highText={
+                        question.score_high_description ??
+                        ""
+                      }
+                      value={field.state.value}
+                      name={field.name}
+                      errors={field.state.meta.errors}
+                      onChange={(value) =>
+                        field.handleChange(value)
+                      }
+                    />
+                  )}
                 </form.Field>
                 <form.Field name="text">
-                  {(field) => {
-                    if (field.state?.value === undefined)
-                      return null;
-                    return (
-                      <>
-                        <Label
-                          htmlFor={field.name}
-                          className="pt-8 block"
-                        >
-                          toelichting
-                        </Label>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) =>
-                            field.handleChange(
-                              e.target.value
-                            )
-                          }
-                        />
-                        {field.state.meta.errors.map(
-                          (error) => (
-                            <p key={error as string}>
-                              {error}
-                            </p>
-                          )
-                        )}
-                      </>
-                    );
-                  }}
+                  {(field) => (
+                    <InnerField
+                      label="extra toelichting"
+                      value={field.state.value}
+                      name={field.name}
+                      errors={field.state.meta.errors}
+                      question={question}
+                      onBlur={field.handleBlur}
+                      onChange={(e) =>
+                        field.handleChange(e.target.value)
+                      }
+                    />
+                  )}
                 </form.Field>
               </>
             );
