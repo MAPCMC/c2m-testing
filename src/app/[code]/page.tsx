@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import NavBar from "@/components/NavBar/index";
 import { getFullForm } from "@/lib/getFullForm";
+import { getUser } from "@/lib/getUser";
 
 export default async function Form({
   params,
@@ -11,6 +12,7 @@ export default async function Form({
   params: { code: string };
 }) {
   const { code } = params;
+  const user = await getUser();
 
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
@@ -18,6 +20,13 @@ export default async function Form({
 
   if (!currentCode) {
     return <div>Code niet gevonden</div>;
+  }
+
+  if (
+    !!currentCode.userId &&
+    (!user || (user && currentCode.userId !== user.id))
+  ) {
+    return <div>Geen toegang</div>;
   }
 
   const form = await getFullForm(

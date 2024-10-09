@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { revalidatePath } from "next/cache";
 import { ChapterFull, QuestionFull } from "@/db/types";
 import { getFullForm } from "@/lib/getFullForm";
+import { getUser } from "@/lib/getUser";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +15,20 @@ export default async function AnswerPage({
   params: { code: string; qid: string };
 }) {
   const { code, qid } = params;
+  const user = await getUser();
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
   });
 
   if (!currentCode) {
     return <h2>Code niet gevonden</h2>;
+  }
+
+  if (
+    !!currentCode.userId &&
+    (!user || (user && currentCode.userId !== user.id))
+  ) {
+    return <div>Geen toegang</div>;
   }
 
   // refresh

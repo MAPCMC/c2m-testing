@@ -2,6 +2,7 @@ import db from "@/db";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar/index";
 import Link from "next/link";
+import { getUser } from "@/lib/getUser";
 
 export default async function Form({
   params,
@@ -9,12 +10,20 @@ export default async function Form({
   params: { code: string };
 }) {
   const { code } = params;
+  const user = await getUser();
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
   });
 
   if (!currentCode) {
-    return <div>Code niet gevonden</div>;
+    return <h2>Code niet gevonden</h2>;
+  }
+
+  if (
+    !!currentCode.userId &&
+    (!user || (user && currentCode.userId !== user.id))
+  ) {
+    return <div>Geen toegang</div>;
   }
 
   const form = await db.query.forms.findFirst({
