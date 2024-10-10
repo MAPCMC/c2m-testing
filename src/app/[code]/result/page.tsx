@@ -21,7 +21,12 @@ export default async function Form({
 
   if (
     !!currentCode.userId &&
-    (!user || (user && currentCode.userId !== user.id))
+    (!user ||
+      (user &&
+        ![
+          currentCode.userId,
+          currentCode.createdById,
+        ].includes(user.id)))
   ) {
     return <div>Geen toegang</div>;
   }
@@ -38,7 +43,7 @@ export default async function Form({
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar noLogout />
-      <header className="space-y-8 p-8  sm:px-20 pb-20">
+      <header className="space-y-8 p-8 sm:px-20 pb-20">
         <h1 className="text-2xl font-bold">
           Vragenlijst: {form?.title}
         </h1>

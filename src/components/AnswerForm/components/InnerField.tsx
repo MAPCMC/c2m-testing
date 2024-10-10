@@ -12,6 +12,7 @@ interface InnerFieldProps {
   description?: string | null;
   as?: React.ElementType;
   wrapper?: React.ElementType;
+  required?: boolean;
   onBlur?: () => void;
   onChange?: (
     event: React.ChangeEvent<HTMLInputElement>
@@ -29,6 +30,7 @@ const InnerField = ({
   wrapper,
   onBlur,
   onChange,
+  required,
   ...props
 }: InnerFieldProps) => {
   const InputComponent = as ?? Input;
@@ -64,10 +66,15 @@ const InnerField = ({
     <WrapperComponent className="space-y-2">
       <FieldLabel
         htmlFor={name}
-        className="text-2xl"
+        className="text-xl"
         error={errors.length > 0}
       >
-        {label}
+        {label}{" "}
+        {required && (
+          <span className="text-destructive">
+            * <span className="sr-only">verplicht</span>
+          </span>
+        )}
       </FieldLabel>
       <InputComponent
         id={name}

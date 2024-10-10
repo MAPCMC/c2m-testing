@@ -5,9 +5,10 @@ import PersonalFormList from "@/components/PersonalFormList";
 import { Suspense } from "react";
 import { getUser } from "@/lib/getUser";
 import NavBar from "@/components/NavBar/index";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function Home() {
-  // TODO inside suspense
   const user = await getUser();
   return (
     <>
@@ -16,23 +17,25 @@ export default async function Home() {
         <h1 className="text-2xl font-bold">
           Connect2Music testportaal
         </h1>
+        {!!user && user.role === "superuser" && (
+          <nav>
+            <ul>
+              <li>
+                <Button asChild>
+                  <Link href="/code-create">
+                    Vragenlijsten klaarzetten
+                  </Link>
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        )}
       </header>
-      <main className="space-y-8 p-8 sm:px-20 pb-20 grow">
+      <main className="space-y-8 p-8 sm:px-20 pb-20 grow max-w-3xl">
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
-          {!user && (
-            <>
-              <p>
-                Vul hier je persoonlijke vragenlijstcode in
-                of lever een anonieme bijdrage.
-              </p>
-              <h2 className="text-xl">
-                Persoonlijke vragenlijst
-              </h2>
-              <PersonalForm />
-              <FormList />
-            </>
-          )}
+          <FormList />
           <PersonalFormList />
+          {!user && <PersonalForm />}
         </Suspense>
       </main>
     </>

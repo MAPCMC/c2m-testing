@@ -24,7 +24,12 @@ export default async function Form({
 
   if (
     !!currentCode.userId &&
-    (!user || (user && currentCode.userId !== user.id))
+    (!user ||
+      (user &&
+        ![
+          currentCode.userId,
+          currentCode.createdById,
+        ].includes(user.id)))
   ) {
     return <div>Geen toegang</div>;
   }
@@ -45,12 +50,12 @@ export default async function Form({
           <Link href="/">Vragenlijst afsluiten</Link>
         </Button>
       </NavBar>
-      <header className="space-y-8 p-8  sm:px-20 pb-20">
+      <header className="space-y-8 p-8 sm:px-20 pb-20">
         <h1 className="text-2xl font-bold">
           Vragenlijst: {form?.title}
         </h1>
       </header>
-      <main className="space-y-8 p-8 sm:px-20 pb-20 grow">
+      <main className="space-y-8 p-8 sm:px-20 pb-20 grow max-w-3xl">
         <p>{form?.description}</p>
         <p>
           Vanaf het moment dat u start met het invullen van

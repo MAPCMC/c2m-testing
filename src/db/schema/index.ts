@@ -9,7 +9,7 @@ export {
   default as profiles,
   profilesRelations,
 } from "./profiles";
-export { default as codes } from "./codes";
+export { default as codes, codesRelations } from "./codes";
 export {
   default as questions,
   questionsRelations,

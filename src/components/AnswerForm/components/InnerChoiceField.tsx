@@ -16,9 +16,10 @@ interface InnerFieldProps {
   description?: string | null;
   as?: React.ElementType;
   wrapper?: React.ElementType;
-  options: { id: number; text: string }[];
+  options: { id: number | string; text: string }[];
   onBlur?: () => void;
   onChange?: ((value: string) => void) | undefined;
+  required?: boolean;
   [key: string]: unknown;
 }
 
@@ -30,6 +31,7 @@ const InnerChoiceField = ({
   description,
   wrapper,
   options,
+  required,
   onBlur,
   onChange,
   ...props
@@ -67,10 +69,15 @@ const InnerChoiceField = ({
       <FieldLabel
         as="legend"
         id={`${name}-label`}
-        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-2xl"
+        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
         error={errors.length > 0}
       >
         {label}
+        {required && (
+          <span className="text-destructive">
+            * <span className="sr-only">verplicht</span>
+          </span>
+        )}
       </FieldLabel>
       <RadioGroup
         id={name}
