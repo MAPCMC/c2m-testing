@@ -1,8 +1,11 @@
 import db from "@/db";
-import { Button } from "@/components/ui/button";
+
 import NavBar from "@/components/NavBar/index";
-import Link from "next/link";
-import { getUser } from "@/lib/getUser";
+import { PageHeader } from "@/components/PageHeader";
+import { getFormUser } from "@/lib/getFormUser";
+import { redirect } from "next/navigation";
+import FormStopSessionButton from "@/components/FormStopSessionButton";
+import { PageMain } from "@/components/PageMain";
 
 export default async function Form({
   params,
@@ -41,19 +44,17 @@ export default async function Form({
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <NavBar noLogout />
-      <header className="space-y-8 p-8 sm:px-20 pb-20">
-        <h1 className="text-2xl font-bold">
-          Vragenlijst: {form?.title}
-        </h1>
-      </header>
-      <main className="space-y-8 p-8 sm:px-20 pb-20 grow">
+      <PageHeader title={`Vragenlijst: ${form?.title}`} />
+      <PageMain className="*:mx-auto">
         <p>Bedankt voor het invullen.</p>
-        <Button asChild>
-          <Link href="/">Naar hoofdpagina</Link>
-        </Button>
-      </main>
-    </div>
+        <div>
+          <FormStopSessionButton>
+            Naar de hoofdpagina
+          </FormStopSessionButton>
+        </div>
+      </PageMain>
+    </>
   );
 }

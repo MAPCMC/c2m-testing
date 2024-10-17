@@ -15,12 +15,18 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import CopyButton from "@/components/CopyButton";
+import { redirect } from "next/navigation";
+import { PageHeader } from "@/components/PageHeader";
+import { PageMain } from "@/components/PageMain";
 
 export default async function SuperUser() {
   const user = await getUser();
 
-  if (!user || user.role !== "superuser") {
-    return <div>Geen toegang</div>;
+  if (
+    !user ||
+    (user.role !== "superuser" && user.role !== "admin")
+  ) {
+    return redirect("/");
   }
 
   const forms = await db.query.forms.findMany();
@@ -36,12 +42,8 @@ export default async function SuperUser() {
   return (
     <>
       <NavBar />
-      <header className="space-y-8 p-8 sm:px-20 pb-20">
-        <h1 className="text-2xl font-bold">
-          Connect2Music testportaal
-        </h1>
-      </header>
-      <main className="space-y-8 p-8 sm:px-20 pb-20 grow max-w-3xl">
+      <PageHeader title="Vragenlijsten klaarzetten" />
+      <PageMain>
         <AddCodeForm forms={forms} creatorId={user.id} />
         {addedCodes.length > 0 && (
           <>
@@ -87,7 +89,7 @@ export default async function SuperUser() {
             </Table>
           </>
         )}
-      </main>
+      </PageMain>
     </>
   );
 }

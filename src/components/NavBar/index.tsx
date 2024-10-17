@@ -11,14 +11,15 @@ const NavBar = async ({
 }) => {
   const user = await getUser();
   return (
-    <div className="py-2 px-4 sm:px-20 border-b-2 flex justify-end items-center gap-3 w-full">
-      {user && (
-        <p className="hidden sm:inline">{user.email}</p>
-      )}
-
-      <ThemeToggle user={user} />
-      {children}
-      <SignIn noLogout={noLogout} />
+    <div className="py-2 border-b-2">
+      <div className="max-w-5xl mx-auto flex justify-end items-center gap-3 px-4 ">
+        {user && (
+          <p className="hidden sm:inline">{user.email}</p>
+        )}
+        <ThemeToggle user={user} />
+        {children}
+        <SignIn noLogout={noLogout} />
+      </div>
     </div>
   );
 };

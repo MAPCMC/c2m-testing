@@ -7,16 +7,25 @@ import { getUser } from "@/lib/getUser";
 import NavBar from "@/components/NavBar/index";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { getServerSession } from "next-auth/next";
+import authOptions from "@/config/auth";
+import { redirect } from "next/navigation";
+import { PageMain } from "@/components/PageMain";
+import { PageHeader } from "@/components/PageHeader";
 
 export default async function Home() {
   const user = await getUser();
+  const session = await getServerSession(authOptions);
+
+  // if user is "form user", redirect to current form
+  if (session?.user && session.user.id === "anonymous") {
+    redirect(`/${session.user.name}`);
+  }
+
   return (
     <>
       <NavBar />
-      <header className="space-y-8 p-8 sm:px-20 pb-20">
-        <h1 className="text-2xl font-bold">
-          Connect2Music testportaal
-        </h1>
+      <PageHeader title="Connect2Music testportaal">
         {!!user && user.role === "superuser" && (
           <nav>
             <ul>
@@ -30,14 +39,14 @@ export default async function Home() {
             </ul>
           </nav>
         )}
-      </header>
-      <main className="space-y-8 p-8 sm:px-20 pb-20 grow max-w-3xl">
+      </PageHeader>
+      <PageMain>
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
+          {!user && <PersonalForm />}
           <FormList />
           <PersonalFormList />
-          {!user && <PersonalForm />}
         </Suspense>
-      </main>
+      </PageMain>
     </>
   );
 }

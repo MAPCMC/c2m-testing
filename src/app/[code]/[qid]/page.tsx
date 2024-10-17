@@ -5,7 +5,9 @@ import { Suspense } from "react";
 import { revalidatePath } from "next/cache";
 import { ChapterFull, QuestionFull } from "@/db/types";
 import { getFullForm } from "@/lib/getFullForm";
-import { getUser } from "@/lib/getUser";
+import { getFormUser } from "@/lib/getFormUser";
+import { PageHeader } from "@/components/PageHeader";
+import { PageMain } from "@/components/PageMain";
 
 export const dynamic = "force-dynamic";
 
@@ -15,25 +17,14 @@ export default async function AnswerPage({
   params: { code: string; qid: string };
 }) {
   const { code, qid } = params;
-  const user = await getUser();
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
   });
 
-  if (!currentCode) {
-    return <h2>Code niet gevonden</h2>;
-  }
+  const formUser = await getFormUser(currentCode);
 
-  if (
-    !!currentCode.userId &&
-    (!user ||
-      (user &&
-        ![
-          currentCode.userId,
-          currentCode.createdById,
-        ].includes(user.id)))
-  ) {
-    return <div>Geen toegang</div>;
+  if (!currentCode || formUser === "blocked") {
+    return <h2>Formulier niet beschikbaar</h2>;
   }
 
   // refresh
@@ -113,14 +104,10 @@ export default async function AnswerPage({
   });
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <NavBar noLogout />
-      <header className="space-y-8 p-6 sm:px-20 pb-20">
-        <h1 className="text-2xl font-bold">
-          Vragenlijst: {form?.title}
-        </h1>
-      </header>
-      <main className="space-y-12 w-full md:max-w-3xl mx-auto px-6 sm:px-20 pb-20 grow">
+      <PageHeader title={`Vragenlijst: ${form?.title}`} />
+      <PageMain className="*:mx-auto">
         <Suspense fallback={<p>Aan het laden...</p>}>
           <article className="lg:gap-4 lg:grid space-y-2 lg:grid-cols-2">
             <h2 className="font-bold">
@@ -142,9 +129,12 @@ export default async function AnswerPage({
             code={code}
             answer={currentAnswer}
             question={currentQuestion}
+            // addAnswerToProfile={
+            //   currentChapter.addAnswersToProfile
+            // }
           />
         </Suspense>
-      </main>
-    </div>
+      </PageMain>
+    </>
   );
 }
