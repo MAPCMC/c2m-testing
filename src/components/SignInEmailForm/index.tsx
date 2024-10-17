@@ -24,14 +24,8 @@ export default function SignInEmailForm({
 
   const form = useForm({
     ...formOpts(code),
-    // transform: useTransform(
-    //   (baseForm) => mergeForm(baseForm, state!),
-    //   [state]
-    // ),
     onSubmit: async ({ value }) => {
       const result = await checkUserResult(value);
-
-      console.log(value, result);
 
       if (result) {
         setFormErrors([result]);
