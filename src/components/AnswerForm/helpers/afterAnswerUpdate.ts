@@ -1,3 +1,5 @@
+"use server";
+
 import { getFullForm } from "@/lib/getFullForm";
 import { redirect } from "next/navigation";
 import { QuestionFull } from "@/db/types";

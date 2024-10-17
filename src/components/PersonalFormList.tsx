@@ -16,7 +16,7 @@ const PersonalFormList = async () => {
 
   return (
     <section className="space-y-3">
-      <h2 className="text-xl font-medium">
+      <h2 className="text-2xl font-medium">
         Persoonlijke vragenlijsten
       </h2>
       {personalCodes.map(async (code) => {

@@ -28,7 +28,9 @@ const FormList = async () => {
   return (
     <section className="space-y-3">
       <h2 className="text-2xl font-medium">
-        Anonieme vragenlijsten
+        {user
+          ? "Andere vragenlijsten"
+          : "Anonieme vragenlijsten"}
       </h2>
       <p>
         Kies een nieuwe vragenlijst om te starten.
@@ -56,7 +58,7 @@ const FormList = async () => {
           </div>
 
           <FormSessionButton formId={form.id}>
-            Start anonieme vragenlijst
+            Start {!user && "anonieme"} vragenlijst
           </FormSessionButton>
         </article>
       ))}

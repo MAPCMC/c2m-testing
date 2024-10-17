@@ -10,6 +10,7 @@ const NavBar = async ({
   noLogout?: boolean;
 }) => {
   const user = await getUser();
+
   return (
     <div className="py-2 border-b-2">
       <div className="max-w-5xl mx-auto flex justify-end items-center gap-3 px-4">

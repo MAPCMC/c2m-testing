@@ -20,7 +20,7 @@ export default async function Admin() {
     !user ||
     (user.role !== "superuser" && user.role !== "admin")
   ) {
-    return redirect("/");
+    redirect("/");
   }
   return (
     <>

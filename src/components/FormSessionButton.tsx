@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { signIn } from "next-auth/react";
 import { getNewCodeLink } from "@/lib/getNewCodeLink";
 import { getUser } from "@/lib/getUser";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function FormSessionButton({
   children,
@@ -16,6 +16,7 @@ export default function FormSessionButton({
   children: React.ReactNode;
   [key: string]: unknown;
 }) {
+  const router = useRouter();
   if (!formId) return null;
   return (
     <Button
@@ -24,7 +25,7 @@ export default function FormSessionButton({
         const user = await getUser();
 
         if (user) {
-          redirect(`/${newCodeLink}`);
+          return router.push(`/${newCodeLink}/profile`);
         }
         await signIn("anonymous", {
           callbackUrl: `/${newCodeLink}`,

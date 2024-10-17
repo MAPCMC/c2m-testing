@@ -34,7 +34,7 @@ export default async function SuperUser() {
     !user ||
     (user.role !== "superuser" && user.role !== "admin")
   ) {
-    return redirect("/");
+    redirect("/");
   }
 
   const forms = await db.query.forms.findMany();
