@@ -55,7 +55,7 @@ export default async function SuperUser() {
         <AddCodeForm forms={forms} creatorId={user.id} />
         {addedCodes.length > 0 && (
           <>
-            <h2 className="text-2xl">
+            <h2 className="text-2xl font-medium">
               Klaargezette vragenlijsten
             </h2>
             <Table>

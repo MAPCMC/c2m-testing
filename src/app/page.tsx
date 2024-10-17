@@ -25,20 +25,40 @@ export default async function Home() {
   return (
     <>
       <NavBar />
-      <PageHeader title="Connect2Music testportaal">
-        {!!user && user.role === "superuser" && (
-          <nav>
-            <ul>
-              <li>
-                <Button asChild>
-                  <Link href="/code-create">
-                    Vragenlijsten klaarzetten
-                  </Link>
-                </Button>
-              </li>
-            </ul>
-          </nav>
-        )}
+      <PageHeader
+        title="Connect2Music testportaal"
+        className="space-y-3"
+      >
+        {!!user &&
+          (user.role === "superuser" ||
+            user.role === "admin") && (
+            <nav>
+              <ul className="flex flex-wrap gap-2">
+                <li>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Link href="/admin">
+                      Vragenlijsten inzien
+                    </Link>
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Link href="/code-create">
+                      Vragenlijsten klaarzetten
+                    </Link>
+                  </Button>
+                </li>
+              </ul>
+            </nav>
+          )}
       </PageHeader>
       <PageMain>
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
