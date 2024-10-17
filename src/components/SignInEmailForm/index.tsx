@@ -33,7 +33,7 @@ export default function SignInEmailForm({
       } else {
         signIn("email", {
           email: value.email,
-          callbackUrl: "/",
+          callbackUrl: `/${code}`,
         });
         form.reset();
       }
