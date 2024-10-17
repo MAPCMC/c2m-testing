@@ -43,8 +43,8 @@ export default async function Home() {
       <PageMain>
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
           {!user && <PersonalForm />}
-          <FormList />
           <PersonalFormList />
+          <FormList />
         </Suspense>
       </PageMain>
     </>

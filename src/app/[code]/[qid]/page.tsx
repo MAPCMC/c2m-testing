@@ -8,6 +8,10 @@ import { getFullForm } from "@/lib/getFullForm";
 import { getFormUser } from "@/lib/getFormUser";
 import { PageHeader } from "@/components/PageHeader";
 import { PageMain } from "@/components/PageMain";
+import { navigateToSession } from "@/lib/navigateToSession";
+import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -17,6 +21,9 @@ export default async function AnswerPage({
   params: { code: string; qid: string };
 }) {
   const { code, qid } = params;
+
+  await navigateToSession(code);
+
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
   });
@@ -24,7 +31,21 @@ export default async function AnswerPage({
   const formUser = await getFormUser(currentCode);
 
   if (!currentCode || formUser === "blocked") {
-    return <h2>Formulier niet beschikbaar</h2>;
+    return (
+      <>
+        <NavBar />
+        <PageHeader title="Formulier niet beschikbaar" />
+        <PageMain>
+          <Button asChild>
+            <Link href="/">Naar de hoofdpagina</Link>
+          </Button>
+        </PageMain>
+      </>
+    );
+  }
+
+  if (formUser === "invited") {
+    return redirect(`/${code}`);
   }
 
   // refresh
@@ -36,7 +57,17 @@ export default async function AnswerPage({
   );
 
   if (!form) {
-    return <h2>Formulier niet gevonden</h2>;
+    return (
+      <>
+        <NavBar />
+        <PageHeader title="Formulier niet gevonden" />
+        <PageMain>
+          <Button asChild>
+            <Link href="/">Naar de hoofdpagina</Link>
+          </Button>
+        </PageMain>
+      </>
+    );
   }
 
   const { currentChapter, currentChapterIndex } =
@@ -60,7 +91,15 @@ export default async function AnswerPage({
     );
 
   if (!currentChapter) {
-    return <h2>Hoofdstuk niet gevonden</h2>;
+    return (
+      <>
+        <NavBar noLogout />
+        <PageHeader title={`Vragenlijst: ${form?.title}`} />
+        <PageMain>
+          <p>Hoofdstuk niet gevonden</p>
+        </PageMain>
+      </>
+    );
   }
 
   const { currentQuestion, currentQuestionIndex } =

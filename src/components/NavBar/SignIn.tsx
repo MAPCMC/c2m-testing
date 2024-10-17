@@ -16,12 +16,19 @@ export default function SignIn({
 }) {
   const { status } = useSession();
 
+  if (status === "loading") {
+    return (
+      <Button disabled variant="outline" size="icon">
+        <Loader2 className="h-4 w-4 animate-spin" />
+      </Button>
+    );
+  }
   if (status === "authenticated") {
     return (
       <>
         {!noLogout && (
           <Button
-            onClick={() => signOut()}
+            onClick={() => signOut({ callbackUrl: "/" })}
             disabled={noLogout}
           >
             Uitloggen
@@ -31,13 +38,7 @@ export default function SignIn({
     );
   }
   return (
-    <Button
-      onClick={() => signIn("google")}
-      disabled={status === "loading"}
-    >
-      {status === "loading" && (
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      )}
+    <Button onClick={() => signIn("google")}>
       Inloggen
     </Button>
   );

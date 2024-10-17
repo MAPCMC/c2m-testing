@@ -18,9 +18,17 @@ import CopyButton from "@/components/CopyButton";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/PageHeader";
 import { PageMain } from "@/components/PageMain";
+import { getServerSession } from "next-auth/next";
+import authOptions from "@/config/auth";
 
 export default async function SuperUser() {
   const user = await getUser();
+  const session = await getServerSession(authOptions);
+
+  // if user is "form user", redirect to current form
+  if (session?.user && session.user.id === "anonymous") {
+    redirect(`/${session.user.name}`);
+  }
 
   if (
     !user ||

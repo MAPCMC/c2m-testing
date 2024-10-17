@@ -1,3 +1,5 @@
+"use server";
+
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/config/auth";
 import db from "@/db";
@@ -15,6 +17,7 @@ export const getUser = async (): Promise<
 > => {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
+
   if (!email) {
     return false;
   }
