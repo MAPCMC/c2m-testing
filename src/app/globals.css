@@ -43,7 +43,7 @@ body {
     --muted-foreground: var(--chorista-bg-solid-dark);
     --accent: var(--chorista-bg-off-1);
     --accent-foreground: var(--chorista-bg-overlay-dark);
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: var(--chorista-bg-off-1);
     --border: var(--chorista-border-soft);
     --input: var(--chorista-bg-off-1);
@@ -70,7 +70,8 @@ body {
     --muted-foreground: var(--chorista-border-solid-dark);
     --accent: var(--chorista-bg-off-1-dark);
     --accent-foreground: var(--chorista-bg-off-1);
-    --destructive: 0 62.8% 30.6%;
+
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: var(--chorista-bg-off-2);
     --border: var(--chorista-border-soft-dark);
     --input: var(--chorista-bg-overlay-dark);

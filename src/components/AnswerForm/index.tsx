@@ -74,7 +74,11 @@ export default function AnswerForm({
       className="space-y-4"
     >
       {formErrors.map((error) => (
-        <p className="w-full" key={error as string}>
+        <p
+          key={error as string}
+          aria-live="assertive"
+          className="text-sm font-medium text-destructive"
+        >
           {error}
         </p>
       ))}

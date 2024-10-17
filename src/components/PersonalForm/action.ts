@@ -32,7 +32,7 @@ export default async function handlePersonalFormSubmit(
         eq(c.link, formData.get("link")?.toString() ?? ""),
     });
 
-    if (code) redirect(`/${code.link}`);
+    if (code) redirect(`/${code.link}/profile`);
   } catch (e) {
     if (e instanceof ServerValidateError) {
       return e.formState;

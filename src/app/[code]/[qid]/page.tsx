@@ -5,6 +5,13 @@ import { Suspense } from "react";
 import { revalidatePath } from "next/cache";
 import { ChapterFull, QuestionFull } from "@/db/types";
 import { getFullForm } from "@/lib/getFullForm";
+import { getFormUser } from "@/lib/getFormUser";
+import { PageHeader } from "@/components/PageHeader";
+import { PageMain } from "@/components/PageMain";
+import { navigateToSession } from "@/lib/navigateToSession";
+import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +21,31 @@ export default async function AnswerPage({
   params: { code: string; qid: string };
 }) {
   const { code, qid } = params;
+
+  await navigateToSession(code);
+
   const currentCode = await db.query.codes.findFirst({
     where: (c, { eq }) => eq(c.link, code),
   });
 
-  if (!currentCode) {
-    return <h2>Code niet gevonden</h2>;
+  const formUser = await getFormUser(currentCode);
+
+  if (!currentCode || formUser === "blocked") {
+    return (
+      <>
+        <NavBar />
+        <PageHeader title="Formulier niet beschikbaar" />
+        <PageMain>
+          <Button asChild>
+            <Link href="/">Naar de hoofdpagina</Link>
+          </Button>
+        </PageMain>
+      </>
+    );
+  }
+
+  if (formUser === "invited") {
+    return redirect(`/${code}`);
   }
 
   // refresh
@@ -31,7 +57,17 @@ export default async function AnswerPage({
   );
 
   if (!form) {
-    return <h2>Formulier niet gevonden</h2>;
+    return (
+      <>
+        <NavBar />
+        <PageHeader title="Formulier niet gevonden" />
+        <PageMain>
+          <Button asChild>
+            <Link href="/">Naar de hoofdpagina</Link>
+          </Button>
+        </PageMain>
+      </>
+    );
   }
 
   const { currentChapter, currentChapterIndex } =
@@ -55,7 +91,15 @@ export default async function AnswerPage({
     );
 
   if (!currentChapter) {
-    return <h2>Hoofdstuk niet gevonden</h2>;
+    return (
+      <>
+        <NavBar noLogout />
+        <PageHeader title={`Vragenlijst: ${form?.title}`} />
+        <PageMain>
+          <p>Hoofdstuk niet gevonden</p>
+        </PageMain>
+      </>
+    );
   }
 
   const { currentQuestion, currentQuestionIndex } =
@@ -99,26 +143,22 @@ export default async function AnswerPage({
   });
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <NavBar noLogout />
-      <header className="space-y-8 p-6  sm:px-20 pb-20">
-        <h1 className="text-2xl font-bold">
-          Vragenlijst: {form?.title}
-        </h1>
-      </header>
-      <main className="space-y-12 w-full md:max-w-3xl mx-auto px-6 sm:px-20 pb-20 grow">
+      <PageHeader title={`Vragenlijst: ${form?.title}`} />
+      <PageMain className="*:mx-auto">
         <Suspense fallback={<p>Aan het laden...</p>}>
-          <article className="gap-4 grid grid-cols-2">
+          <article className="lg:gap-4 lg:grid space-y-2 lg:grid-cols-2">
             <h2 className="font-bold">
               Hoofdstuk {currentChapterIndex + 1}:{" "}
               {currentChapter.title}
             </h2>
-            <p className="text-sm text-right">
+            <p className="text-sm lg:text-right">
               Vraag {currentQuestionIndex + 1} van{" "}
               {currentChapter.questions.length}
             </p>
             {currentQuestionIndex === 0 && (
-              <p className="col-span-2">
+              <p className="lg:col-span-2">
                 {currentChapter.description}
               </p>
             )}
@@ -128,9 +168,12 @@ export default async function AnswerPage({
             code={code}
             answer={currentAnswer}
             question={currentQuestion}
+            // addAnswerToProfile={
+            //   currentChapter.addAnswersToProfile
+            // }
           />
         </Suspense>
-      </main>
-    </div>
+      </PageMain>
+    </>
   );
 }

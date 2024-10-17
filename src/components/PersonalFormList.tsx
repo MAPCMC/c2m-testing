@@ -15,8 +15,8 @@ const PersonalFormList = async () => {
   });
 
   return (
-    <section className="grid lg:grid-cols-4 gap-3">
-      <h2 className="col-span-full text-xl">
+    <section className="space-y-3">
+      <h2 className="text-2xl font-medium">
         Persoonlijke vragenlijsten
       </h2>
       {personalCodes.map(async (code) => {
@@ -27,10 +27,15 @@ const PersonalFormList = async () => {
         return (
           <article
             key={form.id}
-            className="border px-4 py-8 flex flex-col gap-3"
+            className="border px-4 py-3 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-2"
           >
-            <h3 className="text-lg">{form.title}</h3>
-            <p className="grow">{form.description}</p>
+            <div className="flex flex-col gap-2 justify-center">
+              <h3 className="text-lg">{form.title}</h3>
+              {form.description && (
+                <p className="grow">{form.description}</p>
+              )}
+            </div>
+
             <Button asChild>
               <Link href={`/${code.link}`}>
                 Start vragenlijst
@@ -40,8 +45,9 @@ const PersonalFormList = async () => {
         );
       })}
       {personalCodes.length === 0 && (
-        <Alert className="col-span-full">
-          Er zijn geen vragenlijsten voor je klaargezet
+        <Alert>
+          Er zijn geen klaargezette of bestaande
+          vragenlijsten.
         </Alert>
       )}
     </section>

@@ -12,7 +12,7 @@ import {
 import handlePersonalFormSubmit from "./action";
 import formOpts from "./formOptions";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import InnerField from "../AnswerForm/components/InnerField";
 
 export default function PersonalForm() {
   const [state, action] = useFormState(
@@ -38,8 +38,25 @@ export default function PersonalForm() {
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="flex flex-wrap gap-3"
+      className="space-y-2"
     >
+      <h2 className="text-2xl font-medium">
+        Persoonlijke vragenlijst
+      </h2>
+      <p>
+        Heb je een vragenlijstcode toegestuurd gekregen? Vul
+        de code hier in om direct naar jouw vragenlijst te
+        gaan.
+      </p>
+      {formErrors.map((error) => (
+        <p
+          key={error as string}
+          aria-live="assertive"
+          className="text-sm font-medium text-destructive"
+        >
+          {error}
+        </p>
+      ))}
       <form.Field
         name="link"
         validators={{
@@ -50,24 +67,19 @@ export default function PersonalForm() {
               : undefined,
         }}
       >
-        {(field) => {
-          if (field.state?.value === undefined) return null;
-          return (
-            <div className="w-1/4">
-              <Input
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) =>
-                  field.handleChange(e.target.value)
-                }
-              />
-              {field.state.meta.errors.map((error) => (
-                <p key={error as string}>{error}</p>
-              ))}
-            </div>
-          );
-        }}
+        {(field) => (
+          <InnerField
+            className="max-w-md"
+            label="vragenlijstcode"
+            value={field.state.value}
+            name={field.name}
+            errors={field.state.meta.errors}
+            onBlur={field.handleBlur}
+            onChange={(e) =>
+              field.handleChange(e.target.value)
+            }
+          />
+        )}
       </form.Field>
       <form.Subscribe
         selector={(formState) => [
@@ -81,11 +93,6 @@ export default function PersonalForm() {
           </Button>
         )}
       </form.Subscribe>
-      {formErrors.map((error) => (
-        <p className="w-full" key={error as string}>
-          {error}
-        </p>
-      ))}
     </form>
   );
 }
