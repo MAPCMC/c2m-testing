@@ -20,6 +20,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { PageMain } from "@/components/PageMain";
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/config/auth";
+import { BackButton } from "@/components/BackButton";
 
 export default async function SuperUser() {
   const user = await getUser();
@@ -50,7 +51,12 @@ export default async function SuperUser() {
   return (
     <>
       <NavBar />
-      <PageHeader title="Vragenlijsten klaarzetten" />
+      <PageHeader
+        title="Vragenlijsten klaarzetten"
+        className="space-y-3"
+      >
+        <BackButton variant="outline" size="sm" />
+      </PageHeader>
       <PageMain>
         <AddCodeForm forms={forms} creatorId={user.id} />
         {addedCodes.length > 0 && (

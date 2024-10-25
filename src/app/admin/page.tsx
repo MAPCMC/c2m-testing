@@ -8,6 +8,7 @@ import { PageMain } from "@/components/PageMain";
 import NavBar from "@/components/NavBar/index";
 import db from "@/db";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/BackButton";
 import {
   Table,
   TableBody,
@@ -64,7 +65,12 @@ export default async function Admin() {
   return (
     <>
       <NavBar />
-      <PageHeader title="Admin" />
+      <PageHeader
+        title="Vragenlijsten inzien"
+        className="space-y-3"
+      >
+        <BackButton variant="outline" size="sm" />
+      </PageHeader>
       <PageMain className="*:max-w-full">
         {codes.length > 0 && (
           <>
