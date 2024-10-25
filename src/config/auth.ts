@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { env } from "@/env/server";
 import db from "@/db";
 import users from "@/db/schema/users";
+import accounts from "@/db/schema/accounts";
 declare module "next-auth" {
   interface Session {
     user: {
@@ -17,6 +18,9 @@ declare module "next-auth" {
   }
 }
 
+// Extract the type of id in users
+type UserIdType = (typeof users.$inferInsert)["id"];
+
 const options: NextAuthOptions = {
   // @ts-expect-error - The DrizzleAdapter is not yet part of the official NextAuth types (part of v5, using v4 in this project)
   adapter: DrizzleAdapter(db, {
@@ -24,6 +28,71 @@ const options: NextAuthOptions = {
     usersTable: users,
   }),
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        if (!user.email || !account) {
+          return false;
+        }
+
+        let userId: UserIdType;
+        const existingUser = await db.query.users.findFirst(
+          {
+            where: (u, { eq }) =>
+              eq(u.email, user.email as string),
+          }
+        );
+
+        if (existingUser) userId = existingUser.id;
+
+        if (!existingUser && user.email) {
+          const [newUser] = await db
+            .insert(users)
+            .values({
+              email: user.email,
+              role: "user",
+            })
+            .returning({ id: users.id });
+
+          userId = newUser.id;
+        }
+
+        // Check if the account exists for this provider (e.g., Google)
+        const existingAccount =
+          await db.query.accounts.findFirst({
+            where: (a, { eq, and }) =>
+              and(
+                eq(a.provider, account.provider),
+                eq(
+                  a.providerAccountId,
+                  account.providerAccountId
+                )
+              ),
+          });
+
+        if (!userId) {
+          return false;
+        }
+
+        if (!existingAccount) {
+          // Create a new account entry linking to the user
+          // @ts-expect-error - user uuid known error
+          await db.insert(accounts).values({
+            userId: userId,
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+            type: account.type,
+            accessToken: account.access_token,
+            refreshToken: account.refresh_token,
+            expiresAt: account.expires_at,
+          });
+        }
+
+        return true;
+      }
+
+      // default continue to allow credentials login
+      return true;
+    },
     async jwt({ token, user, session }) {
       if (user) {
         token.code = session?.code;
