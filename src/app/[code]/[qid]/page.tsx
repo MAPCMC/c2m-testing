@@ -148,7 +148,7 @@ export default async function AnswerPage({
       <PageHeader title={`Vragenlijst: ${form?.title}`} />
       <PageMain className="*:mx-auto">
         <Suspense fallback={<p>Aan het laden...</p>}>
-          <article className="lg:gap-4 lg:grid space-y-2 lg:grid-cols-2">
+          <article className="lg:gap-4 lg:grid space-y-2 lg:grid-cols-[auto_auto]">
             <h2 className="font-bold">
               Hoofdstuk {currentChapterIndex + 1}:{" "}
               {currentChapter.title}
