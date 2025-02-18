@@ -83,3 +83,15 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
+
+.prose {
+  @apply space-y-2;
+
+  a {
+    @apply text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  ul {
+    @apply list-disc list-inside;
+  }
+}

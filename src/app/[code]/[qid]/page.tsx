@@ -157,11 +157,15 @@ export default async function AnswerPage({
               Vraag {currentQuestionIndex + 1} van{" "}
               {currentChapter.questions.length}
             </p>
-            {currentQuestionIndex === 0 && (
-              <p className="lg:col-span-2">
-                {currentChapter.description}
-              </p>
-            )}
+            {currentQuestionIndex === 0 &&
+              !!currentChapter.description && (
+                <div
+                  className="lg:col-span-2 prose"
+                  dangerouslySetInnerHTML={{
+                    __html: currentChapter.description,
+                  }}
+                ></div>
+              )}
           </article>
           <AnswerForm
             formId={form.id}
