@@ -11,6 +11,8 @@ const forms = pgTable("form", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
   description: varchar("description", { length: 2048 }),
+  app_name: text("app_name"),
+  app_link: text("app_link"),
 });
 
 export const formsRelations = relations(

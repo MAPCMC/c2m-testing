@@ -71,17 +71,19 @@ export default async function CodePage({
       </NavBar>
       <PageHeader title={`Vragenlijst: ${form?.title}`} />
       <PageMain className="*:mx-auto">
-        <Alert>
-          Chorista nog niet gebruikt? Test de applicatie
-          via:{" "}
-          <a
-            target="_blank"
-            href="https://www.chorista.nl/link/test"
-            className="hover:underline focus:underline underline-offset-4"
-          >
-            https://www.chorista.nl/link/test
-          </a>
-        </Alert>
+        {form.app_name && form.app_link && (
+          <Alert>
+            {form.app_name} nog niet gebruikt? Test de
+            applicatie via:{" "}
+            <a
+              target="_blank"
+              href={form.app_link}
+              className="hover:underline focus:underline underline-offset-4"
+            >
+              {form.app_link}
+            </a>
+          </Alert>
+        )}
         <div className="space-y-3">
           {form?.description && <p>{form?.description}</p>}
           <p>
