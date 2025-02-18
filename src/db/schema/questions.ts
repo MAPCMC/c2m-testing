@@ -27,6 +27,7 @@ const questions = pgTable("question", {
       "score",
       "selection",
       "multiple",
+      "multiple_explained",
       "number",
     ],
   })

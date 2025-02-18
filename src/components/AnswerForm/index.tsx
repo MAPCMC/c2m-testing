@@ -276,6 +276,116 @@ export default function AnswerForm({
                                   {qto.option.text}
                                 </Label>
                               </div>
+                            </fieldset>
+                          );
+                        }
+                      )}
+                      {question.description && (
+                        <p className="text-sm">
+                          {question.description}
+                        </p>
+                      )}
+                      {field.state.meta.errors.map(
+                        (error) => (
+                          <p key={error as string}>
+                            {error}
+                          </p>
+                        )
+                      )}
+                      <input
+                        type="hidden"
+                        name="optionsString"
+                        value={JSON.stringify(
+                          field.state.value
+                        )}
+                      />
+                    </div>
+                  );
+                }}
+              </form.Field>
+            );
+          case "multiple_explained":
+            return (
+              <form.Field name="options" mode="array">
+                {(field) => {
+                  if (field.state?.value === undefined)
+                    return null;
+
+                  return (
+                    <div
+                      role="group"
+                      aria-labelledby={`${name}-label`}
+                      className="space-y-2"
+                    >
+                      <h2
+                        id={`${field.name}-label`}
+                        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-2xl"
+                      >
+                        {question.label}
+                      </h2>
+                      {question.questionsToOptions?.map(
+                        (qto) => {
+                          const optionChecked =
+                            !!field.state.value.find(
+                              (v) =>
+                                v.value ===
+                                qto.option.id.toString()
+                            );
+                          return (
+                            <fieldset
+                              key={qto.option.id}
+                              className="space-y-2"
+                            >
+                              <legend className="sr-only">
+                                {qto.option.text} (selecteer
+                                en licht toe)
+                              </legend>
+
+                              <div className="flex items-center space-x-2 border border-input rounded-md p-4 relative">
+                                <Checkbox
+                                  aria-expanded={
+                                    optionChecked
+                                  }
+                                  checked={optionChecked}
+                                  onCheckedChange={(
+                                    checked
+                                  ) => {
+                                    if (checked) {
+                                      field.handleChange([
+                                        ...field.state
+                                          .value,
+                                        {
+                                          value:
+                                            qto.option.id.toString(),
+                                          explanation:
+                                            field.state.value.find(
+                                              (v) =>
+                                                v.value ===
+                                                qto.option.id.toString()
+                                            )
+                                              ?.explanation ??
+                                            "",
+                                        },
+                                      ]);
+                                    } else {
+                                      field.handleChange(
+                                        field.state.value.filter(
+                                          (v) =>
+                                            v.value !==
+                                            qto.option.id.toString()
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  id={`${field.name}${qto.option.id}-check`}
+                                />
+                                <Label
+                                  htmlFor={`${field.name}${qto.option.id}-check`}
+                                  className="after:content-[''] after:absolute after:inset-0"
+                                >
+                                  {qto.option.text}
+                                </Label>
+                              </div>
                               {optionChecked && (
                                 <div>
                                   <Label
