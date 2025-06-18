@@ -13,7 +13,6 @@ export const env = createEnv({
     NEXTAUTH_URL: z.string().url(),
     NEXTAUTH_SECRET: z.string(),
     DB_URL: z.string().url(),
-    DB_SECRET: z.string(),
   },
   onValidationError: (error: ZodError) => {
     console.error(
