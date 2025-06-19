@@ -132,7 +132,7 @@
     --secondary-foreground: var(--chorista-text-solid);
     --muted: var(--chorista-bg-overlay-dark);
     --muted-foreground: var(--chorista-border-solid-dark);
-    --accent: var(--chorista-bg-off-1-dark);
+    --accent: var(--chorista-bg-off-2-dark);
     --accent-foreground: var(--chorista-bg-off-1);
     --destructive: oklch(0.704 0.191 22.216);
     --destructive-foreground: var(--chorista-bg-off-2);

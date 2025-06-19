@@ -22,7 +22,6 @@ declare module "next-auth" {
 type UserIdType = (typeof users.$inferInsert)["id"];
 
 const options: NextAuthOptions = {
-  // @ts-expect-error - The DrizzleAdapter is not yet part of the official NextAuth types (part of v5, using v4 in this project)
   adapter: DrizzleAdapter(db, {
     // @ts-expect-error - user uuid known error
     usersTable: users,

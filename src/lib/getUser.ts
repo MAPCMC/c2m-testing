@@ -1,5 +1,6 @@
 "use server";
 
+import { unstable_cache } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/config/auth";
 import db from "@/db";
@@ -12,6 +13,68 @@ type Profile = typeof profiles.$inferSelect;
 type UserProfile = Omit<Profile, "id" | "userId">;
 export type UserWithProfile = UserProfile & UserBase;
 
+export const getUserCached = unstable_cache(
+  async (
+    email: string
+  ): Promise<UserWithProfile | false> => {
+    if (!email) {
+      return false;
+    }
+
+    const existingUser = await db.query.users.findFirst({
+      where: (user, { eq }) => eq(user.email, email),
+    });
+
+    if (!existingUser) {
+      return false;
+    }
+
+    const profile = await db.query.profiles.findFirst({
+      where: (profile, { eq }) =>
+        eq(profile.userId, existingUser?.id),
+      columns: {
+        id: false,
+        userId: false,
+      },
+    });
+
+    if (!profile) {
+      const [newProfile] = await db
+        .insert(profiles)
+        .values({
+          userId: existingUser.id,
+        })
+        .returning({
+          textSize: profiles.textSize,
+          language: profiles.language,
+          theme: profiles.theme,
+          screenReaderOptimized:
+            profiles.screenReaderOptimized,
+          feedbackEnabled: profiles.feedbackEnabled,
+          readingEnabled: profiles.readingEnabled,
+        });
+
+      return {
+        ...newProfile,
+        id: existingUser.id,
+        email: existingUser.email,
+        role: existingUser.role,
+      };
+    }
+
+    return {
+      ...profile,
+      id: existingUser.id,
+      email: existingUser.email,
+      role: existingUser.role,
+    };
+  },
+  [],
+  {
+    tags: ["user"],
+  }
+);
+
 export const getUser = async (): Promise<
   UserWithProfile | false
 > => {
@@ -22,51 +85,5 @@ export const getUser = async (): Promise<
     return false;
   }
 
-  const existingUser = await db.query.users.findFirst({
-    where: (user, { eq }) => eq(user.email, email),
-  });
-
-  if (!existingUser) {
-    return false;
-  }
-
-  const profile = await db.query.profiles.findFirst({
-    where: (profile, { eq }) =>
-      eq(profile.userId, existingUser?.id),
-    columns: {
-      id: false,
-      userId: false,
-    },
-  });
-
-  if (!profile) {
-    const [newProfile] = await db
-      .insert(profiles)
-      .values({
-        userId: existingUser.id,
-      })
-      .returning({
-        textSize: profiles.textSize,
-        language: profiles.language,
-        theme: profiles.theme,
-        screenReaderOptimized:
-          profiles.screenReaderOptimized,
-        feedbackEnabled: profiles.feedbackEnabled,
-        readingEnabled: profiles.readingEnabled,
-      });
-
-    return {
-      ...newProfile,
-      id: existingUser.id,
-      email: existingUser.email,
-      role: existingUser.role,
-    };
-  }
-
-  return {
-    ...profile,
-    id: existingUser.id,
-    email: existingUser.email,
-    role: existingUser.role,
-  };
+  return getUserCached(email);
 };

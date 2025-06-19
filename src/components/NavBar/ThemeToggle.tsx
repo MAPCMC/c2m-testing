@@ -13,19 +13,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserWithProfile } from "@/lib/getUser";
 import { setProfileTheme } from "./actions/setProfileTheme";
+import { cn } from "@/lib/utils";
 
 export function ThemeToggle({
   user,
 }: {
   user?: UserWithProfile | false;
 }) {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
     if (user && user.theme) {
       setTheme(user.theme);
     }
   }, [user, setTheme]);
+
+  React.useEffect(() => {
+    if (user && theme && theme !== user.theme) {
+      setProfileTheme(user, theme as "light" | "dark");
+    }
+  }, [theme]);
 
   return (
     <DropdownMenu>
@@ -38,16 +45,22 @@ export function ThemeToggle({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onClick={() => {
-            setProfileTheme(user, "light");
+          className={cn(
+            theme === "light" &&
+              "bg-accent text-accent-foreground"
+          )}
+          onClick={async () => {
             setTheme("light");
           }}
         >
           Licht
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => {
-            setProfileTheme(user, "dark");
+          className={cn(
+            theme === "dark" &&
+              "bg-accent text-accent-foreground"
+          )}
+          onClick={async () => {
             setTheme("dark");
           }}
         >
