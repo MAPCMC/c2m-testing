@@ -6,6 +6,7 @@ import {
   ThemeProviderProps,
   ThemeProvider as NextThemesProvider,
 } from "next-themes";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 function ThemeProvider({
   children,
@@ -29,7 +30,7 @@ export default function Providers({
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <SidebarProvider>{children}</SidebarProvider>
       </ThemeProvider>
     </SessionProvider>
   );
