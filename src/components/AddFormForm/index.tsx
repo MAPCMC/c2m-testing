@@ -6,6 +6,7 @@ import {
   mergeForm,
   useForm,
   useTransform,
+  useStore,
 } from "@tanstack/react-form";
 import formOpts from "./formOptions";
 import {
@@ -62,7 +63,8 @@ export default function AddFormForm({ apps }: Props) {
     },
   });
 
-  const formErrors = form.useStore(
+  const formErrors = useStore(
+    form.store,
     (formState) => formState.errors
   );
 
@@ -74,9 +76,9 @@ export default function AddFormForm({ apps }: Props) {
       }}
       className="space-y-4"
     >
-      {formErrors.map((error) => (
+      {formErrors.map((error, i) => (
         <p
-          key={error as string}
+          key={i}
           aria-live="assertive"
           className="text-sm font-medium text-destructive"
         >

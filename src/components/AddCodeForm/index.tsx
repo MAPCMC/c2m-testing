@@ -5,6 +5,7 @@ import { initialFormState } from "@tanstack/react-form/nextjs";
 import {
   mergeForm,
   useForm,
+  useStore,
   useTransform,
 } from "@tanstack/react-form";
 
@@ -68,7 +69,8 @@ export default function AddCodeForm({
     },
   });
 
-  const formErrors = form.useStore(
+  const formErrors = useStore(
+    form.store,
     (formState) => formState.errors
   );
 
@@ -86,9 +88,9 @@ export default function AddCodeForm({
       <p>
         Zet een vragenlijst klaar voor een andere gebruiker.
       </p>
-      {formErrors.map((error) => (
+      {formErrors.map((error, i) => (
         <p
-          key={error as string}
+          key={i}
           aria-live="assertive"
           className="text-sm font-medium text-destructive"
         >
