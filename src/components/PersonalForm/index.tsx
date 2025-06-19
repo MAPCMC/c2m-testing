@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useFormState } from "react-dom";
+import React, { useActionState } from "react";
 import { initialFormState } from "@tanstack/react-form/nextjs";
 import {
   mergeForm,
@@ -15,7 +14,7 @@ import { Button } from "../ui/button";
 import InnerField from "../AnswerForm/components/InnerField";
 
 export default function PersonalForm() {
-  const [state, action] = useFormState(
+  const [state, action] = useActionState(
     handlePersonalFormSubmit,
     initialFormState
   );

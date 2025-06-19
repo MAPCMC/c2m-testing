@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useFormState } from "react-dom";
+import React, { useActionState } from "react";
 import { initialFormState } from "@tanstack/react-form/nextjs";
 import {
   mergeForm,
@@ -43,7 +42,7 @@ export default function AnswerForm({
   nextQuestionId?: number;
   previousQuestionId?: number;
 }) {
-  const [state, action] = useFormState(
+  const [state, action] = useActionState(
     handleAnswerFormSubmit,
     initialFormState
   );
