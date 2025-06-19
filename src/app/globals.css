@@ -71,13 +71,10 @@
     --chorista-bg-off-2: oklch(0.8365 0.0001 0);
 
     --chorista-bg-solid-dark: oklch(0.1013 0.0001 0);
-    --chorista-bg-overlay-dark: oklch(
-      0.1485 0.0001 0 / 0.8
-    );
-
+    --chorista-bg-overlay-dark: oklch(0.7 0.0001 0 / 0.8);
     --chorista-text-solid-dark: oklch(0.9809 0.0001 0);
     --chorista-border-solid-dark: oklch(0.6165 0.0001 0);
-    --chorista-border-soft-dark: oklch(0.2117 0.0001 0);
+    --chorista-border-soft-dark: oklch(0.4 0.0001 0);
     --chorista-bg-off-1-dark: oklch(0.1772 0.0001 0);
     --chorista-bg-off-2-dark: oklch(0.295 0.0001 0);
   }
