@@ -1,18 +1,21 @@
 import SignIn from "./SignIn";
 import ThemeToggle from "./ThemeToggle";
 import { getUser } from "@/lib/getUser";
+import { cn } from "@/lib/utils";
 
 const NavBar = async ({
   noLogout,
   children,
+  className,
 }: {
   children?: React.ReactNode;
   noLogout?: boolean;
+  className?: string;
 }) => {
   const user = await getUser();
 
   return (
-    <div className="py-2 border-b-2">
+    <div className={cn("py-2 border-b-2", className)}>
       <div className="max-w-5xl mx-auto flex justify-end items-center gap-3 px-4">
         {user && (
           <p className="hidden sm:inline">{user.email}</p>

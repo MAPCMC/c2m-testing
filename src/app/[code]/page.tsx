@@ -64,6 +64,13 @@ export default async function CodePage({
     );
   }
 
+  let app;
+  if (form.appId) {
+    app = await db.query.apps.findFirst({
+      where: (a, { eq }) => eq(a.id, form.appId),
+    });
+  }
+
   return (
     <>
       <NavBar noLogout>
@@ -71,16 +78,16 @@ export default async function CodePage({
       </NavBar>
       <PageHeader title={`Vragenlijst: ${form?.title}`} />
       <PageMain className="*:mx-auto">
-        {form.app_name && form.app_link && (
+        {app?.name && app?.link && (
           <Alert>
-            {form.app_name} nog niet gebruikt? Test de
-            applicatie via:{" "}
+            {app.name} nog niet gebruikt? Test de applicatie
+            via:{" "}
             <a
               target="_blank"
-              href={form.app_link}
+              href={app.link}
               className="hover:underline focus:underline underline-offset-4"
             >
-              {form.app_link}
+              {app.link}
             </a>
           </Alert>
         )}

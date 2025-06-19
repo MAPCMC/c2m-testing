@@ -1,3 +1,5 @@
+# C2M Testing
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -27,5 +29,4 @@ Apply migrations to connected db with `npx drizzle-kit migrate`.
 
 ### Prerequisites
 
-- Add a google auth client to allow sign in: https://console.cloud.google.com. Follow instructions from https://next-auth.js.org/providers/google.
-- Integrate vercel & supabase?
+- Add a google auth client to allow sign in [console](https://console.cloud.google.com). Follow instructions from [next-auth](https://next-auth.js.org/providers/google).

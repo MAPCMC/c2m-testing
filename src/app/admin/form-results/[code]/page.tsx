@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { getFullForm } from "@/lib/getFullForm";
 import BackButton from "@/components/BackButton";
+import AdminLayout from "@/components/AdminLayout";
 
 export default async function AdminCodePage({
   params,
@@ -86,10 +87,8 @@ export default async function AdminCodePage({
   const findQuestionAnswer = (key: string) =>
     answers.find((a) => a.questionKey === key);
   return (
-    <>
-      <NavBar />
-      <PageHeader title="Admin" />
-      <PageMain className="*:max-w-full">
+    <AdminLayout headerTitle="Vragenlijst inzien">
+
         <>
           <h2 className="text-2xl font-medium">
             Vragenlijst: {form.title}
@@ -155,7 +154,6 @@ export default async function AdminCodePage({
             </TableBody>
           </Table>
         </>
-      </PageMain>
     </>
   );
 }

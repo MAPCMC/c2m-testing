@@ -3,11 +3,24 @@ import postgres from "postgres";
 import { env } from "@/env/server";
 import * as schema from "./schema/index";
 
-const connectionString = env.DB_URL;
+const max = 10;
 
-const client = postgres(connectionString);
-const db = drizzle(client, {
-  schema: schema,
-});
+const client =
+  globalThis.__POSTGRES__ ??
+  postgres(env.DB_URL, {
+    max,
+    idle_timeout: 60,
+  });
+
+if (process.env.NODE_ENV !== "production") {
+  globalThis.__POSTGRES__ = client;
+}
+
+const db = drizzle(client, { schema });
 
 export default db;
+
+declare global {
+  // eslint-disable-next-line no-var
+  var __POSTGRES__: ReturnType<typeof postgres> | undefined;
+}

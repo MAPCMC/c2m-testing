@@ -2,5 +2,9 @@ export { default } from "next-auth/middleware";
 
 // protect navigation to /admin
 export const config = {
-  matcher: ["/admin", "/code-create"],
+  matcher: [
+    "/admin",
+    "/code-create",
+    "/admin/form-results/:code",
+  ],
 };
