@@ -41,7 +41,7 @@ const InnerChoiceField = ({
 
   if (value === undefined) return null;
 
-  let accessibleInputStateProps: {
+  const accessibleInputStateProps: {
     [key: string]: string;
   } = {};
 

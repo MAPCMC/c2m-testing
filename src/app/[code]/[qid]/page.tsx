@@ -2,7 +2,6 @@ import db from "@/db";
 import NavBar from "@/components/NavBar/index";
 import AnswerForm from "@/components/AnswerForm";
 import { Suspense } from "react";
-import { revalidatePath } from "next/cache";
 import { ChapterFull, QuestionFull } from "@/db/types";
 import { getFullForm } from "@/lib/getFullForm";
 import { getFormUser } from "@/lib/getFormUser";

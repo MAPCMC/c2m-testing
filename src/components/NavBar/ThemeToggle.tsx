@@ -23,16 +23,16 @@ export function ThemeToggle({
   const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
-    if (user && user.theme) {
+    if (user && user.theme && user.theme !== theme) {
       setTheme(user.theme);
     }
-  }, [user, setTheme]);
+  }, [user, setTheme, theme]);
 
   React.useEffect(() => {
     if (user && theme && theme !== user.theme) {
       setProfileTheme(user, theme as "light" | "dark");
     }
-  }, [theme]);
+  }, [theme, user, setProfileTheme]);
 
   return (
     <DropdownMenu>
