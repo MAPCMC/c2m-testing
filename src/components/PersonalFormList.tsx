@@ -22,6 +22,9 @@ const PersonalFormList = async () => {
       {personalCodes.map(async (code) => {
         const form = await db.query.forms.findFirst({
           where: (f, { eq }) => eq(f.id, code.formId),
+          with: {
+            app: true,
+          },
         });
         if (!form) return null;
         return (
@@ -30,7 +33,9 @@ const PersonalFormList = async () => {
             className="border px-4 py-3 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-2"
           >
             <div className="flex flex-col gap-2 justify-center">
-              <h3 className="text-lg">{form.title}</h3>
+              <h3 className="text-lg">
+                {form.app?.name} | {form.title}
+              </h3>
               {form.description && (
                 <p className="grow">{form.description}</p>
               )}

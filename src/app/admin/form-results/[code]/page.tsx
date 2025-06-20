@@ -18,14 +18,14 @@ import {
 } from "@/components/ui/table";
 import { getFullForm } from "@/lib/getFullForm";
 import BackButton from "@/components/BackButton";
-import AdminLayout from "@/components/AdminLayout";
+import LayoutAdmin from "@/components/LayoutAdmin";
 
 export default async function AdminCodePage({
   params,
 }: {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 }) {
-  const { code } = params;
+  const { code } = await params;
   const user = await getUser();
   const session = await getServerSession(authOptions);
 
@@ -44,14 +44,14 @@ export default async function AdminCodePage({
 
   if (!currentCode) {
     return (
-      <>
+      <LayoutAdmin>
         <NavBar />
         <PageHeader title="Admin" />
         <PageMain>
           Controleer de code.
           <BackButton />
         </PageMain>
-      </>
+      </LayoutAdmin>
     );
   }
 
@@ -62,14 +62,14 @@ export default async function AdminCodePage({
 
   if (!form) {
     return (
-      <>
+      <LayoutAdmin>
         <NavBar />
         <PageHeader title="Admin" />
         <PageMain>
           Formulier niet gevonden.
           <BackButton />
         </PageMain>
-      </>
+      </LayoutAdmin>
     );
   }
 
@@ -87,73 +87,67 @@ export default async function AdminCodePage({
   const findQuestionAnswer = (key: string) =>
     answers.find((a) => a.questionKey === key);
   return (
-    <AdminLayout headerTitle="Vragenlijst inzien">
+    <LayoutAdmin headerTitle="Vragenlijst inzien">
+      <h2 className="text-2xl font-medium">
+        Vragenlijst: {form.title}
+      </h2>
+      <BackButton />
+      <Table>
+        <TableCaption>
+          Een lijst van vragen en antwoorden voor deze
+          vragenlijst.
+        </TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="font-bold">
+              Vraag
+            </TableHead>
+            <TableHead className="font-bold">
+              Score
+            </TableHead>
+            <TableHead className="font-bold">
+              Antwoord
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {form.formChapters.map((chapter) =>
+            chapter.questions.map((question) => {
+              const answer = findQuestionAnswer(
+                question.key
+              );
 
-        <>
-          <h2 className="text-2xl font-medium">
-            Vragenlijst: {form.title}
-          </h2>
-          <BackButton />
-          <Table>
-            <TableCaption>
-              Een lijst van vragen en antwoorden voor deze
-              vragenlijst.
-            </TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="font-bold">
-                  Vraag
-                </TableHead>
-                <TableHead className="font-bold">
-                  Score
-                </TableHead>
-                <TableHead className="font-bold">
-                  Antwoord
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {form.formChapters.map((chapter) =>
-                chapter.questions.map((question) => {
-                  const answer = findQuestionAnswer(
-                    question.key
-                  );
+              return (
+                <TableRow key={question.id}>
+                  <TableCell className="font-medium max-w-40">
+                    {question.label}
+                  </TableCell>
+                  <TableCell>{answer?.score}</TableCell>
+                  <TableCell>
+                    {answer?.text}
 
-                  return (
-                    <TableRow key={question.id}>
-                      <TableCell className="font-medium max-w-40">
-                        {question.label}
-                      </TableCell>
-                      <TableCell>{answer?.score}</TableCell>
-                      <TableCell>
-                        {answer?.text}
-
-                        {!!answer?.answersToOptions
-                          ?.length &&
-                          answer?.answersToOptions?.length >
-                            0 && (
-                            <li>
-                              {answer?.answersToOptions.map(
-                                (a) => (
-                                  <li key={a.option.id}>
-                                    {a.option.text}
-                                    {a.explanation
-                                      ? ": "
-                                      : ""}
-                                    {a.explanation}
-                                  </li>
-                                )
-                              )}
-                            </li>
+                    {!!answer?.answersToOptions?.length &&
+                      answer?.answersToOptions?.length >
+                        0 && (
+                        <li>
+                          {answer?.answersToOptions.map(
+                            (a) => (
+                              <li key={a.option.id}>
+                                {a.option.text}
+                                {a.explanation ? ": " : ""}
+                                {a.explanation}
+                              </li>
+                            )
                           )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
-        </>
-    </>
+                        </li>
+                      )}
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          )}
+        </TableBody>
+      </Table>
+    </LayoutAdmin>
   );
 }

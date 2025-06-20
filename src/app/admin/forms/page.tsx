@@ -12,9 +12,12 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { RemoveButton } from "@/components/RemoveButton";
+
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
-import AdminLayout from "@/components/AdminLayout";
+import LayoutAdmin from "@/components/LayoutAdmin";
+// import { eq } from "drizzle-orm";
+// import { forms as formsSchema } from "@/db/schema";
+// import { RemoveButton } from "@/components/RemoveButton";
 
 async function Forms() {
   const forms = await db.query.forms.findMany({
@@ -24,14 +27,16 @@ async function Forms() {
   });
 
   return (
-    <AdminLayout headerTitle="Vragenlijstbeheer">
+    <LayoutAdmin headerTitle="Vragenlijstbeheer">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-medium">
           Vragenlijsten
         </h2>
-        <Link href="/forms/new">
-          <Button>New Form</Button>
-        </Link>
+        <Button asChild>
+          <Link href="/admin/forms/new">
+            Nieuwe vragenlijst
+          </Link>
+        </Button>
       </div>
 
       <Table>
@@ -53,59 +58,68 @@ async function Forms() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {forms.map((form) => (
-            <TableRow key={form.id}>
-              <TableCell className="font-medium">
-                {form.title}
-              </TableCell>
-              <TableCell>{form.description}</TableCell>
-              <TableCell>
-                {form.app ? (
-                  <Badge
-                    variant="outline"
-                    className="capitalize"
-                  >
-                    {form.app.name}
-                  </Badge>
-                ) : (
-                  <span className="text-muted-foreground">
-                    Geen app
-                  </span>
-                )}
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  <Link href={`/forms/${form.id}/edit`}>
-                    <Button variant="outline" size="sm">
-                      Bewerken
+          {forms.map((form) => {
+            return (
+              <TableRow key={form.id}>
+                <TableCell className="font-medium">
+                  {form.title}
+                </TableCell>
+                <TableCell>{form.description}</TableCell>
+                <TableCell>
+                  {form.app ? (
+                    <Badge
+                      variant="outline"
+                      className="capitalize"
+                    >
+                      {form.app.name}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground">
+                      Geen applicatie
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-2">
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Link
+                        href={`/admin/forms/${form.id}/edit`}
+                      >
+                        Bewerken
+                      </Link>
                     </Button>
-                  </Link>
-                  <RemoveButton
-                    variant="destructive"
-                    size="sm"
-                    handleClick={async () => {
-                      "use server";
-                      if (
-                        confirm(
-                          "Weet je zeker dat je dit formulier wilt verwijderen?"
-                        )
-                      ) {
-                        await db.delete(forms, {
-                          where: (f, { eq }) =>
-                            eq(f.id, form.id),
-                        });
-                      }
-                    }}
-                  >
-                    Verwijderen
-                  </RemoveButton>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                    {/* <RemoveButton
+                      variant="destructive"
+                      size="sm"
+                      handleClick={async () => {
+                        "use server";
+                        if (
+                          confirm(
+                            "Weet je zeker dat je dit formulier wilt verwijderen?"
+                          )
+                        ) {
+                          await db
+                            .delete(formsSchema)
+                            .where(
+                              eq(formsSchema.id, form.id)
+                            );
+                        }
+                      }}
+                    >
+                      Verwijderen
+                    </RemoveButton> */}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
-    </AdminLayout>
+    </LayoutAdmin>
   );
 }
 

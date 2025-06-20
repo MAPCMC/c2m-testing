@@ -11,7 +11,7 @@ import { revalidatePath } from "next/cache";
 
 const serverValidate = createServerValidate({
   ...formOpts,
-  onServerValidate: async ({ value }) => {
+  onServerValidate: ({ value }) => {
     if (!value.formId || !value.email) {
       return "Vul alle velden in";
     }

@@ -5,7 +5,7 @@ import NavBar from "@/components/NavBar/index";
 
 import { AppSidebar } from "@/components/AppSidebar";
 
-async function AdminLayout({
+async function LayoutAdmin({
   children,
   headerTitle,
 }: Readonly<{
@@ -15,16 +15,18 @@ async function AdminLayout({
   return (
     <>
       <AppSidebar />
-      <div className="w-full min-h-screen">
-        <NavBar withSidebar />
+      <div className="w-full min-h-svh">
+        <NavBar withSidebar className="*:max-w-none mx-0" />
         <PageHeader
-          // className="border-b-2 max-w-none mx-0 text-center"
-          title={headerTitle ?? "Admin"}
+          className="text-center *:mx-auto"
+          title={headerTitle ?? "Admin dashboard"}
         />
-        <PageMain>{children}</PageMain>
+        <PageMain className="*:mx-auto">
+          {children}
+        </PageMain>
       </div>
     </>
   );
 }
 
-export default AdminLayout;
+export default LayoutAdmin;

@@ -3,7 +3,6 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ValidationError } from "@tanstack/react-form";
 
 import FieldDescription from "./FieldDescription";
 import FieldLabel from "./FieldLabel";
@@ -11,7 +10,9 @@ import FieldLabel from "./FieldLabel";
 interface InnerFieldProps {
   name: string;
   value: string;
-  errors: ValidationError[];
+  errors?: Array<
+    string | { message: string } | null | undefined
+  >;
   label: string;
   description?: string | null;
   as?: React.ElementType;
@@ -50,18 +51,19 @@ const InnerChoiceField = ({
     ] = `${name}-description`;
   }
 
-  if (errors.length > 0) {
+  if (errors && errors.length > 0) {
     accessibleInputStateProps["aria-invalid"] = "true";
-
-    errors.forEach((error, index) => {
-      accessibleInputStateProps = {
-        ...accessibleInputStateProps,
-        "aria-describedby": `${
-          accessibleInputStateProps["aria-describedby"] ??
-          ""
-        } ${name}-error-${index + 1}`,
-      };
-    });
+    accessibleInputStateProps["aria-describedby"] = errors
+      .filter(
+        (error) => error !== undefined && error !== null
+      )
+      .reduce(
+        (acc: string, _, index) =>
+          `${acc}${name}-error-${index + 1}${
+            index < errors.length - 1 ? " " : ""
+          }`,
+        ""
+      );
   }
 
   return (
@@ -70,7 +72,7 @@ const InnerChoiceField = ({
         as="legend"
         id={`${name}-label`}
         className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
-        error={errors.length > 0}
+        error={errors && errors.length > 0}
       >
         {label}
         {required && (
@@ -112,16 +114,26 @@ const InnerChoiceField = ({
           {description}
         </FieldDescription>
       )}
-      {errors.map((error, index) => (
-        <p
-          key={error as string}
-          id={`${name}-error-${index + 1}`}
-          aria-live="assertive"
-          className="text-sm font-medium text-destructive"
-        >
-          {error}
-        </p>
-      ))}
+      {errors
+        ?.filter(
+          (error) => error !== undefined && error !== null
+        )
+        .map((error, index) => (
+          <p
+            key={
+              typeof error === "string"
+                ? error
+                : error.message
+            }
+            id={`${name}-error-${index + 1}`}
+            aria-live="assertive"
+            className="text-sm font-medium text-destructive"
+          >
+            {typeof error === "string"
+              ? error
+              : error.message}
+          </p>
+        ))}
     </WrapperComponent>
   );
 };

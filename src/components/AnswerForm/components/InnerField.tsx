@@ -1,15 +1,18 @@
 import { Input } from "@/components/ui/input";
-import { ValidationError } from "@tanstack/react-form";
-
 import FieldDescription from "./FieldDescription";
 import FieldLabel from "./FieldLabel";
+import { cn } from "@/lib/utils";
+import React from "react";
 
 interface InnerFieldProps {
   name: string;
   value: string;
-  errors: ValidationError[];
+  errors?: Array<
+    string | { message: string } | null | undefined
+  >;
   label: string;
   description?: string | null;
+  className?: string;
   as?: React.ElementType;
   wrapper?: React.ElementType;
   required?: boolean;
@@ -31,6 +34,7 @@ const InnerField = ({
   onBlur,
   onChange,
   required,
+  className,
   ...props
 }: InnerFieldProps) => {
   const InputComponent = as ?? Input;
@@ -48,18 +52,19 @@ const InnerField = ({
     ] = `${name}-description`;
   }
 
-  if (errors.length > 0) {
+  if (errors && errors.length > 0) {
     accessibleInputStateProps["aria-invalid"] = "true";
-
-    errors.forEach((error, index) => {
-      accessibleInputStateProps = {
-        ...accessibleInputStateProps,
-        "aria-describedby": `${
-          accessibleInputStateProps["aria-describedby"] ??
-          ""
-        } ${name}-error-${index + 1}`,
-      };
-    });
+    accessibleInputStateProps["aria-describedby"] = errors
+      .filter(
+        (error) => error !== undefined && error !== null
+      )
+      .reduce(
+        (acc: string, _, index) =>
+          `${acc}${name}-error-${index + 1}${
+            index < errors.length - 1 ? " " : ""
+          }`,
+        ""
+      );
   }
 
   return (
@@ -67,7 +72,7 @@ const InnerField = ({
       <FieldLabel
         htmlFor={name}
         className="text-xl"
-        error={errors.length > 0}
+        error={errors && errors.length > 0}
       >
         {label}{" "}
         {required && (
@@ -80,9 +85,13 @@ const InnerField = ({
         id={name}
         name={name}
         value={value}
-        aria-invalid={errors.length > 0}
+        aria-invalid={errors && errors.length > 0}
         onBlur={onBlur}
         onChange={onChange}
+        className={cn(
+          "bg-background border border-border",
+          className
+        )}
         {...accessibleInputStateProps}
         {...props}
       />
@@ -91,16 +100,26 @@ const InnerField = ({
           {description}
         </FieldDescription>
       )}
-      {errors.map((error, index) => (
-        <p
-          key={error as string}
-          id={`${name}-error-${index + 1}`}
-          aria-live="assertive"
-          className="text-sm font-medium text-destructive"
-        >
-          {error}
-        </p>
-      ))}
+      {errors
+        ?.filter(
+          (error) => error !== undefined && error !== null
+        )
+        .map((error, index) => (
+          <p
+            key={
+              typeof error === "string"
+                ? error
+                : error.message
+            }
+            id={`${name}-error-${index + 1}`}
+            aria-live="assertive"
+            className="text-sm font-medium text-destructive"
+          >
+            {typeof error === "string"
+              ? error
+              : error.message}
+          </p>
+        ))}
     </WrapperComponent>
   );
 };

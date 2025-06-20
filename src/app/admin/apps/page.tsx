@@ -1,0 +1,108 @@
+import React from "react";
+import db from "@/db";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableCaption,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Link from "next/link";
+import { AuthenticatedPage } from "@/components/AuthenticatedPage";
+import LayoutAdmin from "@/components/LayoutAdmin";
+// import { apps as appsSchema } from "@/db/schema";
+// import { eq } from "drizzle-orm";
+// import { RemoveButton } from "@/components/RemoveButton";
+
+async function Apps() {
+  const apps = await db.query.apps.findMany();
+
+  return (
+    <LayoutAdmin headerTitle="Applicatiebeheer">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-medium">
+          Applicaties
+        </h2>
+        <Button asChild>
+          <Link href="/admin/apps/new">
+            Nieuwe applicatie
+          </Link>
+        </Button>
+      </div>
+
+      <Table>
+        <TableCaption>
+          Een lijst van alle applicaties van C2M
+        </TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="font-bold">
+              Titel
+            </TableHead>
+            <TableHead className="font-bold">
+              Beschrijving
+            </TableHead>
+            <TableHead className="font-bold">
+              Link
+            </TableHead>
+            <TableHead className="font-bold">
+              Acties
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {apps.map((app) => (
+            <TableRow key={app.id}>
+              <TableCell className="font-medium">
+                {app.name}
+              </TableCell>
+              <TableCell>{app.description}</TableCell>
+              <TableCell>{app.link}</TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Link
+                      href={`/admin/apps/${app.id}/edit`}
+                    >
+                      Bewerken
+                    </Link>
+                  </Button>
+                  {/* <RemoveButton
+                    variant="destructive"
+                    size="sm"
+                    handleClick={async () => {
+                      "use server";
+                      if (
+                        confirm(
+                          "Weet je zeker dat je deze app wilt verwijderen?"
+                        )
+                      ) {
+                        await db
+                          .delete(appsSchema)
+                          .where(eq(appsSchema.id, app.id));
+                      }
+                    }}
+                  >
+                    Verwijderen
+                  </RemoveButton> */}
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </LayoutAdmin>
+  );
+}
+
+export default AuthenticatedPage({
+  Component: Apps,
+  role: "admin",
+});

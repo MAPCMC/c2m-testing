@@ -9,15 +9,22 @@ import { getFormUser } from "@/lib/getFormUser";
 import FormStopSessionButton from "@/components/FormStopSessionButton";
 import { PageHeader } from "@/components/PageHeader";
 import { PageMain } from "@/components/PageMain";
-import { Alert } from "@/components/ui/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 import { navigateToSession } from "@/lib/navigateToSession";
+import LayoutNormal from "@/components/LayoutNormal";
+import { eq } from "drizzle-orm";
+import { apps } from "@/db/schema";
 
 export default async function CodePage({
   params,
 }: {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 }) {
-  const { code } = params;
+  const { code } = await params;
 
   await navigateToSession(code);
 
@@ -29,7 +36,7 @@ export default async function CodePage({
 
   if (formUser === "blocked" || !currentCode) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet beschikbaar" />
         <PageMain>
@@ -37,7 +44,7 @@ export default async function CodePage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
@@ -52,7 +59,7 @@ export default async function CodePage({
 
   if (!form) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet gevonden" />
         <PageMain>
@@ -60,19 +67,19 @@ export default async function CodePage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
   let app;
   if (form.appId) {
     app = await db.query.apps.findFirst({
-      where: (a, { eq }) => eq(a.id, form.appId),
+      where: eq(apps.id, form.appId),
     });
   }
 
   return (
-    <>
+    <LayoutNormal>
       <NavBar noLogout>
         <FormStopSessionButton />
       </NavBar>
@@ -80,15 +87,22 @@ export default async function CodePage({
       <PageMain className="*:mx-auto">
         {app?.name && app?.link && (
           <Alert>
-            {app.name} nog niet gebruikt? Test de applicatie
-            via:{" "}
-            <a
-              target="_blank"
-              href={app.link}
-              className="hover:underline focus:underline underline-offset-4"
-            >
-              {app.link}
-            </a>
+            <AlertTitle>
+              <span>{app.name}</span>
+              <span> nog niet gebruikt?</span>
+            </AlertTitle>
+            <AlertDescription>
+              <p>
+                <span> Test de applicatie via: </span>
+                <a
+                  target="_blank"
+                  href={app.link}
+                  className="hover:underline focus:underline underline-offset-4"
+                >
+                  {app.link}
+                </a>
+              </p>
+            </AlertDescription>
           </Alert>
         )}
         <div className="space-y-3">
@@ -128,6 +142,6 @@ export default async function CodePage({
           </Button>
         </div>
       </PageMain>
-    </>
+    </LayoutNormal>
   );
 }

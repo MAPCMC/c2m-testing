@@ -1,5 +1,5 @@
 import { createEnv } from "@t3-oss/env-nextjs";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import { config } from "dotenv";
 import { expand } from "dotenv-expand";
 
@@ -14,10 +14,10 @@ export const env = createEnv({
     NEXTAUTH_SECRET: z.string(),
     DB_URL: z.string().url(),
   },
-  onValidationError: (error: ZodError) => {
+  onValidationError: (issues) => {
     console.error(
       "❌ Invalid environment variables:",
-      error.flatten().fieldErrors
+      issues
     );
     process.exit(1);
   },

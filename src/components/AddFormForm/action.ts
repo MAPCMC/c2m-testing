@@ -11,7 +11,7 @@ import formOpts from "./formOptions";
 
 const serverValidate = createServerValidate({
   ...formOpts,
-  onServerValidate: async ({ value }) => {
+  onServerValidate: ({ value }) => {
     if (!value.title || !value.appId) {
       return "Vul alle velden in";
     }
@@ -49,7 +49,6 @@ export const handleSubmit = async (values: {
       .returning();
 
     if (result[0]?.id) {
-      console.log(result);
       return result;
     }
   } catch (e) {

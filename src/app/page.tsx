@@ -10,6 +10,7 @@ import authOptions from "@/config/auth";
 import { redirect } from "next/navigation";
 import { PageMain } from "@/components/PageMain";
 import { PageHeader } from "@/components/PageHeader";
+import LayoutNormal from "@/components/LayoutNormal";
 
 export default async function Home() {
   const user = await getUser();
@@ -29,7 +30,7 @@ export default async function Home() {
   }
 
   return (
-    <>
+    <LayoutNormal>
       <NavBar />
       <PageHeader
         title="Connect2Music testportaal"
@@ -42,6 +43,6 @@ export default async function Home() {
           <FormList />
         </Suspense>
       </PageMain>
-    </>
+    </LayoutNormal>
   );
 }

@@ -9,62 +9,38 @@ import {
   useStore,
 } from "@tanstack/react-form";
 import formOpts from "./formOptions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { handleAddFormSubmit } from "./action";
+import { handleEditFormSubmit } from "./action";
 import InnerField from "../AnswerForm/components/InnerField";
 import { redirect } from "next/navigation";
-import FieldLabel from "../AnswerForm/components/FieldLabel";
+
+import { forms, apps } from "@/db/schema";
+import InnerChoiceField from "../AnswerForm/components/InnerChoiceField";
 
 type Props = {
-  apps: {
-    id: string;
-    name: string;
-  }[];
+  form: typeof forms.$inferSelect;
+  apps: (typeof apps.$inferSelect)[];
 };
 
-export default function AddFormForm({ apps }: Props) {
-  const stateRef = React.useRef(initialFormState);
-  const [result, setResult] = React.useState<string | null>(
-    null
-  );
+export default function EditFormForm({
+  form,
+  apps,
+}: Props) {
   const [state, action] = useActionState(
-    handleAddFormSubmit,
-    stateRef.current
+    handleEditFormSubmit,
+    initialFormState
   );
 
-  React.useEffect(() => {
-    if (state && state !== stateRef.current) {
-      stateRef.current = state;
-    }
-  }, [state]);
-
-  const form = useForm({
-    ...formOpts,
+  const formForm = useForm({
+    ...formOpts(form),
     transform: useTransform(
-      (baseForm) => mergeForm(baseForm, stateRef.current),
-      [stateRef.current]
+      (baseForm) => mergeForm(baseForm, state!),
+      [state]
     ),
-    onSubmit: async () => {
-      try {
-        setResult("Vragenlijst aangemaakt.");
-
-        form.reset();
-      } catch (e) {
-        console.error(e);
-        setResult("Er is iets misgegaan.");
-      }
-    },
   });
 
   const formErrors = useStore(
-    form.store,
+    formForm.store,
     (formState) => formState.errors
   );
 
@@ -72,7 +48,7 @@ export default function AddFormForm({ apps }: Props) {
     <form
       action={action as never}
       onSubmit={() => {
-        form.handleSubmit();
+        formForm.handleSubmit();
       }}
       className="space-y-4"
     >
@@ -85,7 +61,7 @@ export default function AddFormForm({ apps }: Props) {
           {error}
         </p>
       ))}
-      <form.Field
+      <formForm.Field
         name="title"
         validators={{
           onSubmit: ({ value }) => {
@@ -107,9 +83,9 @@ export default function AddFormForm({ apps }: Props) {
             }
           />
         )}
-      </form.Field>
+      </formForm.Field>
 
-      <form.Field name="description">
+      <formForm.Field name="description">
         {(field) => (
           <InnerField
             label="Beschrijving"
@@ -122,51 +98,36 @@ export default function AddFormForm({ apps }: Props) {
             }
           />
         )}
-      </form.Field>
+      </formForm.Field>
 
-      <form.Field name="appId">
+      <formForm.Field name="appId">
         {(field) => (
-          <div>
-            <FieldLabel>App</FieldLabel>
-            <Select
-              onValueChange={field.handleChange}
-              defaultValue={field.state.value}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecteer een app" />
-              </SelectTrigger>
-              <SelectContent>
-                {apps
-                  .filter((app) => !!app.name)
-                  .map((app) => (
-                    <SelectItem key={app.id} value={app.id}>
-                      {app.name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <InnerChoiceField
+            label="Applicatie"
+            description="Selecteer een applicatie"
+            value={field.state.value}
+            name={field.name}
+            errors={field.state.meta.errors}
+            options={apps.map((app) => ({
+              id: app.id,
+              text: app.name ?? "",
+            }))}
+            onBlur={field.handleBlur}
+            onChange={(value) => field.handleChange(value)}
+          />
         )}
-      </form.Field>
+      </formForm.Field>
+      <input type="hidden" name="id" value={form.id} />
 
       <div className="flex justify-end space-x-2">
         <Button
           type="button"
-          variant="outline"
           onClick={() => redirect("/admin/forms")}
         >
           Annuleren
         </Button>
         <Button type="submit">Opslaan</Button>
       </div>
-      {result && (
-        <p
-          aria-live="assertive"
-          className="text-sm font-medium"
-        >
-          {result}
-        </p>
-      )}
     </form>
   );
 }

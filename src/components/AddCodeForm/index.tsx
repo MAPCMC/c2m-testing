@@ -14,9 +14,9 @@ import {
   handleSubmit,
 } from "./action";
 import formOpts from "./formOptions";
-import { Button } from "../ui/button";
-import InnerField from "../AnswerForm/components/InnerField";
-import InnerChoiceField from "../AnswerForm/components/InnerChoiceField";
+import { Button } from "@/components/ui/button";
+import InnerField from "@/components/AnswerForm/components/InnerField";
+import InnerChoiceField from "@/components/AnswerForm/components/InnerChoiceField";
 import { forms } from "@/db/schema";
 
 type Props = {

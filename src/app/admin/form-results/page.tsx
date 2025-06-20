@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
-import AdminLayout from "@/components/AdminLayout";
+import LayoutAdmin from "@/components/LayoutAdmin";
 
 async function Admin() {
   const forms = await db.query.forms.findMany();
@@ -46,7 +46,7 @@ async function Admin() {
   };
 
   return (
-    <AdminLayout headerTitle="Resultaten">
+    <LayoutAdmin headerTitle="Resultaten">
       {codes.length > 0 && (
         <>
           <h2 className="text-2xl font-medium">
@@ -96,7 +96,7 @@ async function Admin() {
           </Table>
         </>
       )}
-    </AdminLayout>
+    </LayoutAdmin>
   );
 }
 

@@ -14,7 +14,7 @@ export const PageMain = ({
 }) => (
   <main
     className={cn(
-      "max-w-5xl mx-auto py-8 px-4 space-y-8 *:max-w-3xl",
+      "mx-auto py-8 px-4 space-y-8 w-full max-w-5xl *:w-full *:max-w-3xl",
       className
     )}
     ref={ref}

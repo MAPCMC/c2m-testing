@@ -7,7 +7,7 @@ import { getUser } from "@/lib/getUser";
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/config/auth";
 import { redirect } from "next/navigation";
-import AdminLayout from "@/components/AdminLayout";
+import LayoutAdmin from "@/components/LayoutAdmin";
 
 export default async function AdminHome() {
   const user = await getUser();
@@ -19,12 +19,12 @@ export default async function AdminHome() {
   }
 
   return (
-    <AdminLayout>
+    <LayoutAdmin>
       <Suspense fallback={<p>Laden vragenlijsten...</p>}>
         {!user && <PersonalForm />}
         <PersonalFormList />
         <FormList />
       </Suspense>
-    </AdminLayout>
+    </LayoutAdmin>
   );
 }

@@ -9,14 +9,14 @@ import {
   useTransform,
 } from "@tanstack/react-form";
 
-import handlePersonalFormSubmit from "./action";
+import handleAddAppSubmit from "./action";
 import formOpts from "./formOptions";
-import { Button } from "../ui/button";
-import InnerField from "../AnswerForm/components/InnerField";
+import { Button } from "@/components/ui/button";
+import InnerField from "@/components/AnswerForm/components/InnerField";
 
-export default function PersonalForm() {
+export default function AddAppForm() {
   const [state, action] = useActionState(
-    handlePersonalFormSubmit,
+    handleAddAppSubmit,
     initialFormState
   );
 
@@ -39,15 +39,14 @@ export default function PersonalForm() {
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-2 p-4 border rounded-md bg-accent"
+      className="space-y-2"
     >
       <h2 className="text-2xl font-medium">
-        Persoonlijke vragenlijst
+        App toevoegen
       </h2>
       <p>
-        Heb je een vragenlijstcode toegestuurd gekregen? Vul
-        de code hier in om direct naar jouw vragenlijst te
-        gaan.
+        Vul de gegevens in om een applicatie die je wilt
+        evalueren toe te voegen.
       </p>
       {formErrors.map((error, i) => (
         <p
@@ -58,20 +57,44 @@ export default function PersonalForm() {
           {error}
         </p>
       ))}
-      <form.Field
-        name="link"
-        validators={{
-          onChange: ({ value }) =>
-            (value.length > 0 && value.length < 10) ||
-            value.length > 10
-              ? "De code heeft 10 tekens"
-              : undefined,
-        }}
-      >
+      <form.Field name="name">
         {(field) => (
           <InnerField
+            required
             className="max-w-md"
-            label="vragenlijstcode"
+            label="naam"
+            value={field.state.value}
+            name={field.name}
+            errors={field.state.meta.errors}
+            onBlur={field.handleBlur}
+            onChange={(e) =>
+              field.handleChange(e.target.value)
+            }
+          />
+        )}
+      </form.Field>
+      <form.Field name="link">
+        {(field) => (
+          <InnerField
+            required
+            className="max-w-md"
+            label="link"
+            value={field.state.value}
+            name={field.name}
+            errors={field.state.meta.errors}
+            onBlur={field.handleBlur}
+            onChange={(e) =>
+              field.handleChange(e.target.value)
+            }
+          />
+        )}
+      </form.Field>
+      <form.Field name="description">
+        {(field) => (
+          <InnerField
+            required
+            className="max-w-md"
+            label="omschrijving"
             value={field.state.value}
             name={field.name}
             errors={field.state.meta.errors}
@@ -90,7 +113,7 @@ export default function PersonalForm() {
       >
         {([canSubmit, isSubmitting]) => (
           <Button type="submit" disabled={!canSubmit}>
-            {isSubmitting ? "..." : "Ophalen"}
+            {isSubmitting ? "..." : "Toevoegen"}
           </Button>
         )}
       </form.Subscribe>

@@ -18,7 +18,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/config/auth";
 
-import AdminLayout from "@/components/AdminLayout";
+import LayoutAdmin from "@/components/LayoutAdmin";
 
 export default async function SuperUser() {
   const user = await getUser();
@@ -47,7 +47,7 @@ export default async function SuperUser() {
   });
 
   return (
-    <AdminLayout headerTitle="Vragenlijsten klaarzetten">
+    <LayoutAdmin headerTitle="Vragenlijsten klaarzetten">
       <AddCodeForm forms={forms} creatorId={user.id} />
       {addedCodes.length > 0 && (
         <>
@@ -90,6 +90,6 @@ export default async function SuperUser() {
           </Table>
         </>
       )}
-    </AdminLayout>
+    </LayoutAdmin>
   );
 }

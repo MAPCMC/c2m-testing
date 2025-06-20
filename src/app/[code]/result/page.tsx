@@ -10,13 +10,14 @@ import { navigateToSession } from "@/lib/navigateToSession";
 import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import LayoutNormal from "@/components/LayoutNormal";
 
 export default async function Form({
   params,
 }: {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 }) {
-  const { code } = params;
+  const { code } = await params;
   await navigateToSession(code);
 
   const currentCode = await db.query.codes.findFirst({
@@ -40,7 +41,7 @@ export default async function Form({
 
   if (!form) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet gevonden" />
         <PageMain>
@@ -48,12 +49,12 @@ export default async function Form({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
   return (
-    <>
+    <LayoutNormal>
       <NavBar noLogout />
       <PageHeader title={`Vragenlijst: ${form?.title}`} />
       <PageMain className="*:mx-auto">
@@ -73,6 +74,6 @@ export default async function Form({
           <BackButton variant="outline" />
         </div>
       </PageMain>
-    </>
+    </LayoutNormal>
   );
 }
