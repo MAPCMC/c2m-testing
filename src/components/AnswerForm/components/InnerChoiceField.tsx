@@ -94,11 +94,12 @@ const InnerChoiceField = ({
         {options?.map((option) => (
           <div
             key={option.id}
-            className="flex items-center space-x-2 border border-input rounded-md p-4 relative"
+            className="flex items-center space-x-2 border rounded-md p-4 relative bg-input"
           >
             <RadioGroupItem
               value={option.id.toString()}
               id={option.id.toString()}
+              className="border-border"
             />
             <Label
               htmlFor={option.id.toString()}

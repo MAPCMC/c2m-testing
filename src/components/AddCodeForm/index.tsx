@@ -80,7 +80,7 @@ export default function AddCodeForm({
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-2"
+      className="space-y-2  p-4 border rounded-md bg-accent"
     >
       <h2 className="text-2xl font-medium">
         Vragenlijst klaarzetten

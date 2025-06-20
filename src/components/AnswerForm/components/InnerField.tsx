@@ -88,10 +88,7 @@ const InnerField = ({
         aria-invalid={errors && errors.length > 0}
         onBlur={onBlur}
         onChange={onChange}
-        className={cn(
-          "bg-background border border-border",
-          className
-        )}
+        className={cn("bg-input border-border", className)}
         {...accessibleInputStateProps}
         {...props}
       />
