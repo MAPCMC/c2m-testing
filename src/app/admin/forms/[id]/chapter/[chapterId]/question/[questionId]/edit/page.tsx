@@ -4,6 +4,8 @@ import LayoutAdmin from "@/components/LayoutAdmin";
 import EditFormQuestionForm from "@/components/EditFormQuestionForm";
 import db from "@/db";
 import { redirect } from "next/navigation";
+import EditFormQuestionOptionForm from "@/components/EditFormQuestionOptionForm";
+import EditFormQuestionConditionForm from "@/components/EditFormQuestionConditionForm";
 
 async function EditFormQuestion({
   params,
@@ -18,10 +20,57 @@ async function EditFormQuestion({
   const question = await db.query.questions.findFirst({
     where: (questions, { eq }) =>
       eq(questions.id, Number(questionId)),
-    with: {
-      formChapter: true,
-    },
   });
+
+  const options = await db.query.questionsToOptions
+    .findMany({
+      where: (qto, { eq }) =>
+        eq(qto.questionId, Number(questionId)),
+      with: {
+        option: true,
+      },
+    })
+    .then((results) => results.map((r) => r.option));
+
+  const condition =
+    await db.query.questionConditions.findFirst({
+      where: (questionConditions, { eq }) =>
+        eq(
+          questionConditions.questionId,
+          Number(questionId)
+        ),
+    });
+
+  const formQuestions = await db.query.formChapters
+    .findMany({
+      where: (formChapters, { eq }) =>
+        eq(formChapters.formId, id),
+      with: {
+        questions: true,
+      },
+    })
+    .then((results) => results.map((r) => r.questions))
+    .then((results) => results.flat())
+    .then(async (results) => {
+      return await Promise.all(
+        results.map(async (q) => {
+          const questionOptions =
+            await db.query.questionsToOptions
+              .findMany({
+                where: (qto, { eq }) =>
+                  eq(qto.questionId, q.id),
+                with: {
+                  option: true,
+                },
+              })
+              .then((results) =>
+                results.map((r) => r.option)
+              );
+
+          return { ...q, options: questionOptions ?? [] };
+        })
+      );
+    });
 
   if (!question) {
     redirect(
@@ -51,6 +100,38 @@ async function EditFormQuestion({
         question={question}
         backUri={`/admin/forms/${id}/chapter/${chapterId}/edit`}
       />
+      {(question.type === "selection" ||
+        question.type === "multiple" ||
+        question.type === "multiple_explained") && (
+        <>
+          <h2 className="text-2xl font-bold text-center">
+            Opties
+          </h2>
+          {options.map((option, i) => {
+            return (
+              <EditFormQuestionOptionForm
+                key={"opt" + option.id + "-" + i}
+                option={option}
+                formId={id}
+                chapterId={chapterId}
+                questionId={questionId}
+              />
+            );
+          })}
+        </>
+      )}
+      <h2 className="text-2xl font-bold text-center">
+        Voorwaarde
+      </h2>
+      {condition && (
+        <EditFormQuestionConditionForm
+          condition={condition}
+          formId={id}
+          formQuestions={formQuestions}
+          chapterId={chapterId}
+          questionId={questionId}
+        />
+      )}
     </LayoutAdmin>
   );
 }
