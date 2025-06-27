@@ -95,6 +95,7 @@ const TextEditor = ({
 
   return (
     <>
+      <EditorContent editor={editor} />
       <div className="border w-full flex gap-1 rounded-md p-1 mb-1">
         <Button
           type="button"
@@ -117,8 +118,6 @@ const TextEditor = ({
           Link verwijderen
         </Button>
       </div>
-      <input type="hidden" name={name} value={value} />
-      <EditorContent editor={editor} />
     </>
   );
 };

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Breadcrumb as BreadcrumbComponent,
   BreadcrumbItem,
@@ -6,8 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-
-import React from "react";
+import Link from "next/link";
 
 export function Breadcrumb({
   items,
@@ -15,18 +15,23 @@ export function Breadcrumb({
   items: { title: string; href: string }[];
 }) {
   return (
-    <BreadcrumbComponent className="p-4">
+    <BreadcrumbComponent className="p-2">
       <BreadcrumbList>
         {items.map((item, index) => (
-          <>
-            <BreadcrumbItem key={index}>
+          <React.Fragment key={index}>
+            <BreadcrumbItem>
               {items.length === index + 1 ? (
-                <BreadcrumbPage>
+                <BreadcrumbPage className="py-2">
                   {item.title}
                 </BreadcrumbPage>
               ) : (
-                <BreadcrumbLink href={item.href}>
-                  {item.title}
+                <BreadcrumbLink asChild>
+                  <Link
+                    href={item.href}
+                    className="p-2 rounded-md hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  >
+                    {item.title}
+                  </Link>
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>
@@ -35,7 +40,7 @@ export function Breadcrumb({
                 key={index + "separator"}
               />
             )}
-          </>
+          </React.Fragment>
         ))}
       </BreadcrumbList>
     </BreadcrumbComponent>

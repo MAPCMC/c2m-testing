@@ -37,8 +37,12 @@ async function EditForm({
   }
 
   return (
-    <LayoutAdmin headerTitle="Vragenlijst bewerken">
+    <LayoutAdmin
+      headerTitle={`Vragenlijst bewerken: ${form.title}`}
+    >
       <EditFormForm form={form} apps={apps} />
+
+      <h2>Hoofdstukken</h2>
       <Table>
         <TableCaption>
           Een lijst van alle hoofdstukken

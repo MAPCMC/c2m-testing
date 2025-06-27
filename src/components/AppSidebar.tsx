@@ -15,7 +15,7 @@ import Link from "next/link";
 export function AppSidebar() {
   return (
     <Sidebar variant="sidebar">
-      <SidebarHeader />
+      <SidebarHeader>Menu</SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Admin</SidebarGroupLabel>

@@ -124,6 +124,7 @@ export default function EditFormForm({
         <Button
           type="button"
           onClick={() => redirect("/admin/forms")}
+          variant="ghost"
         >
           Annuleren
         </Button>

@@ -221,7 +221,7 @@ function Sidebar({
           <SheetHeader className="sr-only">
             <SheetTitle>Sidebar</SheetTitle>
             <SheetDescription>
-              Displays the mobile sidebar.
+              Toont het menu
             </SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">
@@ -248,7 +248,7 @@ function Sidebar({
         data-slot="sidebar-gap"
         className={cn(
           "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
-          "group-data-[collapsible=offcanvas]:w-0",
+          "group-data-[collapsible=offcanvas]:w-0 group-data-[collapsible=offcanvas]:*:hidden",
           "group-data-[side=right]:rotate-180",
           variant === "floating" || variant === "inset"
             ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
@@ -258,7 +258,7 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+          "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex group-data-[collapsible=offcanvas]:*:hidden",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -287,7 +287,7 @@ function SidebarTrigger({
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { open, toggleSidebar } = useSidebar();
 
   return (
     <Button
@@ -303,7 +303,9 @@ function SidebarTrigger({
       {...props}
     >
       <PanelLeftIcon />
-      <span className="sr-only">Open/sluit menu</span>
+      <span className="sr-only">
+        {open ? "Sluit menu" : "Open menu"}
+      </span>
     </Button>
   );
 }

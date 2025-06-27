@@ -15,6 +15,7 @@ interface InnerFieldProps {
   className?: string;
   as?: React.ElementType;
   wrapper?: React.ElementType;
+  wrapperClassName?: string;
   required?: boolean;
   onBlur?: () => void;
   onChange?: (
@@ -31,6 +32,7 @@ const InnerField = ({
   description,
   as,
   wrapper,
+  wrapperClassName,
   onBlur,
   onChange,
   required,
@@ -68,10 +70,12 @@ const InnerField = ({
   }
 
   return (
-    <WrapperComponent className="space-y-2">
+    <WrapperComponent
+      className={cn("space-y-2", wrapperClassName)}
+    >
       <FieldLabel
         htmlFor={name}
-        className="text-xl"
+        className={"text-xl"}
         error={errors && errors.length > 0}
       >
         {label}{" "}

@@ -86,6 +86,7 @@ const InnerTextEditorField = ({
         {...accessibleInputStateProps}
         {...props}
       />
+      <input type="hidden" name={name} value={value} />
       {description && (
         <FieldDescription name={name}>
           {description}

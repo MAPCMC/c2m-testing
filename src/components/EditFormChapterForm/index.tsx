@@ -20,10 +20,12 @@ import InnerCheckField from "../AnswerForm/components/InnerCheckField";
 
 type Props = {
   formChapter: typeof formChapters.$inferSelect;
+  backUri?: string;
 };
 
 export default function EditFormChapterForm({
   formChapter,
+  backUri,
 }: Props) {
   const [state, action] = useActionState(
     handleEditFormSubmit,
@@ -140,7 +142,10 @@ export default function EditFormChapterForm({
       <div className="flex justify-end space-x-2">
         <Button
           type="button"
-          onClick={() => redirect("/admin/forms")}
+          onClick={() =>
+            redirect(backUri ?? "/admin/forms")
+          }
+          variant="ghost"
         >
           Annuleren
         </Button>

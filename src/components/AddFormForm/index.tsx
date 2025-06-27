@@ -152,8 +152,8 @@ export default function AddFormForm({ apps }: Props) {
       <div className="flex justify-end space-x-2">
         <Button
           type="button"
-          variant="outline"
           onClick={() => redirect("/admin/forms")}
+          variant="ghost"
         >
           Annuleren
         </Button>
