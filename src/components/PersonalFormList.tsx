@@ -44,6 +44,9 @@ const PersonalFormList = async () => {
             <Button asChild>
               <Link href={`/${code.link}`}>
                 Start vragenlijst
+                <span className="sr-only">
+                  : {form.title}
+                </span>
               </Link>
             </Button>
           </article>

@@ -108,6 +108,9 @@ export default async function CodeProfilePage({
             </p>
             <FormSessionButton formId={currentCode.formId}>
               Start anonieme vragenlijst
+              <span className="sr-only">
+                : {form.title}
+              </span>
             </FormSessionButton>
           </>
         )}

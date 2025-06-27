@@ -59,6 +59,7 @@ const FormList = async () => {
 
           <FormSessionButton formId={form.id}>
             Start {!user && "anonieme"} vragenlijst
+            <span className="sr-only">: {form.title}</span>
           </FormSessionButton>
         </article>
       ))}
