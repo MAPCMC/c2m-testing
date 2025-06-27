@@ -16,6 +16,7 @@ import { redirect } from "next/navigation";
 
 import { forms, apps } from "@/db/schema";
 import InnerChoiceField from "../AnswerForm/components/InnerChoiceField";
+import InnerTextEditorField from "../AnswerForm/components/InnerTextEditorField";
 
 type Props = {
   form: typeof forms.$inferSelect;
@@ -87,15 +88,15 @@ export default function EditFormForm({
 
       <formForm.Field name="description">
         {(field) => (
-          <InnerField
+          <InnerTextEditorField
             label="Beschrijving"
             value={field.state.value}
             name={field.name}
             errors={field.state.meta.errors}
             onBlur={field.handleBlur}
-            onChange={(e) =>
-              field.handleChange(e.target.value)
-            }
+            onChange={(nextValue) => {
+              field.handleChange(nextValue);
+            }}
           />
         )}
       </formForm.Field>
