@@ -182,4 +182,8 @@
       @apply list-disc list-inside;
     }
   }
+
+  .tiptap.prose ul p:first-child {
+    @apply inline;
+  }
 }

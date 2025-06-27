@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-
+import { getPreviewText } from "@/lib/getPreviewText";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
 // import { eq } from "drizzle-orm";
@@ -64,7 +64,9 @@ async function Forms() {
                 <TableCell className="font-medium">
                   {form.title}
                 </TableCell>
-                <TableCell>{form.description}</TableCell>
+                <TableCell>
+                  {getPreviewText(form.description ?? "")}
+                </TableCell>
                 <TableCell>
                   {form.app ? (
                     <Badge
