@@ -4,6 +4,17 @@ import LayoutAdmin from "@/components/LayoutAdmin";
 import EditFormChapterForm from "@/components/EditFormChapterForm";
 import db from "@/db";
 import { redirect } from "next/navigation";
+import {
+  Table,
+  TableCell,
+  TableBody,
+  TableCaption,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 async function EditFormChapter({
   params,
@@ -15,6 +26,9 @@ async function EditFormChapter({
     {
       where: (formChapters, { eq }) =>
         eq(formChapters.id, Number(chapterId)),
+      with: {
+        questions: true,
+      },
     }
   );
 
@@ -24,19 +38,71 @@ async function EditFormChapter({
 
   return (
     <LayoutAdmin
-      headerTitle="Hoofdstuk bewerken"
+      headerTitle={`Hoofdstuk bewerken: ${formChapter.title}`}
       breadcrumb={[
         {
-          title: "Vragenlijst bewerken",
+          title: "Vragenlijst",
           href: `/admin/forms/${id}/edit`,
         },
         {
-          title: "Hoofdstuk bewerken",
+          title: "Hoofdstuk",
           href: `/admin/forms/${id}/chapter/${chapterId}/edit`,
         },
       ]}
     >
-      <EditFormChapterForm formChapter={formChapter} />
+      <EditFormChapterForm
+        formChapter={formChapter}
+        backUri={`/admin/forms/${id}/edit`}
+      />
+
+      <h2 className="text-2xl font-bold text-center">
+        Vragen
+      </h2>
+      <Table>
+        <TableCaption>
+          Een lijst van alle vragen in dit hoofdstuk
+        </TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="font-bold">
+              Vraag
+            </TableHead>
+            <TableHead className="font-bold">
+              Type
+            </TableHead>
+            <TableHead className="font-bold">
+              Acties
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {formChapter.questions
+            .sort((a, b) => a.order - b.order)
+            .map((question) => {
+              return (
+                <TableRow key={question.id}>
+                  <TableCell>{question.label}</TableCell>
+                  <TableCell>{question.type}</TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Link
+                          href={`/admin/forms/${id}/chapter/${chapterId}/question/${question.id}/edit`}
+                        >
+                          Bewerken
+                        </Link>
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+        </TableBody>
+      </Table>
     </LayoutAdmin>
   );
 }
