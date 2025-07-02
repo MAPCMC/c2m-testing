@@ -77,7 +77,8 @@ export default function AddCodeForm({
   return (
     <form
       action={action as never}
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         form.handleSubmit();
       }}
       className="space-y-2  p-4 border rounded-md bg-accent"

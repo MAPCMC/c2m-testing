@@ -55,9 +55,16 @@ async function EditFormChapter({
         backUri={`/admin/forms/${id}/edit`}
       />
 
-      <h2 className="text-2xl font-bold text-center">
-        Vragen
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-medium">Vragen</h2>
+        <Button asChild>
+          <Link
+            href={`/admin/forms/${id}/chapter/${chapterId}/question/new`}
+          >
+            Nieuw vraag
+          </Link>
+        </Button>
+      </div>
       <Table>
         <TableCaption>
           Een lijst van alle vragen in dit hoofdstuk

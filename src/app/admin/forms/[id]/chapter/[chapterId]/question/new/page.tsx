@@ -1,17 +1,20 @@
 import React from "react";
-import AddChapterForm from "@/components/AddChapterForm";
+import AddFormQuestionForm from "@/components/AddFormQuestionForm";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
 
 async function NewForm({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; chapterId: string }>;
 }) {
-  const { id } = await params;
+  const { id, chapterId } = await params;
   return (
-    <LayoutAdmin headerTitle="Nieuw hoofdstuk">
-      <AddChapterForm formId={id} />
+    <LayoutAdmin headerTitle="Nieuwe vraag">
+      <AddFormQuestionForm
+        formId={id}
+        chapterId={chapterId}
+      />
     </LayoutAdmin>
   );
 }

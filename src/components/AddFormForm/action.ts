@@ -13,7 +13,6 @@ import { redirect } from "next/navigation";
 const serverValidate = createServerValidate({
   ...formOpts,
   onServerValidate: ({ value }) => {
-    console.log("value for validate", value);
     if (!value.title || !value.appId) {
       return "Vul alle velden in";
     }
