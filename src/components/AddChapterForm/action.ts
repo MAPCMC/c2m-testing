@@ -6,15 +6,18 @@ import {
 } from "@tanstack/react-form/nextjs";
 
 import db from "@/db";
-import { forms } from "@/db/schema";
+import { formChapters } from "@/db/schema";
 import formOpts from "./formOptions";
 import { redirect } from "next/navigation";
 
 const serverValidate = createServerValidate({
-  ...formOpts,
+  ...formOpts(""),
   onServerValidate: ({ value }) => {
-    console.log("value for validate", value);
-    if (!value.title || !value.appId) {
+    if (!value.formId) {
+      return "Formulier bestaat niet";
+    }
+
+    if (!value.title || !value.order) {
       return "Vul alle velden in";
     }
   },
@@ -23,16 +26,20 @@ const serverValidate = createServerValidate({
 const handleSubmit = async (values: {
   title: string;
   description: string;
-  appId: string;
+  formId: string;
+  addAnswersToProfile: boolean;
+  order: number;
 }) => {
   try {
     const result = await db
-      .insert(forms)
+      .insert(formChapters)
       .values({
         ...values,
         title: values.title.trim(),
         description: values.description.trim(),
-        appId: values.appId || null,
+        addAnswersToProfile: values.addAnswersToProfile,
+        order: values.order,
+        formId: values.formId || null,
       })
       .returning();
 
@@ -58,9 +65,11 @@ export async function handleAddFormSubmit(
     if (
       result &&
       "id" in result &&
-      typeof result.id === "string"
+      typeof result.id === "number"
     ) {
-      redirect(`/admin/forms/${result.id}/edit`);
+      redirect(
+        `/admin/forms/${result.formId}/chapter/${result.id}/edit`
+      );
     }
   } catch (e) {
     if (e instanceof ServerValidateError) {
