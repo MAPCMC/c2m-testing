@@ -72,7 +72,7 @@ export default function EditFormQuestionConditionForm({
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4 border p-2 rounded-md"
+      className="space-y-4 border p-4 rounded-md"
     >
       {formErrors.map((error, i) => (
         <p
@@ -87,7 +87,8 @@ export default function EditFormQuestionConditionForm({
         name="key"
         validators={{
           onSubmit: ({ value }) => {
-            if (!value) return "Dit veld is verplicht";
+            if (!value || value === "_none")
+              return "Dit veld is verplicht";
             return null;
           },
         }}
@@ -114,7 +115,8 @@ export default function EditFormQuestionConditionForm({
           name="field"
           validators={{
             onSubmit: ({ value }) => {
-              if (!value) return "Dit veld is verplicht";
+              if (!value || value === "_none")
+                return "Dit veld is verplicht";
               return null;
             },
           }}
@@ -154,7 +156,8 @@ export default function EditFormQuestionConditionForm({
           name="operator"
           validators={{
             onSubmit: ({ value }) => {
-              if (!value) return "Dit veld is verplicht";
+              if (!value || value === "_none")
+                return "Dit veld is verplicht";
               return null;
             },
           }}
@@ -202,7 +205,8 @@ export default function EditFormQuestionConditionForm({
           name="requirement"
           validators={{
             onSubmit: ({ value }) => {
-              if (!value) return "Dit veld is verplicht";
+              if (!value || value === "_none")
+                return "Dit veld is verplicht";
               return null;
             },
           }}

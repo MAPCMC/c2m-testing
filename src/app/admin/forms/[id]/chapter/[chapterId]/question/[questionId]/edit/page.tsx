@@ -121,7 +121,7 @@ async function EditFormQuestion({
         </>
       )}
       <h2 className="text-2xl font-bold text-center">
-        Voorwaarde
+        Voorwaardelijke weergave
       </h2>
       {condition && (
         <EditFormQuestionConditionForm

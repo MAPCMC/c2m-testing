@@ -8,31 +8,19 @@ import {
 import db from "@/db";
 import { forms } from "@/db/schema";
 import formOpts from "./formOptions";
+import { redirect } from "next/navigation";
 
 const serverValidate = createServerValidate({
   ...formOpts,
   onServerValidate: ({ value }) => {
+    console.log("value for validate", value);
     if (!value.title || !value.appId) {
       return "Vul alle velden in";
     }
   },
 });
 
-export async function handleAddFormSubmit(
-  prev: unknown,
-  formData: FormData
-) {
-  try {
-    await serverValidate(formData);
-  } catch (e) {
-    if (e instanceof ServerValidateError) {
-      return e.formState;
-    }
-    throw e;
-  }
-}
-
-export const handleSubmit = async (values: {
+const handleSubmit = async (values: {
   title: string;
   description: string;
   appId: string;
@@ -49,16 +37,35 @@ export const handleSubmit = async (values: {
       .returning();
 
     if (result[0]?.id) {
-      return result;
+      return result[0];
     }
   } catch (e) {
     if (e instanceof ServerValidateError) {
       return e.formState;
     }
-
-    return {
-      error:
-        "Er is een fout opgetreden bij het aanmaken van het formulier",
-    };
+    throw e;
   }
 };
+
+export async function handleAddFormSubmit(
+  prev: unknown,
+  formData: FormData
+) {
+  try {
+    const validatedData = await serverValidate(formData);
+    const result = await handleSubmit(validatedData);
+
+    if (
+      result &&
+      "id" in result &&
+      typeof result.id === "string"
+    ) {
+      redirect(`/admin/forms`);
+    }
+  } catch (e) {
+    if (e instanceof ServerValidateError) {
+      return e.formState;
+    }
+    throw e;
+  }
+}

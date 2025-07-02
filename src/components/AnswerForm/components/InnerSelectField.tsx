@@ -83,7 +83,7 @@ const InnerSelectField = ({
         className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
         error={errors && errors.length > 0}
       >
-        {label}
+        {label}{" "}
         {required && (
           <span className="text-destructive">
             * <span className="sr-only">verplicht</span>
@@ -91,20 +91,25 @@ const InnerSelectField = ({
         )}
       </FieldLabel>
       <Select
-        id={name}
         aria-labelledby={`${name}-label`}
         name={name}
-        onBlur={onBlur}
-        onValueChange={onChange}
+        onValueChange={(value) => {
+          onChange?.(value);
+          onBlur?.();
+        }}
         value={value}
-        className={cn("w-full", className)}
-        {...accessibleInputStateProps}
         {...props}
       >
-        <SelectTrigger>
+        <SelectTrigger
+          className="border-border bg-input"
+          {...accessibleInputStateProps}
+        >
           <SelectValue placeholder="Maak een keuze" />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="_none" className="hidden">
+            Geen keuze
+          </SelectItem>
           {options?.map((option) => (
             <SelectItem
               key={option.id}
