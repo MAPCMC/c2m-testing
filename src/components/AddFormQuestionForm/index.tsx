@@ -65,7 +65,16 @@ export default function AddFormQuestionForm({
           {error}
         </p>
       ))}
-      <formForm.Field name="type">
+      <formForm.Field
+        name="type"
+        validators={{
+          onSubmit: ({ value }) => {
+            if (!value || value === "_none")
+              return "Dit veld is verplicht";
+            return null;
+          },
+        }}
+      >
         {(field) => (
           <InnerSelectField
             required

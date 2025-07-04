@@ -95,9 +95,11 @@ export default function AddFormQuestionConditionForm({
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4 border p-4 rounded-md"
+      className="space-y-4"
     >
-      <h3>Vraagvoorwaarde toevoegen</h3>
+      <h2 className="text-2xl font-medium mb-6">
+        Voorwaarde voor weergave toevoegen
+      </h2>
       {formErrors.map((error, i) => (
         <p
           key={i}
@@ -135,7 +137,7 @@ export default function AddFormQuestionConditionForm({
         )}
       </formForm.Field>
       {selectedQuestion && (
-        <div className="w-full grid grid-cols-3 gap-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
           <formForm.Field
             name="field"
             validators={{

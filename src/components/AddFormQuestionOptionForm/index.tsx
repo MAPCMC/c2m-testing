@@ -48,9 +48,11 @@ export default function AddFormQuestionOptionForm({
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4 border p-2 rounded-md bg-accent"
+      className="space-y-4"
     >
-      <h3 className="font-bold">Nieuwe optie</h3>
+      <h3 className="text-xl font-medium mb-6">
+        Nieuwe optie
+      </h3>
       {formErrors.map((error, i) => (
         <p
           key={i}
@@ -60,7 +62,7 @@ export default function AddFormQuestionOptionForm({
           {error}
         </p>
       ))}
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <formForm.Field
           name="text"
           validators={{
@@ -73,7 +75,7 @@ export default function AddFormQuestionOptionForm({
           {(field) => (
             <InnerField
               required
-              label="Optie"
+              label="Label"
               wrapperClassName="w-full"
               value={field.state.value}
               name={field.name}

@@ -73,13 +73,16 @@ const InnerCheckField = ({
           onBlur={onBlur}
           onCheckedChange={onChange}
           checked={value}
-          className={cn("peer border-border", className)}
+          className={cn(
+            "peer border-border ml-4",
+            className
+          )}
           {...accessibleInputStateProps}
           {...props}
         />
         <FieldLabel
           htmlFor={name}
-          className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
+          className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl border rounded-md p-4 pl-12 -ml-10 relative w-full"
           error={errors && errors.length > 0}
         >
           {label}

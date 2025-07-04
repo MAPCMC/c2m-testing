@@ -46,13 +46,18 @@ export default function EditFormQuestionOptionForm({
     (formState) => formState.errors
   );
 
+  const isDirty = useStore(
+    formForm.store,
+    (formState) => formState.isDirty
+  );
+
   return (
     <form
       action={action as never}
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4 border p-2 rounded-md"
+      className="space-y-4"
     >
       {formErrors.map((error, i) => (
         <p
@@ -63,7 +68,7 @@ export default function EditFormQuestionOptionForm({
           {error}
         </p>
       ))}
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <formForm.Field
           name="text"
           validators={{
@@ -76,7 +81,8 @@ export default function EditFormQuestionOptionForm({
           {(field) => (
             <InnerField
               required
-              label="Optie"
+              label="Label"
+              labelClassName="text-lg"
               wrapperClassName="w-full"
               value={field.state.value}
               name={field.name}
@@ -101,8 +107,8 @@ export default function EditFormQuestionOptionForm({
             <InnerField
               required
               label="Key"
+              labelClassName="text-lg"
               wrapperClassName="w-full"
-              description="een unieke identificatie voor deze optie"
               value={field.state.value}
               name={field.name}
               errors={field.state.meta.errors}
@@ -126,16 +132,18 @@ export default function EditFormQuestionOptionForm({
         name="questionId"
         value={questionId}
       />
-      <div className="justify-end space-x-2 flex">
-        <Button
-          type="button"
-          onClick={() => formForm.reset()}
-          variant="ghost"
-        >
-          Annuleren
-        </Button>
-        <Button type="submit">Opslaan</Button>
-      </div>
+      {isDirty && (
+        <div className="justify-end space-x-2 flex">
+          <Button
+            type="button"
+            onClick={() => formForm.reset()}
+            variant="ghost"
+          >
+            Annuleren
+          </Button>
+          <Button type="submit">Opslaan</Button>
+        </div>
+      )}
     </form>
   );
 }

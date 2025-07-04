@@ -38,7 +38,7 @@ async function EditFormChapter({
 
   return (
     <LayoutAdmin
-      headerTitle={`Hoofdstuk bewerken: ${formChapter.title}`}
+      headerTitle={`Bewerken: ${formChapter.title}`}
       breadcrumb={[
         {
           title: "Vragenlijst",

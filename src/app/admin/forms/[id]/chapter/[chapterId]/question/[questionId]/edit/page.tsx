@@ -89,7 +89,7 @@ async function EditFormQuestion({
 
   return (
     <LayoutAdmin
-      headerTitle={`Vraag bewerken: ${question.label}`}
+      headerTitle={`Bewerken: ${question.label}`}
       breadcrumb={[
         {
           title: "Vragenlijst",
@@ -113,9 +113,7 @@ async function EditFormQuestion({
         question.type === "multiple" ||
         question.type === "multiple_explained") && (
         <>
-          <h2 className="text-2xl font-bold text-center">
-            Opties
-          </h2>
+          <h2 className="text-2xl font-medium">Opties</h2>
           {options.map((option, i) => {
             return (
               <EditFormQuestionOptionForm
@@ -134,9 +132,6 @@ async function EditFormQuestion({
           />
         </>
       )}
-      <h2 className="text-2xl font-bold text-center">
-        Voorwaardelijke weergave
-      </h2>
       {condition ? (
         <EditFormQuestionConditionForm
           condition={condition}

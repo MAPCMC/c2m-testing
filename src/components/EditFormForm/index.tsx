@@ -45,6 +45,11 @@ export default function EditFormForm({
     (formState) => formState.errors
   );
 
+  const isDirty = useStore(
+    formForm.store,
+    (formState) => formState.isDirty
+  );
+
   return (
     <form
       action={action as never}
@@ -53,6 +58,9 @@ export default function EditFormForm({
       }}
       className="space-y-4"
     >
+      <h2 className="text-2xl font-medium mb-6">
+        Vragenlijst bewerken
+      </h2>
       {formErrors.map((error, i) => (
         <p
           key={i}
@@ -120,16 +128,18 @@ export default function EditFormForm({
       </formForm.Field>
       <input type="hidden" name="id" value={form.id} />
 
-      <div className="flex justify-end space-x-2">
-        <Button
-          type="button"
-          onClick={() => redirect("/admin/forms")}
-          variant="ghost"
-        >
-          Annuleren
-        </Button>
-        <Button type="submit">Opslaan</Button>
-      </div>
+      {isDirty && (
+        <div className="flex justify-end space-x-2">
+          <Button
+            type="button"
+            onClick={() => redirect("/admin/forms")}
+            variant="ghost"
+          >
+            Annuleren
+          </Button>
+          <Button type="submit">Opslaan</Button>
+        </div>
+      )}
     </form>
   );
 }

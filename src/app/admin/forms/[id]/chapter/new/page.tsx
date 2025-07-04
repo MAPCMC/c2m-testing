@@ -10,7 +10,19 @@ async function NewForm({
 }) {
   const { id } = await params;
   return (
-    <LayoutAdmin headerTitle="Nieuw hoofdstuk">
+    <LayoutAdmin
+      headerTitle="Nieuw hoofdstuk"
+      breadcrumb={[
+        {
+          title: "Vragenlijst",
+          href: `/admin/forms/${id}/edit`,
+        },
+        {
+          title: "Nieuw hoofdstuk",
+          href: `/admin/forms/${id}/chapter/new`,
+        },
+      ]}
+    >
       <AddChapterForm formId={id} />
     </LayoutAdmin>
   );

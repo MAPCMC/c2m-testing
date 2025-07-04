@@ -72,9 +72,11 @@ export default function EditFormQuestionConditionForm({
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4 border p-4 rounded-md"
+      className="space-y-4"
     >
-      <h3>Vraagvoorwaarde bewerken</h3>
+      <h2 className="text-2xl font-medium mb-6">
+        Voorwaarde voor weergave bewerken
+      </h2>
       {formErrors.map((error, i) => (
         <p
           key={i}
@@ -115,11 +117,12 @@ export default function EditFormQuestionConditionForm({
           )}
         </formForm.Field>
       )}
-      <div className="w-full grid grid-cols-3 gap-4">
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
         <formForm.Field
           name="field"
           validators={{
             onSubmit: ({ value }) => {
+              // @ts-expect-error custom default for select field
               if (!value || value === "_none")
                 return "Dit veld is verplicht";
               return null;
@@ -161,6 +164,7 @@ export default function EditFormQuestionConditionForm({
           name="operator"
           validators={{
             onSubmit: ({ value }) => {
+              // @ts-expect-error custom default for select field
               if (!value || value === "_none")
                 return "Dit veld is verplicht";
               return null;

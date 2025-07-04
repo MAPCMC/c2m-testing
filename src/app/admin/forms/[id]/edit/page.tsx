@@ -38,7 +38,17 @@ async function EditForm({
 
   return (
     <LayoutAdmin
-      headerTitle={`Vragenlijst bewerken: ${form.title}`}
+      headerTitle={`Bewerken: ${form.title}`}
+      breadcrumb={[
+        {
+          title: "Vragenlijsten",
+          href: "/admin/forms",
+        },
+        {
+          title: "Vragenlijst",
+          href: `/admin/forms/${form.id}/edit`,
+        },
+      ]}
     >
       <EditFormForm form={form} apps={apps} />
 

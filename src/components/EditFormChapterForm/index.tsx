@@ -53,6 +53,9 @@ export default function EditFormChapterForm({
       }}
       className="space-y-4"
     >
+      <h2 className="text-2xl font-medium mb-6">
+        Hoofdstuk bewerken
+      </h2>
       {formErrors.map((error, i) => (
         <p
           key={i}

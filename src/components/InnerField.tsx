@@ -16,6 +16,7 @@ interface InnerFieldProps {
   as?: React.ElementType;
   wrapper?: React.ElementType;
   wrapperClassName?: string;
+  labelClassName?: string;
   required?: boolean;
   onBlur?: () => void;
   onChange?: (
@@ -33,6 +34,7 @@ const InnerField = ({
   as,
   wrapper,
   wrapperClassName,
+  labelClassName,
   onBlur,
   onChange,
   required,
@@ -75,7 +77,7 @@ const InnerField = ({
     >
       <FieldLabel
         htmlFor={name}
-        className={"text-xl"}
+        className={cn("text-xl", labelClassName)}
         error={errors && errors.length > 0}
       >
         {label}{" "}

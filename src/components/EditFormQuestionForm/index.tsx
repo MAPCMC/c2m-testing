@@ -44,6 +44,11 @@ export default function EditFormQuestionForm({
     (formState) => formState.errors
   );
 
+  const isDirty = useStore(
+    formForm.store,
+    (formState) => formState.isDirty
+  );
+
   return (
     <form
       action={action as never}
@@ -52,6 +57,9 @@ export default function EditFormQuestionForm({
       }}
       className="space-y-4"
     >
+      <h2 className="text-2xl font-medium mb-6">
+        Vraag bewerken
+      </h2>
       {formErrors.map((error, i) => (
         <p
           key={i}
@@ -179,18 +187,20 @@ export default function EditFormQuestionForm({
         name="formChapterId"
         value={question.formChapterId}
       />
-      <div className="flex justify-end space-x-2">
-        <Button
-          type="button"
-          onClick={() =>
-            redirect(backUri ?? "/admin/forms")
-          }
-          variant="ghost"
-        >
-          Annuleren
-        </Button>
-        <Button type="submit">Opslaan</Button>
-      </div>
+      {isDirty && (
+        <div className="flex justify-end space-x-2">
+          <Button
+            type="button"
+            onClick={() =>
+              redirect(backUri ?? "/admin/forms")
+            }
+            variant="ghost"
+          >
+            Annuleren
+          </Button>
+          <Button type="submit">Opslaan</Button>
+        </div>
+      )}
     </form>
   );
 }
