@@ -1,36 +1,34 @@
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import FieldDescription from "./FieldDescription";
-import FieldLabel from "./FieldLabel";
-import { Checkbox } from "@/components/ui/checkbox";
+import FieldDescription from "@/components/FieldDescription";
+import FieldLabel from "@/components/FieldLabel";
+import React from "react";
+import TextEditor from "@/components/TextEditor";
 
 interface InnerFieldProps {
   name: string;
-  value: boolean;
+  value: string;
   errors?: Array<
     string | { message: string } | null | undefined
   >;
   label: string;
   description?: string | null;
-  as?: React.ElementType;
-  wrapper?: React.ElementType;
-  onBlur?: () => void;
-  onChange?: ((value: boolean) => void) | undefined;
-  required?: boolean;
   className?: string;
+  wrapper?: React.ElementType;
+  required?: boolean;
+  onBlur?: () => void;
+  onChange: (value: string) => void;
   [key: string]: unknown;
 }
 
-const InnerCheckField = ({
+const InnerTextEditorField = ({
   name,
   value,
   errors,
   label,
   description,
   wrapper,
-  required,
   onBlur,
   onChange,
+  required,
   className,
   ...props
 }: InnerFieldProps) => {
@@ -65,32 +63,30 @@ const InnerCheckField = ({
 
   return (
     <WrapperComponent className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Checkbox
-          id={name}
-          aria-labelledby={`${name}-label`}
-          name={name}
-          onBlur={onBlur}
-          onCheckedChange={onChange}
-          checked={value}
-          className={cn("peer border-border", className)}
-          {...accessibleInputStateProps}
-          {...props}
-        />
-        <FieldLabel
-          htmlFor={name}
-          className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
-          error={errors && errors.length > 0}
-        >
-          {label}
-          {required && (
-            <span className="text-destructive">
-              * <span className="sr-only">verplicht</span>
-            </span>
-          )}
-        </FieldLabel>
-      </div>
-
+      <FieldLabel
+        htmlFor={name}
+        className="text-xl"
+        error={errors && errors.length > 0}
+      >
+        {label}{" "}
+        {required && (
+          <span className="text-destructive">
+            * <span className="sr-only">verplicht</span>
+          </span>
+        )}
+      </FieldLabel>
+      <TextEditor
+        id={name}
+        name={name}
+        value={value}
+        aria-invalid={errors && errors.length > 0}
+        onBlur={onBlur}
+        onChange={onChange}
+        className={className}
+        {...accessibleInputStateProps}
+        {...props}
+      />
+      <input type="hidden" name={name} value={value} />
       {description && (
         <FieldDescription name={name}>
           {description}
@@ -120,4 +116,4 @@ const InnerCheckField = ({
   );
 };
 
-export default InnerCheckField;
+export default InnerTextEditorField;

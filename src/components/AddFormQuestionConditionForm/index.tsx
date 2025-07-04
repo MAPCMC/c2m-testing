@@ -12,7 +12,7 @@ import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
 import { handleAddFormSubmit } from "./action";
 import { options, questions } from "@/db/schema";
-import InnerSelectField from "../AnswerForm/components/InnerSelectField";
+import InnerSelectField from "../InnerSelectField";
 
 type Props = {
   formQuestions: (typeof questions.$inferSelect & {

@@ -15,16 +15,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 import answers from "@/db/schema/answers";
 import dbOptions from "@/db/schema/options";
 import answersToOptions from "@/db/schema/answersToOptions";
 import { QuestionFull } from "@/db/types";
 import formOpts from "./formOptions";
-import { Textarea } from "../ui/textarea";
-import InnerField from "./components/InnerField";
-import InnerChoiceField from "./components/InnerChoiceField";
-import InnerScoreField from "./components/InnerScoreField";
+import InnerField from "@/components/InnerField";
+import InnerChoiceField from "@/components/InnerChoiceField";
+import InnerScoreField from "@/components/InnerScoreField";
 
 export default function AnswerForm({
   question,

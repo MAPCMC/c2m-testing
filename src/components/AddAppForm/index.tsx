@@ -12,7 +12,7 @@ import {
 import handleAddAppSubmit from "./action";
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
-import InnerField from "@/components/AnswerForm/components/InnerField";
+import InnerField from "@/components/InnerField";
 
 export default function AddAppForm() {
   const [state, action] = useActionState(

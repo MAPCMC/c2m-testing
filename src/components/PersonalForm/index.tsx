@@ -12,7 +12,7 @@ import {
 import handlePersonalFormSubmit from "./action";
 import formOpts from "./formOptions";
 import { Button } from "../ui/button";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 
 export default function PersonalForm() {
   const [state, action] = useActionState(

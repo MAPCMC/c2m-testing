@@ -11,7 +11,7 @@ import {
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
 import { handleEditFormSubmit } from "./action";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 
 import { questions } from "@/db/schema";
 import { Textarea } from "../ui/textarea";

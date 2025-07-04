@@ -3,10 +3,9 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 
-import FieldDescription from "./FieldDescription";
-import FieldLabel from "./FieldLabel";
+import FieldDescription from "@/components/FieldDescription";
+import FieldLabel from "@/components/FieldLabel";
 
 interface InnerFieldProps {
   name: string;
@@ -16,24 +15,25 @@ interface InnerFieldProps {
   >;
   label: string;
   description?: string | null;
-  lowText: string;
-  highText: string;
   as?: React.ElementType;
   wrapper?: React.ElementType;
+  options: { id: number | string; text: string }[];
   onBlur?: () => void;
   onChange?: ((value: string) => void) | undefined;
+  required?: boolean;
   [key: string]: unknown;
 }
 
-const InnerScoreField = ({
+const InnerChoiceField = ({
   name,
   value,
   errors,
   label,
   description,
-  lowText,
-  highText,
   wrapper,
+  options,
+  required,
+  onBlur,
   onChange,
   ...props
 }: InnerFieldProps) => {
@@ -53,7 +53,6 @@ const InnerScoreField = ({
 
   if (errors && errors.length > 0) {
     accessibleInputStateProps["aria-invalid"] = "true";
-
     accessibleInputStateProps["aria-describedby"] = errors
       .filter(
         (error) => error !== undefined && error !== null
@@ -72,68 +71,44 @@ const InnerScoreField = ({
       <FieldLabel
         as="legend"
         id={`${name}-label`}
-        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-2xl"
+        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
         error={errors && errors.length > 0}
       >
         {label}
+        {required && (
+          <span className="text-destructive">
+            * <span className="sr-only">verplicht</span>
+          </span>
+        )}
       </FieldLabel>
       <RadioGroup
         id={name}
+        aria-labelledby={`${name}-label`}
         name={name}
+        onBlur={onBlur}
         onValueChange={onChange}
         value={value}
-        className="flex flex-col md:grid md:grid-cols-5 gap-2"
         {...accessibleInputStateProps}
         {...props}
       >
-        {["1", "2", "3", "4", "5", "nvt"].map(
-          (scoreValue) => (
-            <div
-              key={scoreValue}
-              className={cn(
-                "flex md:flex-col items-center gap-3 relative",
-                "border border-input rounded-md p-4",
-                scoreValue === "nvt" ? " col-span-5" : ""
-              )}
+        {options?.map((option) => (
+          <div
+            key={option.id}
+            className="flex items-center space-x-2 border rounded-md p-4 relative bg-input"
+          >
+            <RadioGroupItem
+              value={option.id.toString()}
+              id={option.id.toString()}
+              className="border-border"
+            />
+            <Label
+              htmlFor={option.id.toString()}
+              className="after:content-[''] after:absolute after:inset-0"
             >
-              <RadioGroupItem
-                value={scoreValue}
-                id={scoreValue}
-              />
-              <Label
-                htmlFor={scoreValue}
-                className="after:w-full after:h-full after:absolute after:content-[''] after:inset-0"
-                aria-describedby={
-                  scoreValue === "1"
-                    ? `${name}-low`
-                    : scoreValue === "5"
-                    ? `${name}-high`
-                    : undefined
-                }
-              >
-                {scoreValue === "nvt"
-                  ? "geen mening"
-                  : scoreValue}
-              </Label>
-              {scoreValue === "1" && (
-                <p
-                  className="text-sm text-center"
-                  id={`${name}-low`}
-                >
-                  {lowText}
-                </p>
-              )}
-              {scoreValue === "5" && (
-                <p
-                  className="text-sm text-center"
-                  id={`${name}-high`}
-                >
-                  {highText}
-                </p>
-              )}
-            </div>
-          )
-        )}
+              {option.text}
+            </Label>
+          </div>
+        ))}
       </RadioGroup>
       {description && (
         <FieldDescription name={name}>
@@ -164,4 +139,4 @@ const InnerScoreField = ({
   );
 };
 
-export default InnerScoreField;
+export default InnerChoiceField;

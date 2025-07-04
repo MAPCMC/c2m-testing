@@ -11,7 +11,7 @@ import {
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
 import { handleAddFormSubmit } from "./action";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 
 type Props = {
   formId: string;

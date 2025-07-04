@@ -1,11 +1,14 @@
 import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-import FieldDescription from "./FieldDescription";
-import FieldLabel from "./FieldLabel";
+import FieldDescription from "@/components/FieldDescription";
+import FieldLabel from "@/components/FieldLabel";
+import { cn } from "@/lib/utils";
 
 interface InnerFieldProps {
   name: string;
@@ -17,6 +20,8 @@ interface InnerFieldProps {
   description?: string | null;
   as?: React.ElementType;
   wrapper?: React.ElementType;
+  wrapperClassName?: string;
+  className?: string;
   options: { id: number | string; text: string }[];
   onBlur?: () => void;
   onChange?: ((value: string) => void) | undefined;
@@ -24,13 +29,15 @@ interface InnerFieldProps {
   [key: string]: unknown;
 }
 
-const InnerChoiceField = ({
+const InnerSelectField = ({
   name,
   value,
   errors,
   label,
   description,
   wrapper,
+  wrapperClassName,
+  className,
   options,
   required,
   onBlur,
@@ -67,49 +74,52 @@ const InnerChoiceField = ({
   }
 
   return (
-    <WrapperComponent className="space-y-2">
+    <WrapperComponent
+      className={cn("space-y-2", wrapperClassName)}
+    >
       <FieldLabel
         as="legend"
         id={`${name}-label`}
         className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
         error={errors && errors.length > 0}
       >
-        {label}
+        {label}{" "}
         {required && (
           <span className="text-destructive">
             * <span className="sr-only">verplicht</span>
           </span>
         )}
       </FieldLabel>
-      <RadioGroup
-        id={name}
+      <Select
         aria-labelledby={`${name}-label`}
         name={name}
-        onBlur={onBlur}
-        onValueChange={onChange}
+        onValueChange={(value) => {
+          onChange?.(value);
+          onBlur?.();
+        }}
         value={value}
-        {...accessibleInputStateProps}
         {...props}
       >
-        {options?.map((option) => (
-          <div
-            key={option.id}
-            className="flex items-center space-x-2 border rounded-md p-4 relative bg-input"
-          >
-            <RadioGroupItem
+        <SelectTrigger
+          className="border-border bg-input"
+          {...accessibleInputStateProps}
+        >
+          <SelectValue placeholder="Maak een keuze" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="_none" className="hidden">
+            Geen keuze
+          </SelectItem>
+          {options?.map((option) => (
+            <SelectItem
+              key={option.id}
               value={option.id.toString()}
-              id={option.id.toString()}
-              className="border-border"
-            />
-            <Label
-              htmlFor={option.id.toString()}
-              className="after:content-[''] after:absolute after:inset-0"
             >
               {option.text}
-            </Label>
-          </div>
-        ))}
-      </RadioGroup>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       {description && (
         <FieldDescription name={name}>
           {description}
@@ -139,4 +149,4 @@ const InnerChoiceField = ({
   );
 };
 
-export default InnerChoiceField;
+export default InnerSelectField;

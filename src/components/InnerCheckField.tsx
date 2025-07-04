@@ -1,45 +1,39 @@
-import { Input } from "@/components/ui/input";
-import FieldDescription from "./FieldDescription";
-import FieldLabel from "./FieldLabel";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import React from "react";
+import FieldDescription from "@/components/FieldDescription";
+import FieldLabel from "@/components/FieldLabel";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface InnerFieldProps {
   name: string;
-  value: string;
+  value: boolean;
   errors?: Array<
     string | { message: string } | null | undefined
   >;
   label: string;
   description?: string | null;
-  className?: string;
   as?: React.ElementType;
   wrapper?: React.ElementType;
-  wrapperClassName?: string;
-  required?: boolean;
   onBlur?: () => void;
-  onChange?: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  onChange?: ((value: boolean) => void) | undefined;
+  required?: boolean;
+  className?: string;
   [key: string]: unknown;
 }
 
-const InnerField = ({
+const InnerCheckField = ({
   name,
   value,
   errors,
   label,
   description,
-  as,
   wrapper,
-  wrapperClassName,
+  required,
   onBlur,
   onChange,
-  required,
   className,
   ...props
 }: InnerFieldProps) => {
-  const InputComponent = as ?? Input;
   const WrapperComponent = wrapper ?? "fieldset";
 
   if (value === undefined) return null;
@@ -70,32 +64,33 @@ const InnerField = ({
   }
 
   return (
-    <WrapperComponent
-      className={cn("space-y-2", wrapperClassName)}
-    >
-      <FieldLabel
-        htmlFor={name}
-        className={"text-xl"}
-        error={errors && errors.length > 0}
-      >
-        {label}{" "}
-        {required && (
-          <span className="text-destructive">
-            * <span className="sr-only">verplicht</span>
-          </span>
-        )}
-      </FieldLabel>
-      <InputComponent
-        id={name}
-        name={name}
-        value={value}
-        aria-invalid={errors && errors.length > 0}
-        onBlur={onBlur}
-        onChange={onChange}
-        className={cn("bg-input border-border", className)}
-        {...accessibleInputStateProps}
-        {...props}
-      />
+    <WrapperComponent className="space-y-2">
+      <div className="flex items-center gap-2">
+        <Checkbox
+          id={name}
+          aria-labelledby={`${name}-label`}
+          name={name}
+          onBlur={onBlur}
+          onCheckedChange={onChange}
+          checked={value}
+          className={cn("peer border-border", className)}
+          {...accessibleInputStateProps}
+          {...props}
+        />
+        <FieldLabel
+          htmlFor={name}
+          className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
+          error={errors && errors.length > 0}
+        >
+          {label}
+          {required && (
+            <span className="text-destructive">
+              * <span className="sr-only">verplicht</span>
+            </span>
+          )}
+        </FieldLabel>
+      </div>
+
       {description && (
         <FieldDescription name={name}>
           {description}
@@ -125,4 +120,4 @@ const InnerField = ({
   );
 };
 
-export default InnerField;
+export default InnerCheckField;

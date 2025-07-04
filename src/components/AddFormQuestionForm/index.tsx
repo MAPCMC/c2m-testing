@@ -11,8 +11,8 @@ import {
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
 import { handleAddFormQuestionSubmit } from "./action";
-import InnerField from "../AnswerForm/components/InnerField";
-import InnerSelectField from "../AnswerForm/components/InnerSelectField";
+import InnerField from "../InnerField";
+import InnerSelectField from "../InnerSelectField";
 import { Textarea } from "../ui/textarea";
 import { redirect } from "next/navigation";
 

@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 import handleEditAppSubmit from "./action";
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
-import InnerField from "@/components/AnswerForm/components/InnerField";
+import InnerField from "@/components/InnerField";
 import { apps } from "@/db/schema";
 
 export default function EditAppForm({

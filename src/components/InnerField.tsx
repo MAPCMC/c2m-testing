@@ -1,14 +1,8 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import FieldDescription from "./FieldDescription";
-import FieldLabel from "./FieldLabel";
+import { Input } from "@/components/ui/input";
+import FieldDescription from "@/components/FieldDescription";
+import FieldLabel from "@/components/FieldLabel";
 import { cn } from "@/lib/utils";
+import React from "react";
 
 interface InnerFieldProps {
   name: string;
@@ -18,32 +12,34 @@ interface InnerFieldProps {
   >;
   label: string;
   description?: string | null;
+  className?: string;
   as?: React.ElementType;
   wrapper?: React.ElementType;
   wrapperClassName?: string;
-  className?: string;
-  options: { id: number | string; text: string }[];
-  onBlur?: () => void;
-  onChange?: ((value: string) => void) | undefined;
   required?: boolean;
+  onBlur?: () => void;
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   [key: string]: unknown;
 }
 
-const InnerSelectField = ({
+const InnerField = ({
   name,
   value,
   errors,
   label,
   description,
+  as,
   wrapper,
   wrapperClassName,
-  className,
-  options,
-  required,
   onBlur,
   onChange,
+  required,
+  className,
   ...props
 }: InnerFieldProps) => {
+  const InputComponent = as ?? Input;
   const WrapperComponent = wrapper ?? "fieldset";
 
   if (value === undefined) return null;
@@ -78,9 +74,8 @@ const InnerSelectField = ({
       className={cn("space-y-2", wrapperClassName)}
     >
       <FieldLabel
-        as="legend"
-        id={`${name}-label`}
-        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
+        htmlFor={name}
+        className={"text-xl"}
         error={errors && errors.length > 0}
       >
         {label}{" "}
@@ -90,36 +85,17 @@ const InnerSelectField = ({
           </span>
         )}
       </FieldLabel>
-      <Select
-        aria-labelledby={`${name}-label`}
+      <InputComponent
+        id={name}
         name={name}
-        onValueChange={(value) => {
-          onChange?.(value);
-          onBlur?.();
-        }}
         value={value}
+        aria-invalid={errors && errors.length > 0}
+        onBlur={onBlur}
+        onChange={onChange}
+        className={cn("bg-input border-border", className)}
+        {...accessibleInputStateProps}
         {...props}
-      >
-        <SelectTrigger
-          className="border-border bg-input"
-          {...accessibleInputStateProps}
-        >
-          <SelectValue placeholder="Maak een keuze" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="_none" className="hidden">
-            Geen keuze
-          </SelectItem>
-          {options?.map((option) => (
-            <SelectItem
-              key={option.id}
-              value={option.id.toString()}
-            >
-              {option.text}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      />
       {description && (
         <FieldDescription name={name}>
           {description}
@@ -149,4 +125,4 @@ const InnerSelectField = ({
   );
 };
 
-export default InnerSelectField;
+export default InnerField;

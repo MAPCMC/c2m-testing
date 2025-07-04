@@ -11,10 +11,10 @@ import {
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
 import { handleAddFormSubmit } from "./action";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 import { redirect } from "next/navigation";
-import InnerTextEditorField from "../AnswerForm/components/InnerTextEditorField";
-import InnerCheckField from "../AnswerForm/components/InnerCheckField";
+import InnerTextEditorField from "../InnerTextEditorField";
+import InnerCheckField from "../InnerCheckField";
 
 type Props = {
   formId: string;

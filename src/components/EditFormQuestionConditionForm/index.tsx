@@ -16,7 +16,7 @@ import {
   questionConditions,
   questions,
 } from "@/db/schema";
-import InnerSelectField from "../AnswerForm/components/InnerSelectField";
+import InnerSelectField from "../InnerSelectField";
 
 type Props = {
   condition: typeof questionConditions.$inferSelect;

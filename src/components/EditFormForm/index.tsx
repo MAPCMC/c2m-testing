@@ -11,12 +11,12 @@ import {
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
 import { handleEditFormSubmit } from "./action";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 import { redirect } from "next/navigation";
 
 import { forms, apps } from "@/db/schema";
-import InnerChoiceField from "../AnswerForm/components/InnerChoiceField";
-import InnerTextEditorField from "../AnswerForm/components/InnerTextEditorField";
+import InnerTextEditorField from "../InnerTextEditorField";
+import InnerSelectField from "../InnerSelectField";
 
 type Props = {
   form: typeof forms.$inferSelect;
@@ -103,7 +103,7 @@ export default function EditFormForm({
 
       <formForm.Field name="appId">
         {(field) => (
-          <InnerChoiceField
+          <InnerSelectField
             label="Applicatie"
             description="Selecteer een applicatie"
             value={field.state.value}

@@ -7,7 +7,7 @@ import { z } from "zod";
 
 import formOpts from "./formOptions";
 import { Button } from "../ui/button";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 import checkUserResult from "./action";
 
 import { signIn } from "next-auth/react";
