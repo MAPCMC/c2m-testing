@@ -186,4 +186,8 @@
   .tiptap.prose ul p:first-child {
     @apply inline;
   }
+
+  .tiptap.prose a {
+    @apply text-blue-600;
+  }
 }

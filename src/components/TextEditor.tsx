@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const TextEditor = ({
@@ -24,6 +24,8 @@ const TextEditor = ({
   className?: string;
   [key: string]: unknown;
 }) => {
+  const [canSetLink, setCanSetLink] = useState(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -33,7 +35,7 @@ const TextEditor = ({
     editorProps: {
       attributes: {
         class: cn(
-          "prose text-sm border rounded-md px-3 py-2 bg-input",
+          "prose text-sm border rounded-md px-3 py-2 bg-input prose-a:underline prose-a:text-blue-600",
           className
         ),
         id: id,
@@ -46,6 +48,23 @@ const TextEditor = ({
       onChange(editor.getHTML());
     },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const updateCanSetLink = () => {
+      const { empty, from, to } = editor.state.selection;
+      setCanSetLink(!empty && from !== to);
+    };
+
+    updateCanSetLink();
+
+    editor.on("selectionUpdate", updateCanSetLink);
+
+    return () => {
+      editor.off("selectionUpdate", updateCanSetLink);
+    };
+  }, [editor]);
 
   const setLink = useCallback(() => {
     if (!editor) return;
@@ -96,28 +115,31 @@ const TextEditor = ({
   return (
     <>
       <EditorContent editor={editor} />
-      <div className="border w-full flex gap-1 rounded-md p-1 mb-1">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={setLink}
-          className={
-            editor.isActive("link") ? "is-active" : ""
-          }
-        >
-          Link toevoegen
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() =>
-            editor.chain().focus().unsetLink().run()
-          }
-          disabled={!editor.isActive("link")}
-        >
-          Link verwijderen
-        </Button>
-      </div>
+      {(canSetLink || editor.isActive("link")) && (
+        <div className="w-full flex gap-1">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={setLink}
+            disabled={!canSetLink}
+            className={
+              editor.isActive("link") ? "is-active" : ""
+            }
+          >
+            Link toevoegen
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() =>
+              editor.chain().focus().unsetLink().run()
+            }
+            disabled={!editor.isActive("link")}
+          >
+            Link verwijderen
+          </Button>
+        </div>
+      )}
     </>
   );
 };
