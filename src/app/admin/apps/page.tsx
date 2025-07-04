@@ -33,7 +33,7 @@ async function Apps() {
         </Button>
       </div>
 
-      <Table>
+      <Table className="w-full">
         <TableCaption>
           Een lijst van alle applicaties van C2M
         </TableCaption>

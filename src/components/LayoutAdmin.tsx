@@ -26,7 +26,7 @@ async function LayoutAdmin({
           className="text-center *:mx-auto"
           title={headerTitle ?? "Admin dashboard"}
         />
-        <PageMain className="*:mx-auto">
+        <PageMain className="max-w-none *:max-w-none">
           {children}
         </PageMain>
       </div>
