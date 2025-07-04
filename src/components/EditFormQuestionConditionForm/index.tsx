@@ -83,33 +83,37 @@ export default function EditFormQuestionConditionForm({
           {error}
         </p>
       ))}
-      <formForm.Field
-        name="key"
-        validators={{
-          onSubmit: ({ value }) => {
-            if (!value || value === "_none")
-              return "Dit veld is verplicht";
-            return null;
-          },
-        }}
-      >
-        {(field) => (
-          <InnerSelectField
-            required
-            wrapperClassName="w-full"
-            label="Vraag"
-            value={field.state.value}
-            name={field.name}
-            errors={field.state.meta.errors}
-            options={formQuestions.map((q) => ({
-              id: q.key,
-              text: q.label,
-            }))}
-            onBlur={field.handleBlur}
-            onChange={(value) => field.handleChange(value)}
-          />
-        )}
-      </formForm.Field>
+      {formQuestions && (
+        <formForm.Field
+          name="key"
+          validators={{
+            onSubmit: ({ value }) => {
+              if (!value || value === "_none")
+                return "Dit veld is verplicht";
+              return null;
+            },
+          }}
+        >
+          {(field) => (
+            <InnerSelectField
+              required
+              wrapperClassName="w-full"
+              label="Vraag"
+              value={field.state.value}
+              name={field.name}
+              errors={field.state.meta.errors}
+              options={formQuestions.map((q) => ({
+                id: q.key,
+                text: q.label,
+              }))}
+              onBlur={field.handleBlur}
+              onChange={(value) =>
+                field.handleChange(value)
+              }
+            />
+          )}
+        </formForm.Field>
+      )}
       <div className="w-full grid grid-cols-3 gap-4">
         <formForm.Field
           name="field"

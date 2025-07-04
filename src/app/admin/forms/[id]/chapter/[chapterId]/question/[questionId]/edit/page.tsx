@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import EditFormQuestionOptionForm from "@/components/EditFormQuestionOptionForm";
 import EditFormQuestionConditionForm from "@/components/EditFormQuestionConditionForm";
 import AddFormQuestionOptionForm from "@/components/AddFormQuestionOptionForm";
+import AddFormQuestionConditionForm from "@/components/AddFormQuestionConditionForm";
 
 async function EditFormQuestion({
   params,
@@ -46,8 +47,15 @@ async function EditFormQuestion({
     .findMany({
       where: (formChapters, { eq }) =>
         eq(formChapters.formId, id),
+      orderBy: (formChapters, { asc }) => [
+        asc(formChapters.order),
+      ],
       with: {
-        questions: true,
+        questions: {
+          orderBy: (questions, { asc }) => [
+            asc(questions.order),
+          ],
+        },
       },
     })
     .then((results) => results.map((r) => r.questions))
@@ -129,11 +137,30 @@ async function EditFormQuestion({
       <h2 className="text-2xl font-bold text-center">
         Voorwaardelijke weergave
       </h2>
-      {condition && (
+      {condition ? (
         <EditFormQuestionConditionForm
           condition={condition}
           formId={id}
-          formQuestions={formQuestions}
+          formQuestions={formQuestions.filter(
+            (q, i) =>
+              i <
+              formQuestions.findIndex(
+                (q) => q.id === Number(questionId)
+              )
+          )}
+          chapterId={chapterId}
+          questionId={questionId}
+        />
+      ) : (
+        <AddFormQuestionConditionForm
+          formId={id}
+          formQuestions={formQuestions.filter(
+            (q, i) =>
+              i <
+              formQuestions.findIndex(
+                (q) => q.id === Number(questionId)
+              )
+          )}
           chapterId={chapterId}
           questionId={questionId}
         />

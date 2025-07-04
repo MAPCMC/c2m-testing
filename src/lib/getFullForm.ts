@@ -67,9 +67,24 @@ async function filterConditionalQuestions(
 
                     if (
                       condition.requirement &&
-                      condition.operator === "equals"
+                      (condition.operator === "equals" ||
+                        condition.operator === "contains")
                     ) {
                       return conditionAnswer.answersToOptions
+                        .map((ato) =>
+                          ato.optionId.toString()
+                        )
+                        .includes(condition.requirement);
+                    }
+
+                    if (
+                      condition.requirement &&
+                      (condition.operator ===
+                        "not equals" ||
+                        condition.operator ===
+                          "not contains")
+                    ) {
+                      return !conditionAnswer.answersToOptions
                         .map((ato) =>
                           ato.optionId.toString()
                         )
