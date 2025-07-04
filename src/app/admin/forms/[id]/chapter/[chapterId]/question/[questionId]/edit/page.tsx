@@ -6,6 +6,7 @@ import db from "@/db";
 import { redirect } from "next/navigation";
 import EditFormQuestionOptionForm from "@/components/EditFormQuestionOptionForm";
 import EditFormQuestionConditionForm from "@/components/EditFormQuestionConditionForm";
+import AddFormQuestionOptionForm from "@/components/AddFormQuestionOptionForm";
 
 async function EditFormQuestion({
   params,
@@ -118,6 +119,11 @@ async function EditFormQuestion({
               />
             );
           })}
+          <AddFormQuestionOptionForm
+            formId={id}
+            chapterId={chapterId}
+            questionId={questionId}
+          />
         </>
       )}
       <h2 className="text-2xl font-bold text-center">

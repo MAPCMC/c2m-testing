@@ -52,7 +52,6 @@ export default function AddFormQuestionForm({
     <form
       action={action as never}
       onSubmit={(e) => {
-        e.preventDefault();
         formForm.handleSubmit();
       }}
       className="space-y-4"

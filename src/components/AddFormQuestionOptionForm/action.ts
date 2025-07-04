@@ -6,29 +6,20 @@ import {
 } from "@tanstack/react-form/nextjs";
 
 import db from "@/db";
-import { options } from "@/db/schema";
+import { options, questionsToOptions } from "@/db/schema";
 import formOpts from "./formOptions";
-import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 const serverValidate = createServerValidate({
-  ...formOpts({
-    id: 0, // dummy values to satisfy the type system
-    text: "",
-    value: "",
-  }),
+  ...formOpts,
   onServerValidate: ({ value }) => {
-    if (!value.id) {
-      return "Optie bestaat niet";
-    }
-
     if (!value.text || !value.value) {
       return "Vul alle velden in";
     }
   },
 });
 
-export async function handleEditFormSubmit(
+export async function handleAddFormSubmit(
   prev: unknown,
   formData: FormData
 ) {
@@ -36,7 +27,6 @@ export async function handleEditFormSubmit(
     await serverValidate(formData);
 
     const values = {
-      id: formData.get("id")?.toString() ?? "",
       text: formData.get("text")?.toString() ?? "",
       value: formData.get("value")?.toString() ?? "",
       formId: formData.get("formId")?.toString() ?? "",
@@ -46,28 +36,32 @@ export async function handleEditFormSubmit(
         formData.get("questionId")?.toString() ?? "",
     };
 
-    if (!values.id) {
-      throw new Error("Optie bestaat niet");
-    }
-
     const result = await db
-      .update(options)
-      .set({
+      .insert(options)
+      .values({
         ...values,
         text: values.text.trim(),
         value: values.value
           .trim()
           .replace(/\s+/g, "_")
           .replace(/[^a-zA-Z0-9_]/g, ""),
-        id: Number(values.id),
       })
-      .where(eq(options.id, Number(values.id)))
       .returning();
 
     if (result) {
-      redirect(
-        `/admin/forms/${values.formId}/chapter/${values.chapterId}/question/${values.questionId}/edit`
-      );
+      const link = await db
+        .insert(questionsToOptions)
+        .values({
+          optionId: result[0].id,
+          questionId: Number(values.questionId),
+        })
+        .returning();
+
+      if (link) {
+        redirect(
+          `/admin/forms/${values.formId}/chapter/${values.chapterId}/question/${values.questionId}/edit`
+        );
+      }
     }
   } catch (e) {
     if (e instanceof ServerValidateError) {
