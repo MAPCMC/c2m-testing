@@ -4,7 +4,17 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import { Button } from "@/components/ui/button";
-import { useCallback, useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const TextEditor = ({
@@ -25,6 +35,8 @@ const TextEditor = ({
   [key: string]: unknown;
 }) => {
   const [canSetLink, setCanSetLink] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [url, setUrl] = useState("");
 
   const editor = useEditor({
     extensions: [
@@ -66,40 +78,35 @@ const TextEditor = ({
     };
   }, [editor]);
 
-  const setLink = useCallback(() => {
+  const handleOpenDialog = () => {
     if (!editor) return;
-    const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl);
+    const previousUrl =
+      editor.getAttributes("link").href || "";
+    setUrl(previousUrl);
+    setIsDialogOpen(true);
+  };
 
-    // cancelled
-    if (url === null) {
-      return;
-    }
+  const handleSetLink = () => {
+    if (!editor) return;
 
-    // empty
-    if (url === "") {
+    if (url.trim() === "") {
       editor
         .chain()
         .focus()
         .extendMarkRange("link")
         .unsetLink()
         .run();
-
-      return;
-    }
-
-    // update link
-    try {
+    } else {
       editor
         .chain()
         .focus()
         .extendMarkRange("link")
-        .setLink({ href: url })
+        .setLink({ href: url.trim() })
         .run();
-    } catch (e: any) {
-      alert(e.message);
     }
-  }, [editor]);
+
+    setIsDialogOpen(false);
+  };
 
   // If the form value changes externally, update the editor
   useEffect(() => {
@@ -116,18 +123,53 @@ const TextEditor = ({
     <>
       <EditorContent editor={editor} />
       {(canSetLink || editor.isActive("link")) && (
-        <div className="w-full flex gap-1">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={setLink}
-            disabled={!canSetLink}
-            className={
-              editor.isActive("link") ? "is-active" : ""
-            }
+        <div className="w-full flex gap-1 mt-2">
+          <Dialog
+            open={isDialogOpen}
+            onOpenChange={setIsDialogOpen}
           >
-            Link toevoegen
-          </Button>
+            <DialogTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleOpenDialog}
+                disabled={!canSetLink}
+                className={
+                  editor.isActive("link") ? "is-active" : ""
+                }
+              >
+                Link toevoegen
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Voeg een link toe</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-2">
+                <Input
+                  type="url"
+                  placeholder="https://..."
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button type="button" variant="ghost">
+                    Annuleren
+                  </Button>
+                </DialogClose>
+                <Button
+                  type="button"
+                  onClick={handleSetLink}
+                >
+                  Opslaan
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
           <Button
             type="button"
             variant="outline"

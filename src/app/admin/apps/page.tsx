@@ -13,9 +13,8 @@ import {
 import Link from "next/link";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
-// import { apps as appsSchema } from "@/db/schema";
-// import { eq } from "drizzle-orm";
-// import { RemoveButton } from "@/components/RemoveButton";
+import RemoveButton from "@/components/RemoveButton";
+import { removeApp } from "@/lib/removeApp";
 
 async function Apps() {
   const apps = await db.query.apps.findMany();
@@ -72,26 +71,23 @@ async function Apps() {
                       href={`/admin/apps/${app.id}/edit`}
                     >
                       Bewerken
+                      <span className="sr-only">
+                        {app.name}
+                      </span>
                     </Link>
                   </Button>
-                  {/* <RemoveButton
-                    variant="destructive"
-                    size="sm"
-                    handleClick={async () => {
-                      "use server";
-                      if (
-                        confirm(
-                          "Weet je zeker dat je deze app wilt verwijderen?"
-                        )
-                      ) {
-                        await db
-                          .delete(appsSchema)
-                          .where(eq(appsSchema.id, app.id));
-                      }
-                    }}
+                  <RemoveButton
+                    schemaName="apps"
+                    id={app.id}
+                    customRemove={removeApp}
+                    alertTitle="App nu verwijderen"
+                    alertDescription="Weet je zeker dat je deze app wilt verwijderen? Let op: deze actie is alleen mogelijk wanneer er geen vragenlijsten zijn gekoppeld."
                   >
                     Verwijderen
-                  </RemoveButton> */}
+                    <span className="sr-only">
+                      {app.name}
+                    </span>
+                  </RemoveButton>
                 </div>
               </TableCell>
             </TableRow>
