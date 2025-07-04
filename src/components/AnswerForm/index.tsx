@@ -282,9 +282,12 @@ export default function AnswerForm({
                         }
                       )}
                       {question.description && (
-                        <p className="text-sm">
-                          {question.description}
-                        </p>
+                        <div
+                          className="prose text-sm"
+                          dangerouslySetInnerHTML={{
+                            __html: question.description,
+                          }}
+                        ></div>
                       )}
                       {field.state.meta.errors
                         .filter(
@@ -433,9 +436,12 @@ export default function AnswerForm({
                         }
                       )}
                       {question.description && (
-                        <p className="text-sm">
-                          {question.description}
-                        </p>
+                        <div
+                          className="prose text-sm"
+                          dangerouslySetInnerHTML={{
+                            __html: question.description,
+                          }}
+                        ></div>
                       )}
                       {field.state.meta.errors
                         .filter(

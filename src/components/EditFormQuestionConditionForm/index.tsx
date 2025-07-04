@@ -74,6 +74,7 @@ export default function EditFormQuestionConditionForm({
       }}
       className="space-y-4 border p-4 rounded-md"
     >
+      <h3>Vraagvoorwaarde bewerken</h3>
       {formErrors.map((error, i) => (
         <p
           key={i}

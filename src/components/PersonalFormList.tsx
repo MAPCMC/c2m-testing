@@ -37,7 +37,12 @@ const PersonalFormList = async () => {
                 {form.app?.name} | {form.title}
               </h3>
               {form.description && (
-                <p className="grow">{form.description}</p>
+                <div
+                  className="lg:col-span-2 prose text-sm"
+                  dangerouslySetInnerHTML={{
+                    __html: form.description,
+                  }}
+                ></div>
               )}
             </div>
 

@@ -87,7 +87,7 @@ export default async function CodePage({
       <PageMain className="*:mx-auto">
         {app?.name && app?.link && (
           <Alert>
-            <AlertTitle>
+            <AlertTitle className="text-lg">
               <span>{app.name}</span>
               <span> nog niet gebruikt?</span>
             </AlertTitle>
@@ -106,7 +106,14 @@ export default async function CodePage({
           </Alert>
         )}
         <div className="space-y-3">
-          {form?.description && <p>{form?.description}</p>}
+          {form?.description && (
+            <div
+              className="lg:col-span-2 prose"
+              dangerouslySetInnerHTML={{
+                __html: form.description,
+              }}
+            ></div>
+          )}
           <p>
             Vanaf het moment dat u start met het invullen
             van de vragenlijst worden uw antwoorden
