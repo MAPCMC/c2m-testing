@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-form/nextjs";
 
 import db from "@/db";
-import { formChapters, questions } from "@/db/schema";
+import { questions } from "@/db/schema";
 import formOpts from "./formOptions";
 import { eq } from "drizzle-orm";
 

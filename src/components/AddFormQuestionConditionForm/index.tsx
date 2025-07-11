@@ -37,7 +37,7 @@ export default function AddFormQuestionConditionForm({
   const formForm = useForm({
     ...formOpts,
     transform: useTransform(
-      (baseForm) => mergeForm(baseForm, state!),
+      (baseForm) => mergeForm(baseForm, state ?? {}),
       [state]
     ),
   });
@@ -49,9 +49,7 @@ export default function AddFormQuestionConditionForm({
 
   const formValues = useStore(
     formForm.store,
-    (formState) => {
-      return formState.values;
-    }
+    (formState) => formState.values
   );
 
   const selectedQuestion = formQuestions.find(
@@ -66,7 +64,10 @@ export default function AddFormQuestionConditionForm({
     : [];
 
   React.useEffect(() => {
-    if (selectedQuestion) {
+    if (
+      selectedQuestion &&
+      (!formValues.field || formValues.field === "_none")
+    ) {
       switch (selectedQuestion.type) {
         case "selection":
         case "multiple":
@@ -87,7 +88,7 @@ export default function AddFormQuestionConditionForm({
         }
       }
     }
-  }, [formValues, selectedQuestion]);
+  }, [formValues, selectedQuestion, formForm]);
 
   return (
     <form
@@ -280,7 +281,18 @@ export default function AddFormQuestionConditionForm({
         >
           Annuleren
         </Button>
-        <Button type="submit">Opslaan</Button>
+        <formForm.Subscribe
+          selector={(formState) => [
+            formState.canSubmit,
+            formState.isSubmitting,
+          ]}
+        >
+          {([canSubmit, isSubmitting]) => (
+            <Button type="submit" disabled={!canSubmit}>
+              {isSubmitting ? "..." : "Opslaan"}
+            </Button>
+          )}
+        </formForm.Subscribe>
       </div>
     </form>
   );

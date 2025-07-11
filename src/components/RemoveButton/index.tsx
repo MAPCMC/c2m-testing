@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { handleRemove } from "./handleRemove";
+import { useRouter } from "next/navigation";
 
 export default function RemoveButton({
   schemaName,
@@ -26,27 +27,25 @@ export default function RemoveButton({
   ...props
 }: {
   schemaName: string;
-  id: string;
+  id: string | number;
   alertTitle?: string;
   alertDescription?: string;
   alertConfirm?: string;
   alertCancel?: string;
-  customRemove?: (id: string) => Promise<void>;
+  customRemove?: (id: string | number) => Promise<void>;
   [key: string]: unknown;
 }) {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
 
   const onConfirm = async () => {
     try {
       if (customRemove) {
         await customRemove(id);
       } else {
-        // ✅ Call server action safely
-        startTransition(() => {
-          handleRemove(schemaName, id);
-        });
+        await handleRemove(schemaName, id);
       }
+      router.refresh();
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);

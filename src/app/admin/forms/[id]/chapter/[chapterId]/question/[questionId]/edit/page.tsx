@@ -8,6 +8,8 @@ import EditFormQuestionOptionForm from "@/components/EditFormQuestionOptionForm"
 import EditFormQuestionConditionForm from "@/components/EditFormQuestionConditionForm";
 import AddFormQuestionOptionForm from "@/components/AddFormQuestionOptionForm";
 import AddFormQuestionConditionForm from "@/components/AddFormQuestionConditionForm";
+import RemoveButton from "@/components/RemoveButton";
+import { removeOption } from "./removeOption";
 
 async function EditFormQuestion({
   params,
@@ -116,13 +118,25 @@ async function EditFormQuestion({
           <h2 className="text-2xl font-medium">Opties</h2>
           {options.map((option, i) => {
             return (
-              <EditFormQuestionOptionForm
-                key={"opt" + option.id + "-" + i}
-                option={option}
-                formId={id}
-                chapterId={chapterId}
-                questionId={questionId}
-              />
+              <div key={"opt" + option.id + "-" + i}>
+                <EditFormQuestionOptionForm
+                  option={option}
+                  formId={id}
+                  chapterId={chapterId}
+                  questionId={questionId}
+                />
+                <RemoveButton
+                  schemaName="options"
+                  id={option.id}
+                  alertTitle="Optie verwijderen"
+                  alertDescription="Weet je zeker dat je deze optie wilt verwijderen?"
+                  alertConfirm="Verwijderen"
+                  alertCancel="Annuleren"
+                  customRemove={removeOption}
+                >
+                  Verwijder optie
+                </RemoveButton>
+              </div>
             );
           })}
           <AddFormQuestionOptionForm
@@ -133,19 +147,31 @@ async function EditFormQuestion({
         </>
       )}
       {condition ? (
-        <EditFormQuestionConditionForm
-          condition={condition}
-          formId={id}
-          formQuestions={formQuestions.filter(
-            (q, i) =>
-              i <
-              formQuestions.findIndex(
-                (q) => q.id === Number(questionId)
-              )
-          )}
-          chapterId={chapterId}
-          questionId={questionId}
-        />
+        <div>
+          <EditFormQuestionConditionForm
+            condition={condition}
+            formId={id}
+            formQuestions={formQuestions.filter(
+              (q, i) =>
+                i <
+                formQuestions.findIndex(
+                  (q) => q.id === Number(questionId)
+                )
+            )}
+            chapterId={chapterId}
+            questionId={questionId}
+          />
+          <RemoveButton
+            schemaName="question_conditions"
+            id={condition.id}
+            alertTitle="Voorwaarde verwijderen"
+            alertDescription="Weet je zeker dat je deze voorwaarde wilt verwijderen?"
+            alertConfirm="Verwijderen"
+            alertCancel="Annuleren"
+          >
+            Verwijder voorwaarde
+          </RemoveButton>
+        </div>
       ) : (
         <AddFormQuestionConditionForm
           formId={id}

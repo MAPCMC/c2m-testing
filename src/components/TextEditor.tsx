@@ -58,6 +58,7 @@ const TextEditor = ({
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
+      onBlur?.();
     },
   });
 
@@ -113,7 +114,7 @@ const TextEditor = ({
     if (editor && editor.getHTML() !== value) {
       editor.commands.setContent(value || "");
     }
-  }, [value]);
+  }, [value, editor]);
 
   if (!editor) {
     return null;

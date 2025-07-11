@@ -2,14 +2,23 @@
 
 import db from "@/db";
 import { eq } from "drizzle-orm";
-import { apps as appsSchema } from "@/db/schema";
+import {
+  apps as appsSchema,
+  questionConditions as questionConditionsSchema,
+  questions as questionsSchema,
+  options as optionsSchema,
+} from "@/db/schema";
 
 export async function handleRemove(
   schemaName: string,
-  id: string
+  id: string | number
 ) {
   const schemas = (schemaName: string) => {
     if (schemaName === "apps") return appsSchema;
+    if (schemaName === "question_conditions")
+      return questionConditionsSchema;
+    if (schemaName === "questions") return questionsSchema;
+    if (schemaName === "options") return optionsSchema;
     return null;
   };
 

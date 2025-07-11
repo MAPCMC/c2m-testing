@@ -15,9 +15,13 @@ const serverValidate = createServerValidate({
   onServerValidate: ({ value }) => {
     if (
       !value.key ||
+      value.key === "_none" ||
       !value.field ||
+      value.field === "_none" ||
       !value.operator ||
-      !value.requirement
+      value.operator === "_none" ||
+      !value.requirement ||
+      value.requirement === "_none"
     ) {
       return "Vul alle velden in";
     }
@@ -29,39 +33,29 @@ export async function handleAddFormSubmit(
   formData: FormData
 ) {
   try {
-    await serverValidate(formData);
-
-    const values = {
-      key: formData.get("key")?.toString() ?? "",
-      field: formData.get("field")?.toString() ?? "",
-      operator: formData.get("operator")?.toString() ?? "",
-      requirement:
-        formData.get("requirement")?.toString() ?? "",
-      formId: formData.get("formId")?.toString() ?? "",
-      chapterId:
-        formData.get("chapterId")?.toString() ?? "",
-      questionId:
-        formData.get("questionId")?.toString() ?? "",
-    };
+    const validatedData = await serverValidate(formData);
 
     const result = await db
       .insert(questionConditions)
       .values({
-        ...values,
-        field: values.field as "text" | "score" | "options",
-        operator: values.operator as
+        ...validatedData,
+        field: validatedData.field as
+          | "text"
+          | "score"
+          | "options",
+        operator: validatedData.operator as
           | "contains"
           | "equals"
           | "not contains"
           | "not equals",
-        requirement: values.requirement,
-        questionId: Number(values.questionId),
+        requirement: validatedData.requirement,
+        questionId: Number(validatedData.questionId),
       })
       .returning();
 
     if (result) {
       redirect(
-        `/admin/forms/${values.formId}/chapter/${values.chapterId}/question/${values.questionId}/edit`
+        `/admin/forms/${validatedData.formId}/chapter/${validatedData.chapterId}/question/${validatedData.questionId}/edit`
       );
     }
   } catch (e) {

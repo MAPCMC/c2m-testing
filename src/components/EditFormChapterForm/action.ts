@@ -35,34 +35,24 @@ export async function handleEditFormSubmit(
   formData: FormData
 ) {
   try {
-    await serverValidate(formData);
+    const validatedData = await serverValidate(formData);
 
-    const values = {
-      title: formData.get("title")?.toString() ?? "",
-      description:
-        formData.get("description")?.toString() ?? "",
-      addAnswersToProfile:
-        formData.get("addAnswersToProfile") ?? false,
-      order: formData.get("order")?.toString() ?? "",
-      formId: formData.get("formId")?.toString() ?? "",
-      id: formData.get("id")?.toString(),
-    };
-
-    if (!values.id) {
+    if (!validatedData.id) {
       throw new Error("Formulier bestaat niet");
     }
 
     return await db
       .update(formChapters)
       .set({
-        ...values,
-        title: values.title.trim(),
-        description: values.description.trim(),
-        addAnswersToProfile: values.addAnswersToProfile,
-        order: Number(values.order),
-        formId: values.formId,
+        ...validatedData,
+        title: validatedData.title.trim(),
+        description: validatedData.description.trim(),
+        addAnswersToProfile:
+          validatedData.addAnswersToProfile ?? false,
+        order: Number(validatedData.order),
+        formId: validatedData.formId,
       })
-      .where(eq(formChapters.id, values.id))
+      .where(eq(formChapters.id, validatedData.id))
       .returning();
   } catch (e) {
     if (e instanceof ServerValidateError) {

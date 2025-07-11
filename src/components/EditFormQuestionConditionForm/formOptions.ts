@@ -9,9 +9,11 @@ const formOpts = (
       id: condition.id,
       key: condition.key ?? "",
       questionId: condition.questionId ?? null,
-      field: condition.field ?? null,
-      operator: condition.operator ?? null,
-      requirement: condition.requirement ?? null,
+      formId: "",
+      chapterId: "",
+      field: condition.field ?? "_none",
+      operator: condition.operator ?? "_none",
+      requirement: condition.requirement ?? "_none",
     },
   });
 };

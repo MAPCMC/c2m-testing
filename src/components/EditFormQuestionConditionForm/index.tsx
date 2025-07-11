@@ -43,7 +43,7 @@ export default function EditFormQuestionConditionForm({
   const formForm = useForm({
     ...formOpts(condition),
     transform: useTransform(
-      (baseForm) => mergeForm(baseForm, state!),
+      (baseForm) => mergeForm(baseForm, state ?? {}),
       [state]
     ),
   });
@@ -122,7 +122,6 @@ export default function EditFormQuestionConditionForm({
           name="field"
           validators={{
             onSubmit: ({ value }) => {
-              // @ts-expect-error custom default for select field
               if (!value || value === "_none")
                 return "Dit veld is verplicht";
               return null;
@@ -153,9 +152,7 @@ export default function EditFormQuestionConditionForm({
               errors={field.state.meta.errors}
               onBlur={field.handleBlur}
               onChange={(value) =>
-                field.handleChange(
-                  value as "options" | "score" | "text"
-                )
+                field.handleChange(value)
               }
             />
           )}
@@ -164,7 +161,6 @@ export default function EditFormQuestionConditionForm({
           name="operator"
           validators={{
             onSubmit: ({ value }) => {
-              // @ts-expect-error custom default for select field
               if (!value || value === "_none")
                 return "Dit veld is verplicht";
               return null;
@@ -199,13 +195,7 @@ export default function EditFormQuestionConditionForm({
               errors={field.state.meta.errors}
               onBlur={field.handleBlur}
               onChange={(value) =>
-                field.handleChange(
-                  value as
-                    | "contains"
-                    | "equals"
-                    | "not contains"
-                    | "not equals"
-                )
+                field.handleChange(value)
               }
             />
           )}

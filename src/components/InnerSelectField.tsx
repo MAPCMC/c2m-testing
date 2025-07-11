@@ -21,7 +21,6 @@ interface InnerFieldProps {
   as?: React.ElementType;
   wrapper?: React.ElementType;
   wrapperClassName?: string;
-  className?: string;
   options: { id: number | string; text: string }[];
   onBlur?: () => void;
   onChange?: ((value: string) => void) | undefined;
@@ -37,7 +36,6 @@ const InnerSelectField = ({
   description,
   wrapper,
   wrapperClassName,
-  className,
   options,
   required,
   onBlur,
@@ -145,6 +143,7 @@ const InnerSelectField = ({
               : error.message}
           </p>
         ))}
+      <input type="hidden" name={name} value={value} />
     </WrapperComponent>
   );
 };

@@ -51,7 +51,7 @@ export default function AddFormQuestionForm({
   return (
     <form
       action={action as never}
-      onSubmit={(e) => {
+      onSubmit={() => {
         formForm.handleSubmit();
       }}
       className="space-y-4"

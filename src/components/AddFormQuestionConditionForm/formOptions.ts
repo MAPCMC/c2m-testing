@@ -7,6 +7,8 @@ const formOpts = formOptions({
     field: "",
     operator: "",
     requirement: "",
+    formId: "",
+    chapterId: "",
   },
 });
 
