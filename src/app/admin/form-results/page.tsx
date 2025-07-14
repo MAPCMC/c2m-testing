@@ -85,7 +85,9 @@ async function Admin() {
                   </TableCell>
                   <TableCell className="space-x-2">
                     <Button asChild>
-                      <Link href={`/admin/${code.link}`}>
+                      <Link
+                        href={`/admin/form-results/${code.link}`}
+                      >
                         Antwoorden inzien
                       </Link>
                     </Button>

@@ -129,7 +129,7 @@ export default async function AdminCodePage({
                     {!!answer?.answersToOptions?.length &&
                       answer?.answersToOptions?.length >
                         0 && (
-                        <li>
+                        <ul>
                           {answer?.answersToOptions.map(
                             (a) => (
                               <li key={a.option.id}>
@@ -139,7 +139,7 @@ export default async function AdminCodePage({
                               </li>
                             )
                           )}
-                        </li>
+                        </ul>
                       )}
                   </TableCell>
                 </TableRow>
