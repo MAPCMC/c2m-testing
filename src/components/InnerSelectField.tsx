@@ -96,6 +96,7 @@ const InnerSelectField = ({
           onBlur?.();
         }}
         value={value}
+        disabled={props.disabled || options.length === 0}
         {...props}
       >
         <SelectTrigger

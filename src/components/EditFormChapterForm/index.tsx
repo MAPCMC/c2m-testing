@@ -116,22 +116,6 @@ export default function EditFormChapterForm({
           />
         )}
       </formForm.Field>
-      <formForm.Field name="order">
-        {(field) => (
-          <InnerField
-            required
-            label="Volgorde"
-            value={field.state.value.toString()}
-            name={field.name}
-            errors={field.state.meta.errors}
-            onBlur={field.handleBlur}
-            onChange={(e) =>
-              field.handleChange(Number(e.target.value))
-            }
-          />
-        )}
-      </formForm.Field>
-
       <input
         type="hidden"
         name="id"

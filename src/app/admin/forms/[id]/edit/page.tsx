@@ -17,6 +17,8 @@ import {
 import { getPreviewText } from "@/lib/getPreviewText";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import RemoveButton from "@/components/RemoveButton";
+import ReOrder from "@/components/ReOrder";
 
 async function EditForm({
   params,
@@ -77,6 +79,9 @@ async function EditForm({
               Beschrijving
             </TableHead>
             <TableHead className="font-bold">
+              Volgorde
+            </TableHead>
+            <TableHead className="font-bold">
               Acties
             </TableHead>
           </TableRow>
@@ -95,7 +100,13 @@ async function EditForm({
                       formChapter.description ?? ""
                     )}
                   </TableCell>
-
+                  <TableCell>
+                    <ReOrder
+                      order={formChapter.order}
+                      id={formChapter.id}
+                      schemaName="form_chapters"
+                    />
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
@@ -109,6 +120,17 @@ async function EditForm({
                           Bewerken
                         </Link>
                       </Button>
+                      <RemoveButton
+                        schemaName="form_chapters"
+                        id={formChapter.id}
+                        alertTitle="Hoofdstuk nu verwijderen"
+                        alertDescription="Weet je zeker dat je deze hoofdstuk wilt verwijderen? Let op: deze actie is alleen mogelijk wanneer er geen vragen zijn gekoppeld."
+                      >
+                        Verwijderen
+                        <span className="sr-only">
+                          {formChapter.title}
+                        </span>
+                      </RemoveButton>
                     </div>
                   </TableCell>
                 </TableRow>

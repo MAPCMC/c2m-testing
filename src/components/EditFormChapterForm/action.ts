@@ -16,7 +16,6 @@ const serverValidate = createServerValidate({
     title: "",
     description: "",
     addAnswersToProfile: false,
-    order: 0,
     formId: "",
   }),
   onServerValidate: ({ value }) => {
@@ -49,7 +48,6 @@ export async function handleEditFormSubmit(
         description: validatedData.description.trim(),
         addAnswersToProfile:
           validatedData.addAnswersToProfile ?? false,
-        order: Number(validatedData.order),
         formId: validatedData.formId,
       })
       .where(eq(formChapters.id, validatedData.id))

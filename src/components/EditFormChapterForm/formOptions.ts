@@ -2,7 +2,10 @@ import { formOptions } from "@tanstack/react-form/nextjs";
 import { formChapters } from "@/db/schema";
 
 const formOpts = (
-  formChapter: typeof formChapters.$inferSelect
+  formChapter: Omit<
+    typeof formChapters.$inferSelect,
+    "order"
+  >
 ) => {
   return formOptions({
     defaultValues: {
@@ -11,7 +14,6 @@ const formOpts = (
       description: formChapter.description ?? "",
       addAnswersToProfile:
         formChapter.addAnswersToProfile ?? false,
-      order: formChapter.order,
       formId: formChapter.formId,
     },
   });

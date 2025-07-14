@@ -7,6 +7,7 @@ import {
   questionConditions as questionConditionsSchema,
   questions as questionsSchema,
   options as optionsSchema,
+  formChapters as formChaptersSchema,
 } from "@/db/schema";
 
 export async function handleRemove(
@@ -19,13 +20,17 @@ export async function handleRemove(
       return questionConditionsSchema;
     if (schemaName === "questions") return questionsSchema;
     if (schemaName === "options") return optionsSchema;
+    if (schemaName === "form_chapters")
+      return formChaptersSchema;
     return null;
   };
 
   const schema = schemas(schemaName);
 
   if (!schema) {
-    throw new Error("Schema not found");
+    throw new Error(
+      "Schema not found: check handleRemove of RemoveButton"
+    );
   }
 
   try {

@@ -2,15 +2,17 @@ import { formOptions } from "@tanstack/react-form/nextjs";
 import { questions } from "@/db/schema";
 
 const formOpts = (
-  question: typeof questions.$inferSelect
+  question: Omit<
+    typeof questions.$inferSelect,
+    "key" | "order"
+  >
 ) => {
   return formOptions({
     defaultValues: {
       id: question.id,
-      key: question.key,
+      formChapterId: question.formChapterId,
       label: question.label ?? "",
       description: question.description ?? "",
-      order: question.order,
       type: question.type,
       scoreHighDescription:
         question.score_high_description ?? "",

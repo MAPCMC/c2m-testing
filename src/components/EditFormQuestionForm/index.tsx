@@ -141,46 +141,6 @@ export default function EditFormQuestionForm({
           </formForm.Field>
         </div>
       )}
-      <formForm.Field
-        name="key"
-        validators={{
-          onSubmit: ({ value }) => {
-            if (!value) return "Dit veld is verplicht";
-            return null;
-          },
-        }}
-      >
-        {(field) => (
-          <InnerField
-            required
-            label="Key"
-            description="een unieke identificatie voor deze vraag"
-            value={field.state.value}
-            name={field.name}
-            errors={field.state.meta.errors}
-            onBlur={field.handleBlur}
-            onChange={(e) =>
-              field.handleChange(e.target.value)
-            }
-          />
-        )}
-      </formForm.Field>
-      <formForm.Field name="order">
-        {(field) => (
-          <InnerField
-            required
-            label="Volgorde"
-            value={field.state.value.toString()}
-            name={field.name}
-            errors={field.state.meta.errors}
-            onBlur={field.handleBlur}
-            onChange={(e) =>
-              field.handleChange(Number(e.target.value))
-            }
-          />
-        )}
-      </formForm.Field>
-
       <input type="hidden" name="id" value={question.id} />
       <input
         type="hidden"

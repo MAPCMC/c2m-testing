@@ -53,6 +53,11 @@ export default function EditFormQuestionConditionForm({
     (formState) => formState.errors
   );
 
+  const isDirty = useStore(
+    formForm.store,
+    (formState) => formState.isDirty
+  );
+
   const keyValue = formForm.getFieldValue("key");
 
   const selectedQuestion = formQuestions.find(
@@ -245,16 +250,18 @@ export default function EditFormQuestionConditionForm({
         name="questionId"
         value={questionId}
       />
-      <div className="justify-end space-x-2 flex">
-        <Button
-          type="button"
-          onClick={() => formForm.reset()}
-          variant="ghost"
-        >
-          Annuleren
-        </Button>
-        <Button type="submit">Opslaan</Button>
-      </div>
+      {isDirty && (
+        <div className="justify-end space-x-2 flex">
+          <Button
+            type="button"
+            onClick={() => formForm.reset()}
+            variant="ghost"
+          >
+            Annuleren
+          </Button>
+          <Button type="submit">Opslaan</Button>
+        </div>
+      )}
     </form>
   );
 }

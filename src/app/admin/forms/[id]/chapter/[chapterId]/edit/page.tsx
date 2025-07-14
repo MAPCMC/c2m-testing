@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import ReOrder from "@/components/ReOrder";
+import RemoveButton from "@/components/RemoveButton";
 
 async function EditFormChapter({
   params,
@@ -78,6 +80,9 @@ async function EditFormChapter({
               Type
             </TableHead>
             <TableHead className="font-bold">
+              Volgorde
+            </TableHead>
+            <TableHead className="font-bold">
               Acties
             </TableHead>
           </TableRow>
@@ -91,6 +96,13 @@ async function EditFormChapter({
                   <TableCell>{question.label}</TableCell>
                   <TableCell>{question.type}</TableCell>
                   <TableCell>
+                    <ReOrder
+                      order={question.order}
+                      id={question.id}
+                      schemaName="questions"
+                    />
+                  </TableCell>
+                  <TableCell>
                     <div className="flex gap-2">
                       <Button
                         asChild
@@ -103,6 +115,17 @@ async function EditFormChapter({
                           Bewerken
                         </Link>
                       </Button>
+                      <RemoveButton
+                        schemaName="questions"
+                        id={question.id}
+                        alertTitle="Vraag nu verwijderen"
+                        alertDescription="Weet je zeker dat je deze vraag wilt verwijderen? Let op: deze actie is alleen mogelijk wanneer er geen antwoorden zijn gekoppeld."
+                      >
+                        Verwijderen
+                        <span className="sr-only">
+                          {question.label}
+                        </span>
+                      </RemoveButton>
                     </div>
                   </TableCell>
                 </TableRow>
