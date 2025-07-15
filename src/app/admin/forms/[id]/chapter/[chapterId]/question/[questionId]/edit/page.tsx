@@ -123,28 +123,36 @@ async function EditFormQuestion({
         question.type === "multiple" ||
         question.type === "multiple_explained") && (
         <>
-          <h2 className="text-2xl font-medium">Opties</h2>
+          <h2 className="text-2xl font-medium max-w-3xl mx-auto">
+            Opties
+          </h2>
           {options.map((option, i) => {
             return (
-              <div key={"opt" + option.id + "-" + i}>
+              <div
+                key={"opt" + option.id + "-" + i}
+                className="max-w-3xl mx-auto border p-4 rounded-md relative"
+              >
                 <EditFormQuestionOptionForm
                   option={option}
                   formId={id}
                   chapterId={chapterId}
                   questionId={questionId}
                 />
-                <RemoveButton
-                  schemaName="options"
-                  id={option.id}
-                  alertTitle="Optie verwijderen"
-                  alertDescription="Weet je zeker dat je deze optie wilt verwijderen?"
-                  alertConfirm="Verwijderen"
-                  alertCancel="Annuleren"
-                  customRemove={removeOption}
-                  size="sm"
-                >
-                  Verwijder optie
-                </RemoveButton>
+                <div className="flex justify-end">
+                  <RemoveButton
+                    schemaName="options"
+                    id={option.id}
+                    alertTitle="Optie verwijderen"
+                    alertDescription="Weet je zeker dat je deze optie wilt verwijderen?"
+                    alertConfirm="Verwijderen"
+                    alertCancel="Annuleren"
+                    customRemove={removeOption}
+                    size="sm"
+                    className="absolute -top-2 -right-2"
+                  >
+                    Verwijder optie
+                  </RemoveButton>
+                </div>
               </div>
             );
           })}
@@ -156,7 +164,7 @@ async function EditFormQuestion({
         </>
       )}
       {condition ? (
-        <div>
+        <div className="max-w-3xl mx-auto border p-4 rounded-md relative">
           <EditFormQuestionConditionForm
             condition={condition}
             formId={id}
@@ -178,6 +186,7 @@ async function EditFormQuestion({
             alertConfirm="Verwijderen"
             alertCancel="Annuleren"
             size="sm"
+            className="absolute -top-2 -right-2"
           >
             Verwijder voorwaarde
           </RemoveButton>

@@ -13,6 +13,7 @@ import handleAddAppSubmit from "./action";
 import formOpts from "./formOptions";
 import { Button } from "@/components/ui/button";
 import InnerField from "@/components/InnerField";
+import { redirect } from "next/navigation";
 
 export default function AddAppForm() {
   const [state, action] = useActionState(
@@ -39,7 +40,7 @@ export default function AddAppForm() {
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-2"
+      className="space-y-2 max-w-3xl mx-auto"
     >
       <h2 className="text-2xl font-medium">
         App toevoegen
@@ -61,7 +62,6 @@ export default function AddAppForm() {
         {(field) => (
           <InnerField
             required
-            className="max-w-md"
             label="naam"
             value={field.state.value}
             name={field.name}
@@ -77,7 +77,6 @@ export default function AddAppForm() {
         {(field) => (
           <InnerField
             required
-            className="max-w-md"
             label="link"
             value={field.state.value}
             name={field.name}
@@ -93,7 +92,6 @@ export default function AddAppForm() {
         {(field) => (
           <InnerField
             required
-            className="max-w-md"
             label="omschrijving"
             value={field.state.value}
             name={field.name}
@@ -105,18 +103,27 @@ export default function AddAppForm() {
           />
         )}
       </form.Field>
-      <form.Subscribe
-        selector={(formState) => [
-          formState.canSubmit,
-          formState.isSubmitting,
-        ]}
-      >
-        {([canSubmit, isSubmitting]) => (
-          <Button type="submit" disabled={!canSubmit}>
-            {isSubmitting ? "..." : "Toevoegen"}
-          </Button>
-        )}
-      </form.Subscribe>
+      <div className="flex justify-end space-x-2">
+        <Button
+          type="button"
+          onClick={() => redirect("/admin/apps")}
+          variant="ghost"
+        >
+          Annuleren
+        </Button>
+        <form.Subscribe
+          selector={(formState) => [
+            formState.canSubmit,
+            formState.isSubmitting,
+          ]}
+        >
+          {([canSubmit, isSubmitting]) => (
+            <Button type="submit" disabled={!canSubmit}>
+              {isSubmitting ? "..." : "Opslaan"}
+            </Button>
+          )}
+        </form.Subscribe>
+      </div>
     </form>
   );
 }

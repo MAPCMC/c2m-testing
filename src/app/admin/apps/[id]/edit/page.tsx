@@ -16,7 +16,19 @@ async function EditApp({
   });
 
   return (
-    <LayoutAdmin headerTitle="Applicatie bewerken">
+    <LayoutAdmin
+      headerTitle="Applicatie bewerken"
+      breadcrumb={[
+        {
+          title: "Applicaties",
+          href: "/admin/apps",
+        },
+        {
+          title: "Applicatie bewerken",
+          href: `/admin/apps/${app?.id}/edit`,
+        },
+      ]}
+    >
       <EditAppForm app={app} />
     </LayoutAdmin>
   );

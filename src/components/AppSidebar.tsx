@@ -80,7 +80,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === "/admin/apps"}
+                  isActive={
+                    pathname === "/admin/apps" ||
+                    pathname.startsWith("/admin/apps/")
+                  }
                 >
                   <Link href="/admin/apps">
                     Applicaties
@@ -90,7 +93,10 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === "/admin/users"}
+                  isActive={
+                    pathname === "/admin/users" ||
+                    pathname.startsWith("/admin/users/")
+                  }
                 >
                   <Link href="/admin/users">
                     Gebruikers

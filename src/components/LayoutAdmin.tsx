@@ -5,7 +5,6 @@ import NavBar from "@/components/NavBar/index";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 async function LayoutAdmin({
   children,
@@ -40,10 +39,8 @@ async function LayoutAdmin({
         />
         <PageMain
           id="main-content"
-          className={cn(
-            "max-w-none *:max-w-none",
-            className
-          )}
+          admin
+          className={className}
         >
           {children}
         </PageMain>

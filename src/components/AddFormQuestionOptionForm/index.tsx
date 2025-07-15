@@ -42,13 +42,18 @@ export default function AddFormQuestionOptionForm({
     (formState) => formState.errors
   );
 
+  const isDirty = useStore(
+    formForm.store,
+    (formState) => formState.isDirty
+  );
+
   return (
     <form
       action={action as never}
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4"
+      className="space-y-4 max-w-3xl mx-auto border p-4 rounded-md bg-accent/10"
     >
       <h3 className="text-xl font-medium mb-6">
         Nieuwe optie
@@ -124,16 +129,18 @@ export default function AddFormQuestionOptionForm({
         name="questionId"
         value={questionId}
       />
-      <div className="justify-end space-x-2 flex">
-        <Button
-          type="button"
-          onClick={() => formForm.reset()}
-          variant="ghost"
-        >
-          Annuleren
-        </Button>
-        <Button type="submit">Opslaan</Button>
-      </div>
+      {isDirty && (
+        <div className="justify-end space-x-2 flex">
+          <Button
+            type="button"
+            onClick={() => formForm.reset()}
+            variant="ghost"
+          >
+            Annuleren
+          </Button>
+          <Button type="submit">Opslaan</Button>
+        </div>
+      )}
     </form>
   );
 }

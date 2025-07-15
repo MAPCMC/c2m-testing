@@ -51,7 +51,7 @@ export default function EditAppForm({
           console.error(e);
         }
       }}
-      className="space-y-2"
+      className="space-y-2 max-w-3xl mx-auto"
     >
       <h2 className="text-2xl font-medium">
         App toevoegen
@@ -73,7 +73,6 @@ export default function EditAppForm({
         {(field) => (
           <InnerField
             required
-            className="max-w-md"
             label="naam"
             value={field.state.value}
             name={field.name}
@@ -89,7 +88,6 @@ export default function EditAppForm({
         {(field) => (
           <InnerField
             required
-            className="max-w-md"
             label="link"
             value={field.state.value}
             name={field.name}
@@ -105,7 +103,6 @@ export default function EditAppForm({
         {(field) => (
           <InnerField
             required
-            className="max-w-md"
             label="omschrijving"
             value={field.state.value}
             name={field.name}
@@ -118,18 +115,28 @@ export default function EditAppForm({
         )}
       </form.Field>
       <input type="hidden" name="id" value={app?.id} />
-      <form.Subscribe
-        selector={(formState) => [
-          formState.canSubmit,
-          formState.isSubmitting,
-        ]}
-      >
-        {([canSubmit, isSubmitting]) => (
-          <Button type="submit" disabled={!canSubmit}>
-            {isSubmitting ? "..." : "Bewerken"}
-          </Button>
-        )}
-      </form.Subscribe>
+
+      <div className="flex justify-end space-x-2">
+        <Button
+          type="button"
+          onClick={() => redirect("/admin/apps")}
+          variant="ghost"
+        >
+          Annuleren
+        </Button>
+        <form.Subscribe
+          selector={(formState) => [
+            formState.canSubmit,
+            formState.isSubmitting,
+          ]}
+        >
+          {([canSubmit, isSubmitting]) => (
+            <Button type="submit" disabled={!canSubmit}>
+              {isSubmitting ? "..." : "Opslaan"}
+            </Button>
+          )}
+        </form.Subscribe>
+      </div>
     </form>
   );
 }

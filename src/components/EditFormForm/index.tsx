@@ -56,7 +56,7 @@ export default function EditFormForm({
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4"
+      className="space-y-4 max-w-3xl mx-auto"
     >
       <h2 className="text-2xl font-medium mb-6">
         Vragenlijst bewerken

@@ -51,7 +51,7 @@ export default function EditUserForm({
           console.error(e);
         }
       }}
-      className="space-y-2"
+      className="space-y-2 max-w-3xl mx-auto"
     >
       <h2 className="text-2xl font-medium">
         Gebruiker bewerken

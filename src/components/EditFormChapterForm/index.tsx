@@ -45,13 +45,18 @@ export default function EditFormChapterForm({
     (formState) => formState.errors
   );
 
+  const isDirty = useStore(
+    formForm.store,
+    (formState) => formState.isDirty
+  );
+
   return (
     <form
       action={action as never}
       onSubmit={() => {
         formForm.handleSubmit();
       }}
-      className="space-y-4"
+      className="space-y-4 max-w-3xl mx-auto"
     >
       <h2 className="text-2xl font-medium mb-6">
         Hoofdstuk bewerken
@@ -126,18 +131,20 @@ export default function EditFormChapterForm({
         name="formId"
         value={formChapter.formId ?? ""}
       />
-      <div className="flex justify-end space-x-2">
-        <Button
-          type="button"
-          onClick={() =>
-            redirect(backUri ?? "/admin/forms")
-          }
-          variant="ghost"
-        >
-          Annuleren
-        </Button>
-        <Button type="submit">Opslaan</Button>
-      </div>
+      {isDirty && (
+        <div className="flex justify-end space-x-2">
+          <Button
+            type="button"
+            onClick={() =>
+              redirect(backUri ?? "/admin/forms")
+            }
+            variant="ghost"
+          >
+            Annuleren
+          </Button>
+          <Button type="submit">Opslaan</Button>
+        </div>
+      )}
     </form>
   );
 }

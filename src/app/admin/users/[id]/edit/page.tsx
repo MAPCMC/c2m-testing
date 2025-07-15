@@ -15,7 +15,19 @@ async function EditUser({
   });
 
   return (
-    <LayoutAdmin headerTitle="Gebruiker bewerken">
+    <LayoutAdmin
+      headerTitle="Gebruiker bewerken"
+      breadcrumb={[
+        {
+          title: "Gebruikers",
+          href: "/admin/users",
+        },
+        {
+          title: "gebruiker",
+          href: `/admin/users/${user?.id}`,
+        },
+      ]}
+    >
       <EditUserForm user={user} />
     </LayoutAdmin>
   );

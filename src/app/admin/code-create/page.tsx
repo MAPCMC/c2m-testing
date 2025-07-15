@@ -50,7 +50,9 @@ export default async function SuperUser() {
 
   return (
     <LayoutAdmin headerTitle="Vragenlijsten klaarzetten">
-      <AddCodeForm forms={forms} creatorId={user.id} />
+      <div className="!max-w-3xl mx-auto">
+        <AddCodeForm forms={forms} creatorId={user.id} />
+      </div>
       {addedCodes.length > 0 && (
         <>
           <h2 className="text-2xl font-medium">

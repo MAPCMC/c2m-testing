@@ -47,7 +47,7 @@ const TextEditor = ({
     editorProps: {
       attributes: {
         class: cn(
-          "prose text-sm border rounded-md px-3 py-2 bg-input dark:bg-input/30 prose-a:underline prose-a:text-blue-600",
+          "prose text-sm border rounded-md px-3 py-2 bg-input min-h-18 dark:bg-input/30 prose-a:underline prose-a:text-blue-600",
           className
         ),
         id: id,
@@ -138,6 +138,7 @@ const TextEditor = ({
                 className={
                   editor.isActive("link") ? "is-active" : ""
                 }
+                size="sm"
               >
                 Link toevoegen
               </Button>
@@ -174,6 +175,7 @@ const TextEditor = ({
           <Button
             type="button"
             variant="outline"
+            size="sm"
             onClick={() =>
               editor.chain().focus().unsetLink().run()
             }

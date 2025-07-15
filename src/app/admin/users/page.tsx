@@ -35,10 +35,18 @@ async function Users(props: Props) {
     limit,
     page,
   });
-
-  console.log(offset, limit, users.total);
-
   const hasNext = offset + limit < users.total;
+
+  const setRoleString = (role: string) => {
+    switch (role) {
+      case "superuser":
+        return "Hoofdgebruiker";
+      case "admin":
+        return "Beheerder";
+      case "user":
+        return "Gebruiker";
+    }
+  };
   return (
     <LayoutAdmin headerTitle="Gebruikersbeheer">
       <div className="flex items-center justify-between gap-4">
@@ -63,7 +71,9 @@ async function Users(props: Props) {
               <TableCell className="font-medium">
                 {user.email}
               </TableCell>
-              <TableCell>{user.role}</TableCell>
+              <TableCell>
+                {setRoleString(user.role)}
+              </TableCell>
               <TableCell>
                 <div className="flex gap-2">
                   <Button
@@ -88,13 +98,15 @@ async function Users(props: Props) {
       </Table>
       <div className="mt-4 flex gap-4 justify-between">
         {page > 1 ? (
-          <Button asChild>
+          <Button asChild variant="outline">
             <Link href={`?q=${query}&page=${page - 1}`}>
               Vorige
             </Link>
           </Button>
         ) : (
-          <Button disabled>Vorige</Button>
+          <Button disabled variant="outline">
+            Vorige
+          </Button>
         )}
 
         {hasNext ? (
