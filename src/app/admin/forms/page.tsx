@@ -70,7 +70,7 @@ async function Forms() {
                   {getPreviewText(form.description ?? "")}
                 </TableCell>
                 <TableCell>
-                  {form.app ? (
+                  {form.app && !form.app.deletedAt ? (
                     <span>{form.app.name}</span>
                   ) : (
                     <span className="text-muted-foreground">

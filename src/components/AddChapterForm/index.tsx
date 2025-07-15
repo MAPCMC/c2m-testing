@@ -103,7 +103,9 @@ export default function AddChapterForm({ formId }: Props) {
             name={field.name}
             errors={field.state.meta.errors}
             onBlur={field.handleBlur}
-            onChange={(value) => field.handleChange(value)}
+            onChange={(value) => {
+              field.handleChange(value);
+            }}
           />
         )}
       </form.Field>

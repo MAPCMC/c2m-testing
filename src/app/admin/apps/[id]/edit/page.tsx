@@ -11,7 +11,8 @@ async function EditApp({
 }) {
   const { id } = await params;
   const app = await db.query.apps.findFirst({
-    where: (apps, { eq }) => eq(apps.id, id),
+    where: (apps, { eq, isNull, and }) =>
+      and(eq(apps.id, id), isNull(apps.deletedAt)),
   });
 
   return (

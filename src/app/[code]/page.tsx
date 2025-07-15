@@ -16,8 +16,6 @@ import {
 } from "@/components/ui/alert";
 import { navigateToSession } from "@/lib/navigateToSession";
 import LayoutNormal from "@/components/LayoutNormal";
-import { eq } from "drizzle-orm";
-import { apps } from "@/db/schema";
 
 export default async function CodePage({
   params,
@@ -73,8 +71,10 @@ export default async function CodePage({
 
   let app;
   if (form.appId) {
+    const appId = form.appId;
     app = await db.query.apps.findFirst({
-      where: eq(apps.id, form.appId),
+      where: (apps, { eq, isNull, and }) =>
+        and(eq(apps.id, appId), isNull(apps.deletedAt)),
     });
   }
 

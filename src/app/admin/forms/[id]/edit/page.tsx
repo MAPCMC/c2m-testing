@@ -36,7 +36,9 @@ async function EditForm({
       },
     },
   });
-  const apps = await db.query.apps.findMany();
+  const apps = await db.query.apps.findMany({
+    where: (apps, { isNull }) => isNull(apps.deletedAt),
+  });
 
   if (!form) {
     redirect("/admin/forms");

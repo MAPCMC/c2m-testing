@@ -4,7 +4,7 @@ import { questions } from "@/db/schema";
 const formOpts = (
   question: Omit<
     typeof questions.$inferSelect,
-    "key" | "order"
+    "key" | "order" | "deletedAt"
   >
 ) => {
   return formOptions({

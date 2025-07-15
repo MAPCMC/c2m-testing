@@ -38,7 +38,8 @@ export async function handleRemove(
   if (
     schemaName === "form_chapters" ||
     schemaName === "forms" ||
-    schemaName === "questions"
+    schemaName === "questions" ||
+    schemaName === "apps"
   ) {
     try {
       await db
@@ -47,6 +48,7 @@ export async function handleRemove(
             | typeof formChaptersSchema
             | typeof questionsSchema
             | typeof formsSchema
+            | typeof appsSchema
         )
         .set({ deletedAt: new Date() })
         .where(eq(schema.id, id));

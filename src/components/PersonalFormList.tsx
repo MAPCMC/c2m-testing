@@ -27,6 +27,12 @@ const PersonalFormList = async () => {
             app: true,
           },
         });
+
+        const app =
+          form?.app && form.app.deletedAt === null
+            ? form.app
+            : null;
+
         if (!form) return null;
         return (
           <article
@@ -35,7 +41,8 @@ const PersonalFormList = async () => {
           >
             <div className="flex flex-col gap-2 justify-center">
               <h3 className="text-lg">
-                {form.app?.name} | {form.title}
+                {app?.name && app.name + " | "}
+                {form.title}
               </h3>
               {form.description && (
                 <div

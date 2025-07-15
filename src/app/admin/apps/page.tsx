@@ -14,10 +14,11 @@ import Link from "next/link";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
 import RemoveButton from "@/components/RemoveButton";
-import { removeApp } from "@/lib/removeApp";
 
 async function Apps() {
-  const apps = await db.query.apps.findMany();
+  const apps = await db.query.apps.findMany({
+    where: (apps, { isNull }) => isNull(apps.deletedAt),
+  });
 
   return (
     <LayoutAdmin headerTitle="Applicatiebeheer">
@@ -80,9 +81,8 @@ async function Apps() {
                     schemaName="apps"
                     size="sm"
                     id={app.id}
-                    customRemove={removeApp}
                     alertTitle="App nu verwijderen"
-                    alertDescription="Weet je zeker dat je deze app wilt verwijderen? Let op: deze actie is alleen mogelijk wanneer er geen vragenlijsten zijn gekoppeld."
+                    alertDescription="Weet je zeker dat je deze app wilt verwijderen?"
                   >
                     Verwijderen
                     <span className="sr-only">

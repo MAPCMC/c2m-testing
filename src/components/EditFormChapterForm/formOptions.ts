@@ -4,7 +4,7 @@ import { formChapters } from "@/db/schema";
 const formOpts = (
   formChapter: Omit<
     typeof formChapters.$inferSelect,
-    "order"
+    "order" | "deletedAt"
   >
 ) => {
   return formOptions({

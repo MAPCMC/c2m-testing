@@ -60,6 +60,10 @@ export async function handleAddFormSubmit(
 ) {
   try {
     const validatedData = await serverValidate(formData);
+
+    validatedData.addAnswersToProfile =
+      formData.get("addAnswersToProfile") === "on";
+
     const result = await handleSubmit(validatedData);
 
     if (

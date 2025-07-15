@@ -36,6 +36,9 @@ export async function handleEditFormSubmit(
   try {
     const validatedData = await serverValidate(formData);
 
+    validatedData.addAnswersToProfile =
+      formData.get("addAnswersToProfile") === "on";
+
     if (!validatedData.id) {
       throw new Error("Formulier bestaat niet");
     }
@@ -47,7 +50,7 @@ export async function handleEditFormSubmit(
         title: validatedData.title.trim(),
         description: validatedData.description.trim(),
         addAnswersToProfile:
-          validatedData.addAnswersToProfile ?? false,
+          validatedData.addAnswersToProfile,
         formId: validatedData.formId,
       })
       .where(eq(formChapters.id, validatedData.id))

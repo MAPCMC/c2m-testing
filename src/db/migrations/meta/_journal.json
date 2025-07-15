@@ -43,6 +43,13 @@
       "when": 1752488901950,
       "tag": "0007_square_iron_lad",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1752573881097,
+      "tag": "0008_clear_maximus",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,9 @@
 import { formOptions } from "@tanstack/react-form/nextjs";
 import { apps } from "@/db/schema";
 
-const formOpts = (data?: typeof apps.$inferSelect) =>
+const formOpts = (
+  data?: Omit<typeof apps.$inferSelect, "deletedAt">
+) =>
   formOptions({
     defaultValues: {
       id: data?.id ?? "",

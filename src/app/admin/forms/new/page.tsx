@@ -5,7 +5,9 @@ import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
 
 async function NewForm() {
-  const apps = await db.query.apps.findMany();
+  const apps = await db.query.apps.findMany({
+    where: (apps, { isNull }) => isNull(apps.deletedAt),
+  });
 
   return (
     <LayoutAdmin headerTitle="Nieuwe vragenlijst">
