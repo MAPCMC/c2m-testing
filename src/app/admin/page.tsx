@@ -25,12 +25,10 @@ export default async function AdminHome() {
   }
 
   return (
-    <LayoutAdmin>
+    <LayoutAdmin className="space-y-8 max-w-3xl mx-auto">
       <Suspense fallback={<p>Laden vragenlijsten...</p>}>
-        <div className="!max-w-3xl mx-auto">
-          <PersonalFormList />
-          <FormList />
-        </div>
+        <PersonalFormList />
+        <FormList />
       </Suspense>
     </LayoutAdmin>
   );
