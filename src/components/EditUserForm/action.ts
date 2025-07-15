@@ -19,7 +19,7 @@ const serverValidate = createServerValidate({
     if (!value.id) {
       return "Er is iets misgegaan. Neem contact op met de beheerder.";
     }
-    if (!value.role) {
+    if (!value.role || value.role === "_none") {
       return "Vul alle velden in";
     }
   },
@@ -41,7 +41,11 @@ export default async function handleEditUserSubmit(
     const user = await db
       .update(users)
       .set({
-        role: validatedData.role,
+        role: validatedData.role as
+          | "user"
+          | "superadmin"
+          | "admin"
+          | "superuser",
       })
       .where(eq(users.id, userId))
       .returning();
