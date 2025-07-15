@@ -85,6 +85,9 @@ async function Forms() {
                         href={`/admin/forms/${form.id}/edit`}
                       >
                         Bewerken
+                        <span className="sr-only">
+                          {form.title}
+                        </span>
                       </Link>
                     </Button>
                     <RemoveButton
@@ -96,6 +99,9 @@ async function Forms() {
                       alertDescription="Weet je zeker dat je deze vragenlijst wilt verwijderen?"
                     >
                       Verwijderen
+                      <span className="sr-only">
+                        {form.title}
+                      </span>
                     </RemoveButton>
                   </div>
                 </TableCell>

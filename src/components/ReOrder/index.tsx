@@ -39,7 +39,9 @@ export default function ReOrder({
           }
         }}
       >
-        <span className="sr-only">omhoog</span>
+        <span className="sr-only">
+          naar {order ? order + 1 : "achter"}
+        </span>
         <Plus />
       </Button>
       <Button
@@ -56,7 +58,9 @@ export default function ReOrder({
           }
         }}
       >
-        <span className="sr-only">omlaag</span>
+        <span className="sr-only">
+          naar {order ? order - 1 : "voor"}
+        </span>
         <Minus />
       </Button>
     </div>

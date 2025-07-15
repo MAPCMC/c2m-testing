@@ -124,6 +124,9 @@ async function EditForm({
                           href={`/admin/forms/${form.id}/chapter/${formChapter.id}/edit`}
                         >
                           Bewerken
+                          <span className="sr-only">
+                            {formChapter.title}
+                          </span>
                         </Link>
                       </Button>
                       <RemoveButton
