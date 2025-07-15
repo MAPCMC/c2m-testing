@@ -129,6 +129,7 @@ async function EditForm({
                         id={formChapter.id}
                         alertTitle="Hoofdstuk nu verwijderen"
                         alertDescription="Weet je zeker dat je dit hoofdstuk wilt verwijderen?."
+                        size="sm"
                       >
                         Verwijderen
                         <span className="sr-only">

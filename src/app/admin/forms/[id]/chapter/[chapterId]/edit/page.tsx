@@ -122,6 +122,7 @@ async function EditFormChapter({
                         </Link>
                       </Button>
                       <RemoveButton
+                        size="sm"
                         schemaName="questions"
                         id={question.id}
                         alertTitle="Vraag nu verwijderen"

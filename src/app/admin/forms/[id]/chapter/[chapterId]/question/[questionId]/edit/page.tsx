@@ -141,6 +141,7 @@ async function EditFormQuestion({
                   alertConfirm="Verwijderen"
                   alertCancel="Annuleren"
                   customRemove={removeOption}
+                  size="sm"
                 >
                   Verwijder optie
                 </RemoveButton>
@@ -176,6 +177,7 @@ async function EditFormQuestion({
             alertDescription="Weet je zeker dat je deze voorwaarde wilt verwijderen?"
             alertConfirm="Verwijderen"
             alertCancel="Annuleren"
+            size="sm"
           >
             Verwijder voorwaarde
           </RemoveButton>

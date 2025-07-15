@@ -78,6 +78,7 @@ async function Apps() {
                   </Button>
                   <RemoveButton
                     schemaName="apps"
+                    size="sm"
                     id={app.id}
                     customRemove={removeApp}
                     alertTitle="App nu verwijderen"

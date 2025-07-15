@@ -15,6 +15,7 @@ import Link from "next/link";
 import { getPreviewText } from "@/lib/getPreviewText";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
+import RemoveButton from "@/components/RemoveButton";
 // import { eq } from "drizzle-orm";
 // import { forms as formsSchema } from "@/db/schema";
 // import { RemoveButton } from "@/components/RemoveButton";
@@ -70,12 +71,7 @@ async function Forms() {
                 </TableCell>
                 <TableCell>
                   {form.app ? (
-                    <Badge
-                      variant="outline"
-                      className="capitalize"
-                    >
-                      {form.app.name}
-                    </Badge>
+                    <span>{form.app.name}</span>
                   ) : (
                     <span className="text-muted-foreground">
                       Geen applicatie
@@ -95,26 +91,16 @@ async function Forms() {
                         Bewerken
                       </Link>
                     </Button>
-                    {/* <RemoveButton
+                    <RemoveButton
                       variant="destructive"
                       size="sm"
-                      handleClick={async () => {
-                        "use server";
-                        if (
-                          confirm(
-                            "Weet je zeker dat je dit formulier wilt verwijderen?"
-                          )
-                        ) {
-                          await db
-                            .delete(formsSchema)
-                            .where(
-                              eq(formsSchema.id, form.id)
-                            );
-                        }
-                      }}
+                      schemaName="forms"
+                      id={form.id}
+                      alertTitle="Vragenlijst nu verwijderen"
+                      alertDescription="Weet je zeker dat je deze vragenlijst wilt verwijderen?"
                     >
                       Verwijderen
-                    </RemoveButton> */}
+                    </RemoveButton>
                   </div>
                 </TableCell>
               </TableRow>
