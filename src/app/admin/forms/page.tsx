@@ -21,6 +21,7 @@ import LayoutAdmin from "@/components/LayoutAdmin";
 
 async function Forms() {
   const forms = await db.query.forms.findMany({
+    where: (form, { isNull }) => isNull(form.deletedAt),
     with: {
       app: true,
     },

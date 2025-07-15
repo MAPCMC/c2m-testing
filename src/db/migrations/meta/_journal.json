@@ -36,6 +36,13 @@
       "when": 1750254283649,
       "tag": "0006_polite_stryfe",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1752488901950,
+      "tag": "0007_square_iron_lad",
+      "breakpoints": true
     }
   ]
 }

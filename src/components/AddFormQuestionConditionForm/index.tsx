@@ -52,6 +52,11 @@ export default function AddFormQuestionConditionForm({
     (formState) => formState.values
   );
 
+  const isDirty = useStore(
+    formForm.store,
+    (formState) => formState.isDirty
+  );
+
   const selectedQuestion = formQuestions.find(
     (q) => q.key === formValues.key
   );
@@ -273,27 +278,29 @@ export default function AddFormQuestionConditionForm({
         name="questionId"
         value={questionId}
       />
-      <div className="justify-end space-x-2 flex">
-        <Button
-          type="button"
-          onClick={() => formForm.reset()}
-          variant="ghost"
-        >
-          Annuleren
-        </Button>
-        <formForm.Subscribe
-          selector={(formState) => [
-            formState.canSubmit,
-            formState.isSubmitting,
-          ]}
-        >
-          {([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit}>
-              {isSubmitting ? "..." : "Opslaan"}
-            </Button>
-          )}
-        </formForm.Subscribe>
-      </div>
+      {isDirty && (
+        <div className="justify-end space-x-2 flex">
+          <Button
+            type="button"
+            onClick={() => formForm.reset()}
+            variant="ghost"
+          >
+            Annuleren
+          </Button>
+          <formForm.Subscribe
+            selector={(formState) => [
+              formState.canSubmit,
+              formState.isSubmitting,
+            ]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <Button type="submit" disabled={!canSubmit}>
+                {isSubmitting ? "..." : "Opslaan"}
+              </Button>
+            )}
+          </formForm.Subscribe>
+        </div>
+      )}
     </form>
   );
 }

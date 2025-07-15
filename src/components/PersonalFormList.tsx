@@ -21,7 +21,8 @@ const PersonalFormList = async () => {
       </h2>
       {personalCodes.map(async (code) => {
         const form = await db.query.forms.findFirst({
-          where: (f, { eq }) => eq(f.id, code.formId),
+          where: (f, { eq, isNull, and }) =>
+            and(eq(f.id, code.formId), isNull(f.deletedAt)),
           with: {
             app: true,
           },

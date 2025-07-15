@@ -26,10 +26,16 @@ async function EditFormChapter({
   const { id, chapterId } = await params;
   const formChapter = await db.query.formChapters.findFirst(
     {
-      where: (formChapters, { eq }) =>
-        eq(formChapters.id, Number(chapterId)),
+      where: (formChapters, { eq, isNull, and }) =>
+        and(
+          eq(formChapters.id, Number(chapterId)),
+          isNull(formChapters.deletedAt)
+        ),
       with: {
-        questions: true,
+        questions: {
+          where: (questions, { isNull }) =>
+            isNull(questions.deletedAt),
+        },
       },
     }
   );
@@ -119,7 +125,7 @@ async function EditFormChapter({
                         schemaName="questions"
                         id={question.id}
                         alertTitle="Vraag nu verwijderen"
-                        alertDescription="Weet je zeker dat je deze vraag wilt verwijderen? Let op: deze actie is alleen mogelijk wanneer er geen antwoorden zijn gekoppeld."
+                        alertDescription="Weet je zeker dat je deze vraag wilt verwijderen?"
                       >
                         Verwijderen
                         <span className="sr-only">

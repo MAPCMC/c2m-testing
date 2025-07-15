@@ -36,7 +36,9 @@ export default async function SuperUser() {
     redirect("/");
   }
 
-  const forms = await db.query.forms.findMany();
+  const forms = await db.query.forms.findMany({
+    where: (form, { isNull }) => isNull(form.deletedAt),
+  });
 
   const addedCodes = await db.query.codes.findMany({
     where: (codes, { eq }) =>

@@ -22,8 +22,11 @@ async function EditFormQuestion({
 }) {
   const { id, chapterId, questionId } = await params;
   const question = await db.query.questions.findFirst({
-    where: (questions, { eq }) =>
-      eq(questions.id, Number(questionId)),
+    where: (questions, { eq, isNull, and }) =>
+      and(
+        eq(questions.id, Number(questionId)),
+        isNull(questions.deletedAt)
+      ),
   });
 
   const options = await db.query.questionsToOptions
@@ -47,13 +50,18 @@ async function EditFormQuestion({
 
   const formQuestions = await db.query.formChapters
     .findMany({
-      where: (formChapters, { eq }) =>
-        eq(formChapters.formId, id),
+      where: (formChapters, { eq, and, isNull }) =>
+        and(
+          eq(formChapters.formId, id),
+          isNull(formChapters.deletedAt)
+        ),
       orderBy: (formChapters, { asc }) => [
         asc(formChapters.order),
       ],
       with: {
         questions: {
+          where: (questions, { isNull }) =>
+            isNull(questions.deletedAt),
           orderBy: (questions, { asc }) => [
             asc(questions.order),
           ],

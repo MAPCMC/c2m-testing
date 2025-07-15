@@ -1,6 +1,5 @@
 import React from "react";
 import FormList from "@/components/FormList";
-import PersonalForm from "@/components/PersonalForm/index";
 import PersonalFormList from "@/components/PersonalFormList";
 import { Suspense } from "react";
 import { getUser } from "@/lib/getUser";
@@ -18,12 +17,20 @@ export default async function AdminHome() {
     redirect(`/${session.user.name}`);
   }
 
+  if (
+    !user ||
+    (user.role !== "superuser" && user.role !== "admin")
+  ) {
+    redirect("/");
+  }
+
   return (
     <LayoutAdmin>
       <Suspense fallback={<p>Laden vragenlijsten...</p>}>
-        {!user && <PersonalForm />}
-        <PersonalFormList />
-        <FormList />
+        <div className="!max-w-3xl mx-auto">
+          <PersonalFormList />
+          <FormList />
+        </div>
       </Suspense>
     </LayoutAdmin>
   );

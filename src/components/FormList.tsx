@@ -17,9 +17,12 @@ const FormList = async () => {
 
   const forms = await db.query.forms.findMany({
     where: user
-      ? (forms, { notInArray }) =>
-          notInArray(forms.id, userFormIds)
-      : undefined,
+      ? (forms, { notInArray, isNull, and }) =>
+          and(
+            notInArray(forms.id, userFormIds),
+            isNull(forms.deletedAt)
+          )
+      : (forms, { isNull }) => isNull(forms.deletedAt),
   });
 
   if (!forms.length) {

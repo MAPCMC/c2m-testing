@@ -39,7 +39,7 @@ export default function PersonalForm() {
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-2 p-4 border rounded-md bg-accent"
+      className="space-y-2 p-4 border rounded-md bg-accent/10"
     >
       <h2 className="text-2xl font-medium">
         Persoonlijke vragenlijst

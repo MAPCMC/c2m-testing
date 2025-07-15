@@ -3,6 +3,7 @@ import {
   text,
   uuid,
   varchar,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import formChapters from "./formChapters";
@@ -13,6 +14,7 @@ const forms = pgTable("form", {
   title: text("title").notNull(),
   description: varchar("description", { length: 2048 }),
   appId: uuid("app_id").references(() => apps.id),
+  deletedAt: timestamp("deleted_at", { mode: "date" }),
 });
 
 export const formsRelations = relations(

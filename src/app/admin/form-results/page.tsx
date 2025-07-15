@@ -16,7 +16,9 @@ import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
 
 async function Admin() {
-  const forms = await db.query.forms.findMany();
+  const forms = await db.query.forms.findMany({
+    where: (form, { isNull }) => isNull(form.deletedAt),
+  });
   const codes = await db.query.codes.findMany({
     with: {
       user: true,

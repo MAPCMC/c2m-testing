@@ -129,14 +129,19 @@ export async function getFullForm(
   code: string
 ) {
   const fullForm = await db.query.forms.findFirst({
-    where: (form, { eq }) => eq(form.id, formId),
+    where: (form, { eq, isNull, and }) =>
+      and(eq(form.id, formId), isNull(form.deletedAt)),
     with: {
       formChapters: {
+        where: (formChapters, { isNull }) =>
+          isNull(formChapters.deletedAt),
         orderBy: (formChapters, { asc }) => [
           asc(formChapters.order),
         ],
         with: {
           questions: {
+            where: (questions, { isNull }) =>
+              isNull(questions.deletedAt),
             orderBy: (questions, { asc }) => [
               asc(questions.order),
             ],

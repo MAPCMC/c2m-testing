@@ -35,8 +35,11 @@ export default async function Form({
   }
 
   const form = await db.query.forms.findFirst({
-    where: (form, { eq }) =>
-      eq(form.id, currentCode.formId),
+    where: (form, { eq, and, isNull }) =>
+      and(
+        eq(form.id, currentCode.formId),
+        isNull(form.deletedAt)
+      ),
   });
 
   if (!form) {

@@ -3,6 +3,7 @@ import {
   serial,
   text,
   integer,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import questionsToOptions from "./questionsToOptions";
@@ -35,6 +36,7 @@ const questions = pgTable("question", {
     .default("text"),
   score_high_description: text("score_high_description"),
   score_low_description: text("score_low_description"),
+  deletedAt: timestamp("deleted_at", { mode: "date" }),
 });
 
 export const questionsRelations = relations(
