@@ -2,7 +2,7 @@ import db from "@/db";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getUser } from "@/lib/getUser";
-import { Alert } from "./ui/alert";
+import { Alert, AlertTitle } from "./ui/alert";
 
 const PersonalFormList = async () => {
   const user = await getUser();
@@ -67,8 +67,10 @@ const PersonalFormList = async () => {
       })}
       {personalCodes.length === 0 && (
         <Alert>
-          Er zijn geen klaargezette of bestaande
-          vragenlijsten.
+          <AlertTitle>
+            Er zijn geen klaargezette of bestaande
+            vragenlijsten.
+          </AlertTitle>
         </Alert>
       )}
     </section>

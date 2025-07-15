@@ -36,7 +36,7 @@ export default async function Home() {
         title="Connect2Music testportaal"
         className="space-y-3"
       />
-      <PageMain>
+      <PageMain className="space-y-6">
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
           {!user && <PersonalForm />}
           <PersonalFormList />

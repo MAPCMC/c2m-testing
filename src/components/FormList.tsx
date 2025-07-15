@@ -23,6 +23,9 @@ const FormList = async () => {
             isNull(forms.deletedAt)
           )
       : (forms, { isNull }) => isNull(forms.deletedAt),
+    with: {
+      app: true,
+    },
   });
 
   if (!forms.length) {
@@ -54,7 +57,12 @@ const FormList = async () => {
           className="border px-4 py-3 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-2"
         >
           <div className="flex flex-col gap-2 justify-center">
-            <h3 className="text-lg">{form.title}</h3>
+            <h3 className="text-lg">
+              {form.app?.name && form.app.deletedAt === null
+                ? form.app.name + " | "
+                : ""}
+              {form.title}
+            </h3>
             {form.description && (
               <div
                 className="lg:col-span-2 prose text-sm"

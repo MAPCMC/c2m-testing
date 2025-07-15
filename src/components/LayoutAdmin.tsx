@@ -5,15 +5,18 @@ import NavBar from "@/components/NavBar/index";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 async function LayoutAdmin({
   children,
   headerTitle,
   breadcrumb,
+  className,
 }: Readonly<{
   children: React.ReactNode;
   headerTitle?: string;
   breadcrumb?: { title: string; href: string }[];
+  className?: string;
 }>) {
   return (
     <>
@@ -37,7 +40,10 @@ async function LayoutAdmin({
         />
         <PageMain
           id="main-content"
-          className="max-w-none *:max-w-none"
+          className={cn(
+            "max-w-none *:max-w-none",
+            className
+          )}
         >
           {children}
         </PageMain>
