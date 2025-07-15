@@ -9,15 +9,20 @@ import { getFormUser } from "@/lib/getFormUser";
 import FormStopSessionButton from "@/components/FormStopSessionButton";
 import { PageHeader } from "@/components/PageHeader";
 import { PageMain } from "@/components/PageMain";
-import { Alert } from "@/components/ui/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 import { navigateToSession } from "@/lib/navigateToSession";
+import LayoutNormal from "@/components/LayoutNormal";
 
 export default async function CodePage({
   params,
 }: {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 }) {
-  const { code } = params;
+  const { code } = await params;
 
   await navigateToSession(code);
 
@@ -29,7 +34,7 @@ export default async function CodePage({
 
   if (formUser === "blocked" || !currentCode) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet beschikbaar" />
         <PageMain>
@@ -37,7 +42,7 @@ export default async function CodePage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
@@ -52,7 +57,7 @@ export default async function CodePage({
 
   if (!form) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet gevonden" />
         <PageMain>
@@ -60,32 +65,55 @@ export default async function CodePage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
+  let app;
+  if (form.appId) {
+    const appId = form.appId;
+    app = await db.query.apps.findFirst({
+      where: (apps, { eq, isNull, and }) =>
+        and(eq(apps.id, appId), isNull(apps.deletedAt)),
+    });
+  }
+
   return (
-    <>
+    <LayoutNormal>
       <NavBar noLogout>
         <FormStopSessionButton />
       </NavBar>
       <PageHeader title={`Vragenlijst: ${form?.title}`} />
       <PageMain className="*:mx-auto">
-        {form.app_name && form.app_link && (
+        {app?.name && app?.link && (
           <Alert>
-            {form.app_name} nog niet gebruikt? Test de
-            applicatie via:{" "}
-            <a
-              target="_blank"
-              href={form.app_link}
-              className="hover:underline focus:underline underline-offset-4"
-            >
-              {form.app_link}
-            </a>
+            <AlertTitle className="text-lg">
+              <span>{app.name}</span>
+              <span> nog niet gebruikt?</span>
+            </AlertTitle>
+            <AlertDescription>
+              <p>
+                <span> Test de applicatie via: </span>
+                <a
+                  target="_blank"
+                  href={app.link}
+                  className="hover:underline focus:underline underline-offset-4"
+                >
+                  {app.link}
+                </a>
+              </p>
+            </AlertDescription>
           </Alert>
         )}
         <div className="space-y-3">
-          {form?.description && <p>{form?.description}</p>}
+          {form?.description && (
+            <div
+              className="lg:col-span-2 prose"
+              dangerouslySetInnerHTML={{
+                __html: form.description,
+              }}
+            ></div>
+          )}
           <p>
             Vanaf het moment dat u start met het invullen
             van de vragenlijst worden uw antwoorden
@@ -121,6 +149,6 @@ export default async function CodePage({
           </Button>
         </div>
       </PageMain>
-    </>
+    </LayoutNormal>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import { useFormState } from "react-dom";
+import React, { useActionState } from "react";
 import { initialFormState } from "@tanstack/react-form/nextjs";
 import {
   mergeForm,
   useForm,
+  useStore,
   useTransform,
 } from "@tanstack/react-form";
 
@@ -14,9 +14,9 @@ import {
   handleSubmit,
 } from "./action";
 import formOpts from "./formOptions";
-import { Button } from "../ui/button";
-import InnerField from "../AnswerForm/components/InnerField";
-import InnerChoiceField from "../AnswerForm/components/InnerChoiceField";
+import { Button } from "@/components/ui/button";
+import InnerField from "@/components/InnerField";
+import InnerChoiceField from "@/components/InnerChoiceField";
 import { forms } from "@/db/schema";
 
 type Props = {
@@ -32,7 +32,7 @@ export default function AddCodeForm({
   const [result, setResult] = React.useState<string | null>(
     null
   );
-  const [state, action] = useFormState(
+  const [state, action] = useActionState(
     handleAddCodeSubmit,
     stateRef.current
   );
@@ -69,17 +69,19 @@ export default function AddCodeForm({
     },
   });
 
-  const formErrors = form.useStore(
+  const formErrors = useStore(
+    form.store,
     (formState) => formState.errors
   );
 
   return (
     <form
       action={action as never}
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         form.handleSubmit();
       }}
-      className="space-y-2"
+      className="space-y-2  p-4 border rounded-md"
     >
       <h2 className="text-2xl font-medium">
         Vragenlijst klaarzetten
@@ -87,9 +89,9 @@ export default function AddCodeForm({
       <p>
         Zet een vragenlijst klaar voor een andere gebruiker.
       </p>
-      {formErrors.map((error) => (
+      {formErrors.map((error, i) => (
         <p
-          key={error as string}
+          key={i}
           aria-live="assertive"
           className="text-sm font-medium text-destructive"
         >

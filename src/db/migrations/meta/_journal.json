@@ -29,6 +29,27 @@
       "when": 1728485732954,
       "tag": "0003_nebulous_gamma_corps",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1750254283649,
+      "tag": "0006_polite_stryfe",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1752488901950,
+      "tag": "0007_square_iron_lad",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1752573881097,
+      "tag": "0008_clear_maximus",
+      "breakpoints": true
     }
   ]
 }

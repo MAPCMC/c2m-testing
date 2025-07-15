@@ -3,12 +3,11 @@
 import React from "react";
 
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { z } from "zod";
 
 import formOpts from "./formOptions";
 import { Button } from "../ui/button";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 import checkUserResult from "./action";
 
 import { signIn } from "next-auth/react";
@@ -42,7 +41,6 @@ export default function SignInEmailForm({
 
   return (
     <form
-      // action={action as never}
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -61,7 +59,6 @@ export default function SignInEmailForm({
       ))}
       <form.Field
         name="email"
-        validatorAdapter={zodValidator()}
         validators={{
           onChange: z
             .string()
@@ -73,7 +70,11 @@ export default function SignInEmailForm({
             label="E-mailadres"
             value={field.state.value}
             name={field.name}
-            errors={field.state.meta.errors}
+            errors={
+              field.state.meta.errors as {
+                message: string;
+              }[]
+            }
             onBlur={field.handleBlur}
             onChange={(e) => {
               if (formErrors.length > 0) setFormErrors([]);

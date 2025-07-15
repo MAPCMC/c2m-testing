@@ -4,7 +4,7 @@ import { AnswerFull, QuestionFull } from "@/db/types";
 const formOpts = (data: {
   code: string;
   formId: string;
-  question: QuestionFull;
+  question: Omit<QuestionFull, "deletedAt">;
   answer?: AnswerFull;
 }) =>
   formOptions({

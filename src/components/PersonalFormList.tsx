@@ -21,8 +21,18 @@ const PersonalFormList = async () => {
       </h2>
       {personalCodes.map(async (code) => {
         const form = await db.query.forms.findFirst({
-          where: (f, { eq }) => eq(f.id, code.formId),
+          where: (f, { eq, isNull, and }) =>
+            and(eq(f.id, code.formId), isNull(f.deletedAt)),
+          with: {
+            app: true,
+          },
         });
+
+        const app =
+          form?.app && form.app.deletedAt === null
+            ? form.app
+            : null;
+
         if (!form) return null;
         return (
           <article
@@ -30,15 +40,26 @@ const PersonalFormList = async () => {
             className="border px-4 py-3 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-2"
           >
             <div className="flex flex-col gap-2 justify-center">
-              <h3 className="text-lg">{form.title}</h3>
+              <h3 className="text-lg">
+                {app?.name && app.name + " | "}
+                {form.title}
+              </h3>
               {form.description && (
-                <p className="grow">{form.description}</p>
+                <div
+                  className="lg:col-span-2 prose text-sm"
+                  dangerouslySetInnerHTML={{
+                    __html: form.description,
+                  }}
+                ></div>
               )}
             </div>
 
             <Button asChild>
               <Link href={`/${code.link}`}>
                 Start vragenlijst
+                <span className="sr-only">
+                  : {form.title}
+                </span>
               </Link>
             </Button>
           </article>

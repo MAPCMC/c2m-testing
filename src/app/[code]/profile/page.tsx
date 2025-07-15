@@ -12,13 +12,14 @@ import { PageHeader } from "@/components/PageHeader";
 import { navigateToSession } from "@/lib/navigateToSession";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import LayoutNormal from "@/components/LayoutNormal";
 
 export default async function CodeProfilePage({
   params,
 }: {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 }) {
-  const { code } = params;
+  const { code } = await params;
 
   await navigateToSession(code);
 
@@ -35,7 +36,7 @@ export default async function CodeProfilePage({
 
   if (!currentCode || formUser === "blocked") {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet beschikbaar" />
         <PageMain>
@@ -43,7 +44,7 @@ export default async function CodeProfilePage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
@@ -61,7 +62,7 @@ export default async function CodeProfilePage({
 
   if (!form) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet gevonden" />
         <PageMain>
@@ -69,12 +70,12 @@ export default async function CodeProfilePage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
   return (
-    <>
+    <LayoutNormal>
       <NavBar noLogout />
       <PageHeader title={`Vragenlijst: ${form?.title}`} />
       <PageMain>
@@ -107,10 +108,13 @@ export default async function CodeProfilePage({
             </p>
             <FormSessionButton formId={currentCode.formId}>
               Start anonieme vragenlijst
+              <span className="sr-only">
+                : {form.title}
+              </span>
             </FormSessionButton>
           </>
         )}
       </PageMain>
-    </>
+    </LayoutNormal>
   );
 }

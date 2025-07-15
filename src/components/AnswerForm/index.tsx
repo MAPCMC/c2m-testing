@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import { useFormState } from "react-dom";
+import React, { useActionState } from "react";
 import { initialFormState } from "@tanstack/react-form/nextjs";
 import {
   mergeForm,
   useForm,
+  useStore,
   useTransform,
 } from "@tanstack/react-form";
 
@@ -15,16 +15,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 import answers from "@/db/schema/answers";
 import dbOptions from "@/db/schema/options";
 import answersToOptions from "@/db/schema/answersToOptions";
 import { QuestionFull } from "@/db/types";
 import formOpts from "./formOptions";
-import { Textarea } from "../ui/textarea";
-import InnerField from "./components/InnerField";
-import InnerChoiceField from "./components/InnerChoiceField";
-import InnerScoreField from "./components/InnerScoreField";
+import InnerField from "@/components/InnerField";
+import InnerChoiceField from "@/components/InnerChoiceField";
+import InnerScoreField from "@/components/InnerScoreField";
 
 export default function AnswerForm({
   question,
@@ -43,7 +43,7 @@ export default function AnswerForm({
   nextQuestionId?: number;
   previousQuestionId?: number;
 }) {
-  const [state, action] = useFormState(
+  const [state, action] = useActionState(
     handleAnswerFormSubmit,
     initialFormState
   );
@@ -61,7 +61,8 @@ export default function AnswerForm({
     ),
   });
 
-  const formErrors = form.useStore(
+  const formErrors = useStore(
+    form.store,
     (formState) => formState.errors
   );
 
@@ -73,9 +74,9 @@ export default function AnswerForm({
       }}
       className="space-y-4"
     >
-      {formErrors.map((error) => (
+      {formErrors.map((error, i) => (
         <p
-          key={error as string}
+          key={i}
           aria-live="assertive"
           className="text-sm font-medium text-destructive"
         >
@@ -281,17 +282,22 @@ export default function AnswerForm({
                         }
                       )}
                       {question.description && (
-                        <p className="text-sm">
-                          {question.description}
-                        </p>
+                        <div
+                          className="prose text-sm"
+                          dangerouslySetInnerHTML={{
+                            __html: question.description,
+                          }}
+                        ></div>
                       )}
-                      {field.state.meta.errors.map(
-                        (error) => (
-                          <p key={error as string}>
-                            {error}
-                          </p>
+                      {field.state.meta.errors
+                        .filter(
+                          (error) =>
+                            error !== undefined &&
+                            error !== null
                         )
-                      )}
+                        .map((error) => (
+                          <p key={error}>{error}</p>
+                        ))}
                       <input
                         type="hidden"
                         name="optionsString"
@@ -430,17 +436,22 @@ export default function AnswerForm({
                         }
                       )}
                       {question.description && (
-                        <p className="text-sm">
-                          {question.description}
-                        </p>
+                        <div
+                          className="prose text-sm"
+                          dangerouslySetInnerHTML={{
+                            __html: question.description,
+                          }}
+                        ></div>
                       )}
-                      {field.state.meta.errors.map(
-                        (error) => (
-                          <p key={error as string}>
-                            {error}
-                          </p>
+                      {field.state.meta.errors
+                        .filter(
+                          (error) =>
+                            error !== undefined &&
+                            error !== null
                         )
-                      )}
+                        .map((error) => (
+                          <p key={error}>{error}</p>
+                        ))}
                       <input
                         type="hidden"
                         name="optionsString"

@@ -1,34 +1,86 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --chorista-bg-solid: 0 0% 98%;
-  --chorista-bg-overlay: 0 0% 64% 0.8;
-  --chorista-text-solid: 0 0% 0%;
-  --chorista-border-solid: 0 0% 0%;
-  --chorista-border-soft: 0 12% 27%;
-  --chorista-bg-off-1: 0 0% 93%;
-  --chorista-bg-off-2: 0 0% 80%;
+@custom-variant dark (&:is(.dark *));
 
-  --chorista-bg-solid-dark: 0 0% 9%;
-  --chorista-bg-overlay-dark: 0 0% 15% 0.8;
-
-  --chorista-text-solid-dark: 0 0% 98%;
-  --chorista-border-solid-dark: 0 0% 67%;
-  --chorista-border-soft-dark: 0 0% 20%;
-  --chorista-bg-off-1-dark: 0 0% 18%;
-  --chorista-bg-off-2-dark: 0 0% 27%;
+@theme {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(
+    --sidebar-primary-foreground
+  );
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(
+    --sidebar-accent-foreground
+  );
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-body {
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: Arial, Helvetica, sans-serif;
-}
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
 
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
 @layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
   :root {
+    --chorista-bg-solid: oklch(0.9809 0.0001 0);
+    --chorista-bg-overlay: oklch(0.7966 0.0001 0 / 0.8);
+    --chorista-text-solid: oklch(0 0 0);
+    --chorista-border-solid: oklch(0 0 0);
+    --chorista-border-soft: oklch(0.2997 0.0292 0);
+    --chorista-bg-off-1: oklch(0.9482 0.0001 0);
+    --chorista-bg-off-2: oklch(0.8365 0.0001 0);
+
+    --chorista-bg-solid-dark: oklch(0.1013 0.0001 0);
+    --chorista-bg-overlay-dark: oklch(0.7 0.0001 0 / 0.8);
+    --chorista-text-solid-dark: oklch(0.9809 0.0001 0);
+    --chorista-border-solid-dark: oklch(0.6165 0.0001 0);
+    --chorista-border-soft-dark: oklch(0.4 0.0001 0);
+    --chorista-bg-off-1-dark: oklch(0.1772 0.0001 0);
+    --chorista-bg-off-2-dark: oklch(0.295 0.0001 0);
+  }
+
+  :root {
+    --radius: 0.625rem;
     --background: var(--chorista-bg-solid);
     --foreground: var(--chorista-text-solid);
     --card: var(--chorista-bg-solid);
@@ -41,20 +93,32 @@ body {
     --secondary-foreground: var(--chorista-text-solid-dark);
     --muted: var(--chorista-bg-off-1);
     --muted-foreground: var(--chorista-bg-solid-dark);
-    --accent: var(--chorista-bg-off-1);
-    --accent-foreground: var(--chorista-bg-overlay-dark);
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: var(--chorista-bg-off-1);
+    --accent: var(--chorista-bg-off-2);
+    --accent-foreground: var(--chorista-text-solid);
+    --destructive: oklch(0.55 0.222 23.5);
+    --destructive-foreground: var(
+      --chorista-text-solid-dark
+    );
     --border: var(--chorista-border-soft);
     --input: var(--chorista-bg-off-1);
     --ring: var(--chorista-border-solid);
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: var(--chorista-bg-solid);
+    --sidebar-foreground: var(--chorista-text-solid);
+    --sidebar-primary: var(--chorista-bg-solid);
+    --sidebar-primary-foreground: var(
+      --chorista-text-solid
+    );
+    --sidebar-accent: var(--chorista-bg-off-1);
+    --sidebar-accent-foreground: var(--chorista-text-solid);
+    --sidebar-border: var(--chorista-border-solid);
+    --sidebar-ring: var(--chorista-border-solid);
   }
+
   .dark {
     --background: var(--chorista-bg-solid-dark);
     --foreground: var(--chorista-text-solid-dark);
@@ -68,30 +132,62 @@ body {
     --secondary-foreground: var(--chorista-text-solid);
     --muted: var(--chorista-bg-overlay-dark);
     --muted-foreground: var(--chorista-border-solid-dark);
-    --accent: var(--chorista-bg-off-1-dark);
-    --accent-foreground: var(--chorista-bg-off-1);
-
-    --destructive: 0 84.2% 60.2%;
+    --accent: var(--chorista-bg-off-2-dark);
+    --accent-foreground: var(--chorista-text-solid-dark);
+    --destructive: oklch(0.55 0.222 23.5);
     --destructive-foreground: var(--chorista-bg-off-2);
     --border: var(--chorista-border-soft-dark);
     --input: var(--chorista-bg-overlay-dark);
     --ring: var(--chorista-text-solid-dark);
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: var(--chorista-bg-solid-dark);
+    --sidebar-foreground: var(--chorista-text-solid-dark);
+    --sidebar-primary: var(--chorista-bg-solid);
+    --sidebar-primary-foreground: var(
+      --chorista-text-solid
+    );
+    --sidebar-accent: var(--chorista-bg-off-2-dark);
+    --sidebar-accent-foreground: var(
+      --chorista-text-solid-dark
+    );
+    --sidebar-border: var(--chorista-border-solid-dark);
+    --sidebar-ring: var(--chorista-text-solid-dark);
   }
-}
 
-.prose {
-  @apply space-y-2;
-
-  a {
-    @apply text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  body {
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
-  ul {
-    @apply list-disc list-inside;
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .prose {
+    @apply space-y-2;
+
+    a {
+      @apply text-primary underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    }
+
+    ul {
+      @apply list-disc list-inside;
+    }
+  }
+
+  .tiptap.prose ul p:first-child {
+    @apply inline;
+  }
+
+  .tiptap.prose a {
+    @apply text-blue-600;
   }
 }

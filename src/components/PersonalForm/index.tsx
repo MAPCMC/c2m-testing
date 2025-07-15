@@ -1,21 +1,21 @@
 "use client";
 
-import React from "react";
-import { useFormState } from "react-dom";
+import React, { useActionState } from "react";
 import { initialFormState } from "@tanstack/react-form/nextjs";
 import {
   mergeForm,
   useForm,
+  useStore,
   useTransform,
 } from "@tanstack/react-form";
 
 import handlePersonalFormSubmit from "./action";
 import formOpts from "./formOptions";
 import { Button } from "../ui/button";
-import InnerField from "../AnswerForm/components/InnerField";
+import InnerField from "../InnerField";
 
 export default function PersonalForm() {
-  const [state, action] = useFormState(
+  const [state, action] = useActionState(
     handlePersonalFormSubmit,
     initialFormState
   );
@@ -28,7 +28,8 @@ export default function PersonalForm() {
     ),
   });
 
-  const formErrors = form.useStore(
+  const formErrors = useStore(
+    form.store,
     (formState) => formState.errors
   );
 
@@ -38,7 +39,7 @@ export default function PersonalForm() {
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-2"
+      className="space-y-2 p-4 border rounded-md bg-accent/10"
     >
       <h2 className="text-2xl font-medium">
         Persoonlijke vragenlijst
@@ -48,9 +49,9 @@ export default function PersonalForm() {
         de code hier in om direct naar jouw vragenlijst te
         gaan.
       </p>
-      {formErrors.map((error) => (
+      {formErrors.map((error, i) => (
         <p
-          key={error as string}
+          key={i}
           aria-live="assertive"
           className="text-sm font-medium text-destructive"
         >

@@ -13,19 +13,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserWithProfile } from "@/lib/getUser";
 import { setProfileTheme } from "./actions/setProfileTheme";
+import { cn } from "@/lib/utils";
 
 export function ThemeToggle({
   user,
 }: {
   user?: UserWithProfile | false;
 }) {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
-    if (user && user.theme) {
+    if (
+      user &&
+      theme &&
+      user.theme &&
+      user.theme !== theme
+    ) {
       setTheme(user.theme);
     }
-  }, [user, setTheme]);
+  }, [user, setTheme, theme]);
 
   return (
     <DropdownMenu>
@@ -33,22 +39,30 @@ export function ThemeToggle({
         <Button variant="outline" size="icon">
           <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
+          <span className="sr-only">Wissel van thema</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onClick={() => {
-            setProfileTheme(user, "light");
+          className={cn(
+            theme === "light" &&
+              "bg-accent text-accent-foreground"
+          )}
+          onClick={async () => {
             setTheme("light");
+            setProfileTheme(user, "light");
           }}
         >
           Licht
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => {
-            setProfileTheme(user, "dark");
+          className={cn(
+            theme === "dark" &&
+              "bg-accent text-accent-foreground"
+          )}
+          onClick={async () => {
             setTheme("dark");
+            setProfileTheme(user, "dark");
           }}
         >
           Donker

@@ -2,7 +2,6 @@ import db from "@/db";
 import NavBar from "@/components/NavBar/index";
 import AnswerForm from "@/components/AnswerForm";
 import { Suspense } from "react";
-import { revalidatePath } from "next/cache";
 import { ChapterFull, QuestionFull } from "@/db/types";
 import { getFullForm } from "@/lib/getFullForm";
 import { getFormUser } from "@/lib/getFormUser";
@@ -12,15 +11,16 @@ import { navigateToSession } from "@/lib/navigateToSession";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import LayoutNormal from "@/components/LayoutNormal";
 
 export const dynamic = "force-dynamic";
 
 export default async function AnswerPage({
   params,
 }: {
-  params: { code: string; qid: string };
+  params: Promise<{ code: string; qid: string }>;
 }) {
-  const { code, qid } = params;
+  const { code, qid } = await params;
 
   await navigateToSession(code);
 
@@ -32,7 +32,7 @@ export default async function AnswerPage({
 
   if (!currentCode || formUser === "blocked") {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet beschikbaar" />
         <PageMain>
@@ -40,16 +40,13 @@ export default async function AnswerPage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
   if (formUser === "invited") {
     return redirect(`/${code}`);
   }
-
-  // refresh
-  revalidatePath("/[code]/[qid]", "page");
 
   const form = await getFullForm(
     currentCode.formId,
@@ -58,7 +55,7 @@ export default async function AnswerPage({
 
   if (!form) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar />
         <PageHeader title="Formulier niet gevonden" />
         <PageMain>
@@ -66,7 +63,7 @@ export default async function AnswerPage({
             <Link href="/">Naar de hoofdpagina</Link>
           </Button>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
@@ -92,13 +89,13 @@ export default async function AnswerPage({
 
   if (!currentChapter) {
     return (
-      <>
+      <LayoutNormal>
         <NavBar noLogout />
         <PageHeader title={`Vragenlijst: ${form?.title}`} />
         <PageMain>
           <p>Hoofdstuk niet gevonden</p>
         </PageMain>
-      </>
+      </LayoutNormal>
     );
   }
 
@@ -143,7 +140,7 @@ export default async function AnswerPage({
   });
 
   return (
-    <>
+    <LayoutNormal>
       <NavBar noLogout />
       <PageHeader title={`Vragenlijst: ${form?.title}`} />
       <PageMain className="*:mx-auto">
@@ -178,6 +175,6 @@ export default async function AnswerPage({
           />
         </Suspense>
       </PageMain>
-    </>
+    </LayoutNormal>
   );
 }

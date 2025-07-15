@@ -6,6 +6,7 @@ import {
   uuid,
   varchar,
   integer,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import questions from "./questions";
@@ -22,6 +23,7 @@ const formChapters = pgTable("form_chapter", {
     .notNull()
     .default(false),
   order: integer("order").notNull().default(1),
+  deletedAt: timestamp("deleted_at", { mode: "date" }),
 });
 
 export const formChaptersRelations = relations(

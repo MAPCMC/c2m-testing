@@ -7,9 +7,11 @@ jiti("./src/env/server.ts");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    typedRoutes: true,
-  },
+  output: "standalone",
+  transpilePackages: [
+    "@t3-oss/env-nextjs",
+    "@t3-oss/env-core",
+  ],
 };
 
 export default nextConfig;

@@ -17,9 +17,12 @@ const FormList = async () => {
 
   const forms = await db.query.forms.findMany({
     where: user
-      ? (forms, { notInArray }) =>
-          notInArray(forms.id, userFormIds)
-      : undefined,
+      ? (forms, { notInArray, isNull, and }) =>
+          and(
+            notInArray(forms.id, userFormIds),
+            isNull(forms.deletedAt)
+          )
+      : (forms, { isNull }) => isNull(forms.deletedAt),
   });
 
   if (!forms.length) {
@@ -53,12 +56,18 @@ const FormList = async () => {
           <div className="flex flex-col gap-2 justify-center">
             <h3 className="text-lg">{form.title}</h3>
             {form.description && (
-              <p className="grow">{form.description}</p>
+              <div
+                className="lg:col-span-2 prose text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: form.description,
+                }}
+              ></div>
             )}
           </div>
 
           <FormSessionButton formId={form.id}>
             Start {!user && "anonieme"} vragenlijst
+            <span className="sr-only">: {form.title}</span>
           </FormSessionButton>
         </article>
       ))}
