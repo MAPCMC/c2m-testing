@@ -95,7 +95,7 @@
     --muted-foreground: var(--chorista-bg-solid-dark);
     --accent: var(--chorista-bg-off-2);
     --accent-foreground: var(--chorista-text-solid);
-    --destructive: oklch(0.646 0.222 41.116);
+    --destructive: oklch(0.55 0.222 23.5);
     --destructive-foreground: var(
       --chorista-text-solid-dark
     );
@@ -134,7 +134,7 @@
     --muted-foreground: var(--chorista-border-solid-dark);
     --accent: var(--chorista-bg-off-2-dark);
     --accent-foreground: var(--chorista-text-solid-dark);
-    --destructive: oklch(0.704 0.191 22.216);
+    --destructive: oklch(0.55 0.222 23.5);
     --destructive-foreground: var(--chorista-bg-off-2);
     --border: var(--chorista-border-soft-dark);
     --input: var(--chorista-bg-overlay-dark);

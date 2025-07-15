@@ -10,15 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { getPreviewText } from "@/lib/getPreviewText";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
 import RemoveButton from "@/components/RemoveButton";
-// import { eq } from "drizzle-orm";
-// import { forms as formsSchema } from "@/db/schema";
-// import { RemoveButton } from "@/components/RemoveButton";
 
 async function Forms() {
   const forms = await db.query.forms.findMany({

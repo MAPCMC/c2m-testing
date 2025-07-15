@@ -1,5 +1,4 @@
 import React from "react";
-import db from "@/db";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -13,14 +12,39 @@ import {
 import Link from "next/link";
 import { AuthenticatedPage } from "@/components/AuthenticatedPage";
 import LayoutAdmin from "@/components/LayoutAdmin";
+import Search from "@/components/Search";
+import { getUsers } from "@/lib/getUsers";
+interface Props {
+  searchParams?: Promise<{
+    q?: string;
+    page?: string;
+  }>;
+}
 
-async function Users() {
-  const users = await db.query.users.findMany();
+async function Users(props: Props) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.q || "";
+  const currentPage = searchParams?.page || "1";
 
+  const limit = 20;
+  const page = parseInt(currentPage, 10);
+  const offset = (page - 1) * limit;
+
+  const users = await getUsers({
+    q: query,
+    limit,
+    page,
+  });
+
+  console.log(offset, limit, users.total);
+
+  const hasNext = offset + limit < users.total;
   return (
     <LayoutAdmin headerTitle="Gebruikersbeheer">
-      <h2 className="text-2xl font-medium">Gebruikers</h2>
-
+      <div className="flex items-center justify-between gap-4">
+        <h2 className="text-2xl font-medium">Gebruikers</h2>
+        <Search placeholder="Zoeken op e-mail..." />
+      </div>
       <Table className="w-full">
         <TableCaption>
           Een lijst van alle gebruikers
@@ -34,7 +58,7 @@ async function Users() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
+          {users.result.map((user) => (
             <TableRow key={user.id}>
               <TableCell className="font-medium">
                 {user.email}
@@ -62,6 +86,27 @@ async function Users() {
           ))}
         </TableBody>
       </Table>
+      <div className="mt-4 flex gap-4 justify-between">
+        {page > 1 ? (
+          <Button asChild>
+            <Link href={`?q=${query}&page=${page - 1}`}>
+              Vorige
+            </Link>
+          </Button>
+        ) : (
+          <Button disabled>Vorige</Button>
+        )}
+
+        {hasNext ? (
+          <Button asChild>
+            <Link href={`?q=${query}&page=${page + 1}`}>
+              Volgende
+            </Link>
+          </Button>
+        ) : (
+          <Button disabled>Volgende</Button>
+        )}
+      </div>
     </LayoutAdmin>
   );
 }
