@@ -37,7 +37,10 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   asChild
                   isActive={
-                    pathname === "/admin/form-results"
+                    pathname === "/admin/form-results" ||
+                    pathname.startsWith(
+                      "/admin/form-results/"
+                    )
                   }
                 >
                   <Link href="/admin/form-results">
