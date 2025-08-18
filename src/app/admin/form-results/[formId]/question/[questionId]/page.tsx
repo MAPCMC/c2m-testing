@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import ChooseQuestionForm from "@/components/ChooseQuestionForm";
+import prepareExportData from "./prepareExportData";
 
 async function FormResultsQuestion({
   params,
@@ -80,19 +81,7 @@ async function FormResultsQuestion({
     },
   });
 
-  // Group answers by question key
-  const answersByQuestion = answers.reduce(
-    (acc, answer) => {
-      if (!answer.questionKey) return acc;
-
-      if (!acc[answer.questionKey]) {
-        acc[answer.questionKey] = [];
-      }
-      acc[answer.questionKey].push(answer);
-      return acc;
-    },
-    {} as Record<string, typeof answers>
-  );
+  const exportData = prepareExportData(form, answers);
 
   return (
     <LayoutAdmin
@@ -114,14 +103,26 @@ async function FormResultsQuestion({
         },
       ]}
     >
-      <ChooseQuestionForm
-        questions={questions.map((q) => ({
-          id: q.id.toString(),
-          label: q.label,
-        }))}
-        questionId={questionId}
-        formId={formId}
-      />
+      <div className="flex justify-between flex-wrap gap-2">
+        <ChooseQuestionForm
+          questions={questions.map((q) => ({
+            id: q.id.toString(),
+            label: q.label,
+          }))}
+          questionId={questionId}
+          formId={formId}
+          className="grow"
+        />
+        <ExportButton
+          data={exportData}
+          filename={`${form.title}-${
+            question.key
+          }-antwoorden-${
+            new Date().toISOString().split("T")[0]
+          }`}
+          label="Exporteer antwoorden voor deze vraag (CSV)"
+        />
+      </div>
       <Table className="max-w-full">
         <TableCaption>
           Een lijst van alle antwoorden voor deze vraag.

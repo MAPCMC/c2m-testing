@@ -19,6 +19,8 @@ import LayoutAdmin from "@/components/LayoutAdmin";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ChooseCodeMenu from "@/components/ChooseCodeMenu";
+import { ExportButton } from "@/components/ExportButton";
+import prepareExportData from "./prepareExportData";
 
 export default async function AdminCodePage({
   params,
@@ -95,6 +97,8 @@ export default async function AdminCodePage({
     (c) => c.formId === formId
   );
 
+  const exportData = prepareExportData(form, answers);
+
   const findQuestionAnswer = (key: string) =>
     answers.find((a) => a.questionKey === key);
   return (
@@ -117,11 +121,21 @@ export default async function AdminCodePage({
         },
       ]}
     >
-      <ChooseCodeMenu
-        code={code}
-        codes={currentFormCodes.map((c) => c.link)}
-        formId={form.id}
-      />
+      <div className="flex justify-between flex-wrap gap-2">
+        <ChooseCodeMenu
+          code={code}
+          codes={currentFormCodes.map((c) => c.link)}
+          formId={form.id}
+          className="grow"
+        />
+        <ExportButton
+          data={exportData}
+          filename={`${form.title}-${code}-antwoorden-${
+            new Date().toISOString().split("T")[0]
+          }`}
+          label="Exporteer antwoorden voor deze code (CSV)"
+        />
+      </div>
       <Table>
         <TableCaption>
           Alle vragen en antwoorden met code {code}.
@@ -156,7 +170,7 @@ export default async function AdminCodePage({
                     {!!answer?.answersToOptions?.length &&
                       answer?.answersToOptions?.length >
                         0 && (
-                        <ul>
+                        <ul className="list-disc list-inside">
                           {answer?.answersToOptions.map(
                             (a) => (
                               <li key={a.option.id}>

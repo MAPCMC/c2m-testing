@@ -8,13 +8,15 @@ export function ChooseQuestionForm({
   questionId,
   questions,
   formId,
+  className,
 }: {
   questionId: string;
   questions: { id: string; label: string }[];
   formId: string;
+  className?: string;
 }) {
   return (
-    <form>
+    <form className={className}>
       <InnerSelectField
         name="question"
         options={questions.map((question) => ({

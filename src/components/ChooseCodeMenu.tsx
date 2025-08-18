@@ -8,13 +8,15 @@ export function ChooseCodeMenu({
   code,
   codes,
   formId,
+  className,
 }: {
   code: string;
   codes: string[];
   formId: string;
+  className?: string;
 }) {
   return (
-    <form>
+    <form className={className}>
       <InnerSelectField
         name="code"
         options={codes.map((code) => ({
