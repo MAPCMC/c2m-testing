@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 
 interface ExportButtonProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   filename: string;
   label: string;

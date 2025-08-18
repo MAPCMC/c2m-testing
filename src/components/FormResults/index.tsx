@@ -1,6 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import {
   Table,
   TableBody,
@@ -40,29 +44,29 @@ function FormResults({
   }>({});
 
   // Fetch user info for a specific code
-  const fetchUserInfo = async (
-    code: string,
-    email?: string
-  ) => {
-    if (userInfo[code] || loading[code]) return;
+  const fetchUserInfo = useCallback(
+    async (code: string, email?: string) => {
+      if (userInfo[code] || loading[code]) return;
 
-    setLoading((prev) => ({ ...prev, [code]: true }));
-    try {
-      const name = await findUserInfo(code, email);
-      setUserInfo((prev) => ({ ...prev, [code]: name }));
-    } catch (error) {
-      console.error(
-        `Failed to fetch user info for code ${code}:`,
-        error
-      );
-      setUserInfo((prev) => ({
-        ...prev,
-        [code]: "anoniem",
-      }));
-    } finally {
-      setLoading((prev) => ({ ...prev, [code]: false }));
-    }
-  };
+      setLoading((prev) => ({ ...prev, [code]: true }));
+      try {
+        const name = await findUserInfo(code, email);
+        setUserInfo((prev) => ({ ...prev, [code]: name }));
+      } catch (error) {
+        console.error(
+          `Failed to fetch user info for code ${code}:`,
+          error
+        );
+        setUserInfo((prev) => ({
+          ...prev,
+          [code]: "anoniem",
+        }));
+      } finally {
+        setLoading((prev) => ({ ...prev, [code]: false }));
+      }
+    },
+    [loading, userInfo]
+  );
 
   // When formId changes, fetch user info for all visible codes
   useEffect(() => {
@@ -76,7 +80,7 @@ function FormResults({
       const codeData = codes.find((c) => c.link === code);
       fetchUserInfo(code, codeData?.user?.email);
     });
-  }, [formId, codes]);
+  }, [formId, codes, fetchUserInfo]);
 
   return (
     <div>

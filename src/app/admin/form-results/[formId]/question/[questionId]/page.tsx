@@ -81,7 +81,7 @@ async function FormResultsQuestion({
     },
   });
 
-  const exportData = prepareExportData(form, answers);
+  const exportData = prepareExportData(answers);
 
   return (
     <LayoutAdmin

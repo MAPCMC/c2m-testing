@@ -75,7 +75,7 @@ async function Admin({
           </p>
           <ul className="space-y-4">
             {form?.formChapters.map((chapter) => (
-              <li>
+              <li key={chapter.id}>
                 <p className="font-semibold">
                   {chapter.title}
                 </p>

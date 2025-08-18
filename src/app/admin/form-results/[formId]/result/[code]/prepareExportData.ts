@@ -8,21 +8,6 @@ import {
   options,
 } from "@/db/schema";
 
-const escapeCsvValue = (value: string): string => {
-  if (value === null || value === undefined) return "";
-  // Escape double quotes by doubling them
-  const escaped = value.toString().replace(/"/g, '""');
-  // Wrap in quotes if contains comma, newline, or double quote
-  if (
-    escaped.includes(",") ||
-    escaped.includes("\n") ||
-    escaped.includes('"')
-  ) {
-    return `"${escaped}"`;
-  }
-  return escaped;
-};
-
 const prepareExportData = (
   form: typeof forms.$inferSelect & {
     formChapters: (typeof formChapters.$inferSelect & {
