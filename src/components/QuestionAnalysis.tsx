@@ -652,9 +652,8 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
 
         <div className="border rounded-md">
           <Table>
-            <TableHeader>
+            <TableHeader className="sr-only">
               <TableRow>
-                <TableHead>#</TableHead>
                 <TableHead>Antwoord</TableHead>
               </TableRow>
             </TableHeader>
@@ -668,10 +667,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
 
                 return (
                   <TableRow key={index}>
-                    <TableCell className="font-mono w-12">
-                      {index + 1}
-                    </TableCell>
-                    <TableCell className="font-medium truncate max-w-full">
+                    <TableCell className="font-medium max-w-full whitespace-normal">
                       {displayText || (
                         <span className="text-muted-foreground">
                           (Leeg antwoord)

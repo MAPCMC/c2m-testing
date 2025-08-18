@@ -3,9 +3,6 @@ import { getUser } from "@/lib/getUser";
 import { getServerSession } from "next-auth/next";
 import authOptions from "@/config/auth";
 import { redirect } from "next/navigation";
-import { PageHeader } from "@/components/PageHeader";
-import { PageMain } from "@/components/PageMain";
-import NavBar from "@/components/NavBar/index";
 import db from "@/db";
 import {
   Table,
@@ -21,6 +18,7 @@ import BackButton from "@/components/BackButton";
 import LayoutAdmin from "@/components/LayoutAdmin";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import ChooseCodeMenu from "@/components/ChooseCodeMenu";
 
 export default async function AdminCodePage({
   params,
@@ -51,17 +49,15 @@ export default async function AdminCodePage({
   const prevCode = codes[currentIndex - 1]?.link;
   const nextCode = codes[currentIndex + 1]?.link;
 
-  console.log(codes, currentIndex, prevCode, nextCode);
-
   if (!currentCode) {
     return (
-      <LayoutAdmin>
-        <NavBar />
-        <PageHeader title="Admin" />
-        <PageMain>
-          Controleer de code.
+      <LayoutAdmin headerTitle={`Niet gevonden: ${code}`}>
+        <div className="space-y-2">
+          <p className="text-muted-foreground">
+            Controleer de code.
+          </p>
           <BackButton />
-        </PageMain>
+        </div>
       </LayoutAdmin>
     );
   }
@@ -73,13 +69,13 @@ export default async function AdminCodePage({
 
   if (!form) {
     return (
-      <LayoutAdmin>
-        <NavBar />
-        <PageHeader title="Admin" />
-        <PageMain>
-          Formulier niet gevonden.
+      <LayoutAdmin headerTitle="Formulier niet gevonden">
+        <div className="space-y-2">
+          <p className="text-muted-foreground">
+            Controleer de code.
+          </p>
           <BackButton />
-        </PageMain>
+        </div>
       </LayoutAdmin>
     );
   }
@@ -94,6 +90,10 @@ export default async function AdminCodePage({
       },
     },
   });
+
+  const currentFormCodes = codes.filter(
+    (c) => c.formId === formId
+  );
 
   const findQuestionAnswer = (key: string) =>
     answers.find((a) => a.questionKey === key);
@@ -117,10 +117,14 @@ export default async function AdminCodePage({
         },
       ]}
     >
+      <ChooseCodeMenu
+        code={code}
+        codes={currentFormCodes.map((c) => c.link)}
+        formId={form.id}
+      />
       <Table>
         <TableCaption>
-          Een lijst van vragen en antwoorden voor deze
-          vragenlijst.
+          Alle vragen en antwoorden met code {code}.
         </TableCaption>
         <TableHeader>
           <TableRow>
@@ -144,13 +148,11 @@ export default async function AdminCodePage({
 
               return (
                 <TableRow key={question.id}>
-                  <TableCell className="font-medium max-w-40">
+                  <TableCell className="font-medium w-1/3 whitespace-normal">
                     {question.label}
                   </TableCell>
                   <TableCell>{answer?.score}</TableCell>
-                  <TableCell>
-                    {answer?.text}
-
+                  <TableCell className="whitespace-normal w-full space-y-2">
                     {!!answer?.answersToOptions?.length &&
                       answer?.answersToOptions?.length >
                         0 && (
@@ -166,6 +168,7 @@ export default async function AdminCodePage({
                           )}
                         </ul>
                       )}
+                    {answer?.text && <p>{answer?.text}</p>}
                   </TableCell>
                 </TableRow>
               );
@@ -175,7 +178,7 @@ export default async function AdminCodePage({
       </Table>
       <div className="flex justify-between gap-2">
         <Button
-          asChild
+          asChild={!!prevCode}
           variant="outline"
           disabled={!prevCode}
         >
@@ -183,14 +186,14 @@ export default async function AdminCodePage({
             <Link
               href={`/admin/form-results/${form.id}/result/${prevCode}`}
             >
-              Terug
+              Vorige
             </Link>
           ) : (
-            "Terug"
+            "Vorige"
           )}
         </Button>
         <Button
-          asChild
+          asChild={!!nextCode}
           variant="outline"
           disabled={!nextCode}
         >

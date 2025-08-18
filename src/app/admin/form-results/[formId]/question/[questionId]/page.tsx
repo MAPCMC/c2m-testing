@@ -15,6 +15,7 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table";
+import ChooseQuestionForm from "@/components/ChooseQuestionForm";
 
 async function FormResultsQuestion({
   params,
@@ -93,48 +94,9 @@ async function FormResultsQuestion({
     {} as Record<string, typeof answers>
   );
 
-  // Get all options for answer processing
-  const options = await db.query.options.findMany();
-
-  // Prepare data for export
-  const prepareExportData = () => {
-    const exportData: any[] = [];
-
-    if (!question) {
-      return exportData;
-    }
-
-    const questionAnswers =
-      answersByQuestion[question.key] || [];
-
-    questionAnswers.forEach((answer) => {
-      let answerText = answer.text || "";
-
-      // Process options if available
-      if (answer.answersToOptions?.length > 0) {
-        answerText = answer.answersToOptions
-          .map((ao) => ao.option?.text)
-          .filter(Boolean)
-          .join("; ");
-      }
-
-      exportData.push({
-        Formulier: form.title,
-        Vraag: question.label,
-        Vraagtype: question.type,
-        Antwoord: answerText,
-        //   Datum: answer.createdAt
-        //     ? new Date(answer.createdAt).toISOString()
-        //     : "",
-      });
-    });
-
-    return exportData;
-  };
-
   return (
     <LayoutAdmin
-      headerTitle="Antwoorden per vraag"
+      headerTitle={`Antwoorden op vraag: ${question.label}`}
       formId={formId}
       tabs={[
         {
@@ -152,36 +114,28 @@ async function FormResultsQuestion({
         },
       ]}
     >
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-muted-foreground">
-            {question?.label}
-          </p>
-
-          <ExportButton
-            data={prepareExportData()}
-            filename={`form-answers-${
-              new Date().toISOString().split("T")[0]
-            }`}
-            label="Exporteer alle antwoorden (CSV)"
-          />
-        </div>
-      </div>
-
-      <Table>
+      <ChooseQuestionForm
+        questions={questions.map((q) => ({
+          id: q.id.toString(),
+          label: q.label,
+        }))}
+        questionId={questionId}
+        formId={formId}
+      />
+      <Table className="max-w-full">
         <TableCaption>
           Een lijst van alle antwoorden voor deze vraag.
         </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="font-bold">
-              Tekst
-            </TableHead>
-            <TableHead className="font-bold">
-              Opties
+              Formulier
             </TableHead>
             <TableHead className="font-bold">
               Score
+            </TableHead>
+            <TableHead className="font-bold">
+              Antwoord
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -189,12 +143,19 @@ async function FormResultsQuestion({
           {answers.map((answer) => {
             return (
               <TableRow key={answer.id}>
-                <TableCell>{answer?.text}</TableCell>
                 <TableCell>
+                  <Link
+                    href={`/admin/form-results/${form.id}/result/${answer.code}`}
+                  >
+                    {answer?.code}
+                  </Link>
+                </TableCell>
+                <TableCell>{answer.score}</TableCell>
+                <TableCell className="whitespace-normal w-full space-y-2">
                   {!!answer?.answersToOptions?.length &&
                     answer?.answersToOptions?.length >
                       0 && (
-                      <ul>
+                      <ul className="list-disc list-inside">
                         {answer?.answersToOptions.map(
                           (a) => (
                             <li key={a.option.id}>
@@ -206,8 +167,8 @@ async function FormResultsQuestion({
                         )}
                       </ul>
                     )}
+                  {answer.text && <p>{answer?.text}</p>}
                 </TableCell>
-                <TableCell>{answer.score}</TableCell>
               </TableRow>
             );
           })}
@@ -216,7 +177,7 @@ async function FormResultsQuestion({
 
       <div className="flex justify-between gap-2">
         <Button
-          asChild
+          asChild={prevQuestion ? true : false}
           variant="outline"
           disabled={!prevQuestion}
         >
@@ -224,14 +185,14 @@ async function FormResultsQuestion({
             <Link
               href={`/admin/form-results/${form.id}/question/${prevQuestion.id}`}
             >
-              Terug
+              Vorige
             </Link>
           ) : (
-            "Terug"
+            "Vorige"
           )}
         </Button>
         <Button
-          asChild
+          asChild={nextQuestion ? true : false}
           variant="outline"
           disabled={!nextQuestion}
         >
