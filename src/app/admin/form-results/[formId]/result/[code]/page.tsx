@@ -19,13 +19,15 @@ import {
 import { getFullForm } from "@/lib/getFullForm";
 import BackButton from "@/components/BackButton";
 import LayoutAdmin from "@/components/LayoutAdmin";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function AdminCodePage({
   params,
 }: {
-  params: Promise<{ code: string }>;
+  params: Promise<{ code: string; formId: string }>;
 }) {
-  const { code } = await params;
+  const { code, formId } = await params;
   const user = await getUser();
   const session = await getServerSession(authOptions);
 
@@ -38,9 +40,18 @@ export default async function AdminCodePage({
     redirect("/");
   }
 
-  const currentCode = await db.query.codes.findFirst({
-    where: (c, { eq }) => eq(c.link, code),
+  const codes = await db.query.codes.findMany({
+    where: (c, { eq }) => eq(c.formId, formId),
   });
+
+  const currentCode = codes.find((c) => c.link === code);
+  const currentIndex = codes.findIndex(
+    (c) => c.link === code
+  );
+  const prevCode = codes[currentIndex - 1]?.link;
+  const nextCode = codes[currentIndex + 1]?.link;
+
+  console.log(codes, currentIndex, prevCode, nextCode);
 
   if (!currentCode) {
     return (
@@ -74,7 +85,7 @@ export default async function AdminCodePage({
   }
 
   const answers = await db.query.answers.findMany({
-    where: (a, { eq }) => eq(a.code, code),
+    where: (a, { eq }) => eq(a.code, currentCode.link),
     with: {
       answersToOptions: {
         with: {
@@ -87,11 +98,25 @@ export default async function AdminCodePage({
   const findQuestionAnswer = (key: string) =>
     answers.find((a) => a.questionKey === key);
   return (
-    <LayoutAdmin headerTitle="Vragenlijst inzien">
-      <h2 className="text-2xl font-medium">
-        Vragenlijst: {form.title}
-      </h2>
-      <BackButton />
+    <LayoutAdmin
+      headerTitle={`${form.title} inzien: ${code}`}
+      formId={form.id}
+      tabs={[
+        {
+          title: "Overzicht",
+          href: `/admin/form-results/${form.id}/summary`,
+        },
+        {
+          title: "Per vraag",
+          href: `/admin/form-results/${form.id}/question`,
+        },
+        {
+          title: "Per ingevuld formulier",
+          href: `/admin/form-results/${form.id}/result`,
+          active: true,
+        },
+      ]}
+    >
       <Table>
         <TableCaption>
           Een lijst van vragen en antwoorden voor deze
@@ -148,6 +173,38 @@ export default async function AdminCodePage({
           )}
         </TableBody>
       </Table>
+      <div className="flex justify-between gap-2">
+        <Button
+          asChild
+          variant="outline"
+          disabled={!prevCode}
+        >
+          {prevCode ? (
+            <Link
+              href={`/admin/form-results/${form.id}/result/${prevCode}`}
+            >
+              Terug
+            </Link>
+          ) : (
+            "Terug"
+          )}
+        </Button>
+        <Button
+          asChild
+          variant="outline"
+          disabled={!nextCode}
+        >
+          {nextCode ? (
+            <Link
+              href={`/admin/form-results/${form.id}/result/${nextCode}`}
+            >
+              Volgende
+            </Link>
+          ) : (
+            "Volgende"
+          )}
+        </Button>
+      </div>
     </LayoutAdmin>
   );
 }

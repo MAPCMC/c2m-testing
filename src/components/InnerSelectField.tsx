@@ -25,6 +25,7 @@ interface InnerFieldProps {
   onBlur?: () => void;
   onChange?: ((value: string) => void) | undefined;
   required?: boolean;
+  labelClassName?: string;
   [key: string]: unknown;
 }
 
@@ -40,6 +41,7 @@ const InnerSelectField = ({
   required,
   onBlur,
   onChange,
+  labelClassName,
   ...props
 }: InnerFieldProps) => {
   const WrapperComponent = wrapper ?? "fieldset";
@@ -78,7 +80,10 @@ const InnerSelectField = ({
       <FieldLabel
         as="legend"
         id={`${name}-label`}
-        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
+        className={cn(
+          "font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl",
+          labelClassName
+        )}
         error={errors && errors.length > 0}
       >
         {label}{" "}
