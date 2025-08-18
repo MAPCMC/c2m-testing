@@ -86,7 +86,7 @@ export default function AddFormQuestionForm({
               { id: "text", text: "Tekst" },
               { id: "score", text: "Score" },
               { id: "number", text: "Nummer" },
-              { id: "textarea", text: "Tekstarea" },
+              { id: "textarea", text: "Lange tekst" },
               { id: "multiple", text: "Meerkeuze" },
               {
                 id: "multiple_explained",

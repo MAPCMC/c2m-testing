@@ -140,13 +140,16 @@ export default async function CodePage({
           </p>
         </div>
         <div>
-          <Button asChild className="mr-3">
-            <Link
-              href={`/${code}/${form.formChapters[0].questions[0].id}`}
-            >
-              Volgende
-            </Link>
-          </Button>
+          {form.formChapters?.[0]?.questions?.length >
+            0 && (
+            <Button asChild className="mr-3">
+              <Link
+                href={`/${code}/${form.formChapters[0].questions[0].id}`}
+              >
+                Volgende
+              </Link>
+            </Button>
+          )}
         </div>
       </PageMain>
     </LayoutNormal>
