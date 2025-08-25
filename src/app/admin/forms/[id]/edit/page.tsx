@@ -61,9 +61,7 @@ async function EditForm({
       <EditFormForm form={form} apps={apps} />
 
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-medium">
-          Hoofdstukken
-        </h2>
+        <h2 className="text-2xl font-bold">Hoofdstukken</h2>
         <Button asChild>
           <Link
             href={`/admin/forms/${form.id}/chapter/new`}

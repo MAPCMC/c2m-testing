@@ -68,7 +68,7 @@ const InnerScoreField = ({
   }
 
   return (
-    <WrapperComponent className="space-y-2">
+    <WrapperComponent className="space-y-3">
       <FieldLabel
         as="legend"
         id={`${name}-label`}
@@ -92,7 +92,7 @@ const InnerScoreField = ({
               key={scoreValue}
               className={cn(
                 "flex md:flex-col items-center gap-3 relative",
-                "border border-input rounded-md p-4",
+                "border border-border rounded-md p-4 bg-card",
                 scoreValue === "nvt" ? " col-span-5" : ""
               )}
             >
@@ -102,7 +102,13 @@ const InnerScoreField = ({
               />
               <Label
                 htmlFor={scoreValue}
-                className="after:w-full after:h-full after:absolute after:content-[''] after:inset-0"
+                className={cn(
+                  "after:w-full after:h-full after:absolute after:content-[''] after:inset-0",
+                  {
+                    "text-2xl font-bold":
+                      scoreValue !== "nvt",
+                  }
+                )}
                 aria-describedby={
                   scoreValue === "1"
                     ? `${name}-low`

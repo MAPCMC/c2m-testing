@@ -39,7 +39,7 @@ const Search = ({
         Zoeken op e-mail
       </label>
       <Input
-        className="peer block w-full pl-10 outline-2 "
+        className="peer block w-full pl-10 outline-2 border-border"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

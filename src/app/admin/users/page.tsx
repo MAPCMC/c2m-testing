@@ -50,7 +50,7 @@ async function Users(props: Props) {
   return (
     <LayoutAdmin headerTitle="Gebruikersbeheer">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-2xl font-medium">Gebruikers</h2>
+        <h2 className="text-2xl font-bold">Gebruikers</h2>
         <Search placeholder="Zoeken op e-mail..." />
       </div>
       <Table className="w-full">

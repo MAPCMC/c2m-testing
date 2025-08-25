@@ -103,7 +103,7 @@ export default function AddFormQuestionConditionForm({
       }}
       className="space-y-4 max-w-3xl mx-auto"
     >
-      <h2 className="text-2xl font-medium mb-6">
+      <h2 className="text-2xl font-bold mb-6">
         Voorwaarde voor weergave toevoegen
       </h2>
       {formErrors.map((error, i) => (

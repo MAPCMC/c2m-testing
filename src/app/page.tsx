@@ -41,7 +41,7 @@ export default async function Home() {
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
           {!user && <PersonalForm />}
           <PersonalFormList />
-          <FormList />
+          <FormList className="md:px-4" />
         </Suspense>
       </PageMain>
     </LayoutNormal>

@@ -73,7 +73,7 @@ const InnerField = ({
 
   return (
     <WrapperComponent
-      className={cn("space-y-2", wrapperClassName)}
+      className={cn("space-y-3", wrapperClassName)}
     >
       <FieldLabel
         htmlFor={name}

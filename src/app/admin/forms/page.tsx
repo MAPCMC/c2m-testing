@@ -27,7 +27,7 @@ async function Forms() {
   return (
     <LayoutAdmin headerTitle="Vragenlijstbeheer">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-medium">
+        <h2 className="text-2xl font-bold">
           Vragenlijsten
         </h2>
         <Button asChild>

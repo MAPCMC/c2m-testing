@@ -77,10 +77,8 @@
     --chorista-yellow: oklch(0.7937 0.1249 64.66);
     --chorista-red: oklch(0.6749 0.1747 22.97);
     --chorista-aqua: oklch(0.5966 0.0718 210.21);
-    --chorista-aqua-light: oklch(0.819 0.0718 210.21);
     --chorista-blue: oklch(0.4463 0.0788 233.77);
-    --chorista-blue-light: oklch(0.8368 0.0788 233.77);
-
+    --chorista-blue-light: oklch(0.9294 0.0395 233.77);
     --chorista-bg-solid-dark: oklch(0.1013 0.0001 0);
     --chorista-bg-overlay-dark: oklch(0.7 0.0001 0 / 0.8);
     --chorista-text-solid-dark: oklch(0.9809 0.0001 0);
@@ -124,10 +122,12 @@
     --sidebar-primary-foreground: var(
       --chorista-text-solid
     );
-    --sidebar-accent: var(--chorista-bg-off-1);
-    --sidebar-accent-foreground: var(--chorista-text-solid);
+    --sidebar-accent: var(--chorista-blue);
+    --sidebar-accent-foreground: var(
+      --chorista-text-solid-dark
+    );
     --sidebar-border: var(--chorista-border-solid);
-    --sidebar-ring: var(--chorista-border-solid);
+    --sidebar-ring: var(--chorista-blue);
   }
 
   .dark {
@@ -186,12 +186,16 @@
     @apply space-y-2;
 
     a {
-      @apply text-primary underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+      @apply text-primary underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-2;
     }
 
     ul {
       @apply list-disc list-inside;
     }
+  }
+
+  .tiptap {
+    @apply focus-visible:outline-hidden focus-visible:ring-3 focus-visible:ring-ring/50;
   }
 
   .tiptap.prose ul p:first-child {

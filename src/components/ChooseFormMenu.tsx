@@ -17,7 +17,7 @@ export function ChooseFormMenu({
   }
 
   return (
-    <form className="p-4">
+    <form className="px-4 pt-4 -mb-2">
       <InnerSelectField
         name="form"
         options={forms.map((form) => ({

@@ -23,7 +23,7 @@ const NavBar = async ({
   return (
     <div
       className={cn(
-        "py-2 border-b w-full bg-card dark:bg-background",
+        "py-2 border-b w-full bg-card dark:bg-background @container",
         className
       )}
     >
@@ -45,7 +45,9 @@ const NavBar = async ({
         )}
         <div className="flex items-center gap-3">
           {user && (
-            <p className="hidden sm:inline">{user.email}</p>
+            <p className="hidden @lg:inline text-sm">
+              {user.email}
+            </p>
           )}
           <ThemeToggle user={user} />
           {children}

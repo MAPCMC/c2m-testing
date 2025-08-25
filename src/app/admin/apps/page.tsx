@@ -23,9 +23,7 @@ async function Apps() {
   return (
     <LayoutAdmin headerTitle="Applicatiebeheer">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-medium">
-          Applicaties
-        </h2>
+        <h2 className="text-2xl font-bold">Applicaties</h2>
         <Button asChild>
           <Link href="/admin/apps/new">
             Nieuwe applicatie

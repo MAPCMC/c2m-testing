@@ -81,9 +81,9 @@ export default function AddCodeForm({
         e.preventDefault();
         form.handleSubmit();
       }}
-      className="space-y-2  p-4 border rounded-md"
+      className="space-y-2  p-4 border rounded-md bg-card"
     >
-      <h2 className="text-2xl font-medium">
+      <h2 className="text-2xl font-bold">
         Vragenlijst klaarzetten
       </h2>
       <p>

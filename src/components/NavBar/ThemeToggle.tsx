@@ -42,7 +42,10 @@ export function ThemeToggle({
           <span className="sr-only">Wissel van thema</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        className="space-y-0.5"
+      >
         <DropdownMenuItem
           className={cn(
             theme === "light" &&

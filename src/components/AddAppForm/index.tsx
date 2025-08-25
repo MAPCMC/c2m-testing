@@ -42,9 +42,7 @@ export default function AddAppForm() {
       }}
       className="space-y-2 max-w-3xl mx-auto"
     >
-      <h2 className="text-2xl font-medium">
-        App toevoegen
-      </h2>
+      <h2 className="text-2xl font-bold">App toevoegen</h2>
       <p>
         Vul de gegevens in om een applicatie die je wilt
         evalueren toe te voegen.

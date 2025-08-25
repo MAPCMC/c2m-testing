@@ -123,7 +123,7 @@ async function EditFormQuestion({
         question.type === "multiple" ||
         question.type === "multiple_explained") && (
         <>
-          <h2 className="text-2xl font-medium max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold max-w-3xl mx-auto">
             Opties
           </h2>
           {options.map((option, i) => {

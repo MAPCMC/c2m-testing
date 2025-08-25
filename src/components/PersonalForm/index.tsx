@@ -39,9 +39,9 @@ export default function PersonalForm() {
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-2 p-4 border rounded-md bg-accent/10"
+      className="space-y-2 p-4 border rounded-md bg-card"
     >
-      <h2 className="text-2xl font-medium">
+      <h2 className="text-2xl font-bold">
         Persoonlijke vragenlijst
       </h2>
       <p>
