@@ -15,13 +15,16 @@ export function ChooseFormMenu({
   if (!forms) {
     return null;
   }
+
   return (
     <form className="p-4">
       <InnerSelectField
         name="form"
         options={forms.map((form) => ({
           id: form.id,
-          text: form.title,
+          text: `${
+            form.app?.name ? form.app.name + " | " : ""
+          }${form.title}`,
         }))}
         value={activeFormId}
         label={`Kies een formulier (actief: ${

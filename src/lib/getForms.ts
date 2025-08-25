@@ -7,6 +7,9 @@ export async function getForms() {
     return await db.query.forms.findMany({
       where: (form, { isNull }) => isNull(form.deletedAt),
       orderBy: (forms, { asc }) => [asc(forms.title)],
+      with: {
+        app: true,
+      },
     });
   } catch (error) {
     console.error("Error fetching forms:", error);
