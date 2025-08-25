@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import C2MLogo from "@/components/C2MLogo";
 
 export const PageHeader = ({
   className,
@@ -7,6 +8,7 @@ export const PageHeader = ({
   titleClassName,
   ref,
   children,
+  logo = false,
   ...props
 }: {
   className?: string;
@@ -14,6 +16,7 @@ export const PageHeader = ({
   titleClassName?: string;
   ref?: React.Ref<HTMLHeadingElement>;
   children?: React.ReactNode;
+  logo?: boolean;
   [x: string]: unknown;
 }) => (
   <header
@@ -21,8 +24,19 @@ export const PageHeader = ({
     ref={ref}
     {...props}
   >
+    {logo && (
+      <div className="h-40 flex items-center justify-center sr-none">
+        <C2MLogo className="w-full h-full header-logo" />
+      </div>
+    )}
     <h1
-      className={cn("text-2xl font-bold", titleClassName)}
+      className={cn(
+        "text-2xl font-bold",
+        {
+          "text-4xl text-center": logo,
+        },
+        titleClassName
+      )}
     >
       {title}
     </h1>

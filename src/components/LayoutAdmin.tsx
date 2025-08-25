@@ -39,7 +39,11 @@ async function LayoutAdmin({
       </Button>
       <AppSidebar />
       <div className="w-full min-h-svh peer-data-[state=expanded]:w-[calc(100%-var(--sidebar-width))]">
-        <NavBar withSidebar className="*:max-w-none mx-0" />
+        <NavBar
+          withSidebar
+          className="*:max-w-none mx-0"
+          logo={false}
+        />
         {breadcrumb?.length && (
           <Breadcrumb items={breadcrumb} />
         )}

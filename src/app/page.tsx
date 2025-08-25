@@ -31,10 +31,11 @@ export default async function Home() {
 
   return (
     <LayoutNormal>
-      <NavBar />
+      <NavBar logo={false} />
       <PageHeader
         title="Connect2Music testportaal"
-        className="space-y-3"
+        className="space-y-6 mt-6"
+        logo
       />
       <PageMain className="space-y-8">
         <Suspense fallback={<p>Laden vragenlijsten...</p>}>
