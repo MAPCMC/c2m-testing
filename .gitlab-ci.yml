@@ -1,0 +1,98 @@
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+  CONTAINER_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+  HELM_RELEASE_NAME: c2m-testing
+  KUBE_NAMESPACE: ${CI_PROJECT_NAMESPACE}-${CI_ENVIRONMENT_NAME}
+
+stages:
+  - install
+  - build
+  - deploy
+
+# Cache node modules and build outputs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .next/cache/
+
+# Install stage
+install:
+  stage: install
+  image: node:20-alpine
+  script:
+    - npm install -g pnpm
+    - pnpm install --frozen-lockfile
+
+# Build stage
+build:
+  stage: build
+  image: docker:24.0
+  services:
+    - docker:24.0-dind
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - docker build -t $CONTAINER_IMAGE .
+    - docker push $CONTAINER_IMAGE
+  only:
+    - main
+
+# Deploy to staging
+deploy-staging:
+  stage: deploy
+  image: alpine/helm:3.12.0
+  environment:
+    name: staging
+    url: ${STAGING_URL}
+  before_script:
+    - apk add --no-cache curl
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - chmod +x kubectl && mv kubectl /usr/local/bin/
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+  script:
+    - |
+      helm upgrade --install $HELM_RELEASE_NAME ./chart \
+        --namespace $KUBE_NAMESPACE \
+        --set image.repository=${CI_REGISTRY_IMAGE} \
+        --set image.tag=${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA} \
+        --set db.host=${DB_HOST} \
+        --set db.database=${DB_NAME} \
+        --set db.username=${DB_USER} \
+        --set db.password=${DB_PASSWORD} \
+        --set-string env.NEXTAUTH_URL="${NEXTAUTH_URL}" \
+        --set-string env.NEXTAUTH_SECRET="${NEXTAUTH_SECRET}" \
+        --set-string env.GOOGLE_CLIENT_ID="${GOOGLE_CLIENT_ID}" \
+        --set-string env.GOOGLE_CLIENT_SECRET="${GOOGLE_CLIENT_SECRET}" \
+        --set-string env.DATABASE_URL="${DB_URL}"
+  only:
+    - main
+
+# Deploy to production (manual step)
+deploy-production:
+  stage: deploy
+  image: alpine/helm:3.12.0
+  environment:
+    name: production
+    url: ${PRODUCTION_URL}
+  when: manual
+  before_script:
+    - apk add --no-cache curl
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - chmod +x kubectl && mv kubectl /usr/local/bin/
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+  script:
+    - |
+      helm upgrade --install $HELM_RELEASE_NAME ./chart \
+        --namespace $KUBE_NAMESPACE \
+        --set image.repository=${CI_REGISTRY_IMAGE} \
+        --set image.tag=${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA} \
+        --set db.host=${PROD_DB_HOST} \
+        --set db.database=${PROD_DB_NAME} \
+        --set db.username=${PROD_DB_USER} \
+        --set db.password=${PROD_DB_PASSWORD} \
+        --set-string env.NEXTAUTH_URL="${PROD_NEXTAUTH_URL}" \
+        --set-string env.NEXTAUTH_SECRET="${PROD_NEXTAUTH_SECRET}" \
+        --set-string env.GOOGLE_CLIENT_ID="${PROD_GOOGLE_CLIENT_ID}" \
+        --set-string env.GOOGLE_CLIENT_SECRET="${PROD_GOOGLE_CLIENT_SECRET}" \
+        --set-string env.DATABASE_URL="${PROD_DB_URL}" \
+        --values values.production.yaml

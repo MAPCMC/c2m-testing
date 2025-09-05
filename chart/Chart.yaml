@@ -1,0 +1,15 @@
+apiVersion: v2
+name: c2m-testing
+description: A Helm chart for deploying c2m-testing application
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - nextjs
+  - react
+  - typescript
+maintainers:
+  - name: Maarten Peene
+    email: info@maartenpeene.nl
+# image:
+#   repository: your-registry/c2m-testing
