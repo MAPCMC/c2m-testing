@@ -60,10 +60,7 @@ function BreadcrumbLink({
   return (
     <Comp
       data-slot="breadcrumb-link"
-      className={cn(
-        "hover:text-foreground transition-colors",
-        className
-      )}
+      className={cn("transition-colors", className)}
       {...props}
     />
   );
@@ -80,7 +77,7 @@ function BreadcrumbPage({
       aria-disabled="true"
       aria-current="page"
       className={cn(
-        "text-foreground font-normal",
+        "text-foreground font-semibold",
         className
       )}
       {...props}
@@ -98,10 +95,10 @@ function BreadcrumbSeparator({
       data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
-      className={cn("[&>svg]:size-3.5", className)}
+      className={cn("[&>svg]:size-5", className)}
       {...props}
     >
-      {children ?? <ChevronRight />}
+      {children ?? <ChevronRight strokeWidth={1.5} />}
     </li>
   );
 }

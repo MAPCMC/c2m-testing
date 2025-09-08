@@ -29,23 +29,20 @@ const NavBar = async ({
     >
       <div
         className={cn(
-          "max-w-5xl mx-auto flex justify-between items-center gap-8 px-4 relative",
-          {
-            "justify-end": !withSidebar,
-          }
+          "max-w-5xl mx-auto flex justify-between items-center gap-8 px-4 relative"
         )}
       >
-        <div>{withSidebar && <SidebarTrigger />}</div>
-        {logo && (
-          <C2MLogo
-            className={
-              "w-9 h-9 absolute inset-0 mx-auto sr-none"
-            }
-          />
-        )}
+        <div>
+          {withSidebar && <SidebarTrigger />}
+          {logo && (
+            <C2MLogo
+              className={cn("w-9 h-9 sr-none shrink-0")}
+            />
+          )}
+        </div>
         <div className="flex items-center gap-3">
           {user && (
-            <p className="hidden @lg:inline text-sm">
+            <p className="hidden @2xl:inline text-sm">
               {user.email}
             </p>
           )}

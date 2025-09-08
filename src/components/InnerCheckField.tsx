@@ -73,7 +73,7 @@ const InnerCheckField = ({
           onCheckedChange={onChange}
           checked={value}
           className={cn(
-            "peer border-border ml-4",
+            "peer border-border ml-4 z-10",
             className
           )}
           {...accessibleInputStateProps}
@@ -81,7 +81,7 @@ const InnerCheckField = ({
         />
         <FieldLabel
           htmlFor={name}
-          className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl border rounded-md p-4 pl-12 -ml-10 relative w-full"
+          className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 border rounded-md p-4 pl-15 -ml-13 relative w-full bg-card py-5"
           error={errors && errors.length > 0}
         >
           {label}

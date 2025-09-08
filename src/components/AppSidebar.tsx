@@ -25,7 +25,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar variant="sidebar">
-      <SidebarHeader>Menu</SidebarHeader>
+      <SidebarHeader className="p-4">Menu</SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Admin</SidebarGroupLabel>
@@ -120,8 +120,8 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
       </SidebarContent>
-      <SidebarFooter>
-        <C2MLogo className="w-12 md:w-24" />
+      <SidebarFooter className="p-4">
+        <C2MLogo className="w-20 md:w-24" />
       </SidebarFooter>
     </Sidebar>
   );

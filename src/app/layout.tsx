@@ -26,7 +26,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${openSans.className} antialiased bg-yellow/10 dark:bg-background`}
+        className={`${openSans.className} antialiased bg-c2m-yellow/10 dark:bg-background`}
       >
         <Providers>{children}</Providers>
       </body>

@@ -8,6 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export function Breadcrumb({
   items,
@@ -26,12 +27,11 @@ export function Breadcrumb({
                 </BreadcrumbPage>
               ) : (
                 <BreadcrumbLink asChild>
-                  <Link
-                    href={item.href}
-                    className="p-2 rounded-md hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  >
-                    {item.title}
-                  </Link>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href={item.href}>
+                      {item.title}
+                    </Link>
+                  </Button>
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>
