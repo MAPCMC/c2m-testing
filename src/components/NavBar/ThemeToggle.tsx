@@ -55,7 +55,7 @@ export function ThemeToggle({
             setProfileTheme(user, "light");
           }}
         >
-          <Sun className="h-[1.5rem] w-[1.5rem]" />
+          <Sun className="h-[1.5rem] w-[1.5rem] text-inherit" />
           Licht
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -67,7 +67,7 @@ export function ThemeToggle({
             setProfileTheme(user, "dark");
           }}
         >
-          <Moon className="h-[1.2rem] w-[1.2rem]" />
+          <Moon className="h-[1.2rem] w-[1.2rem] text-inherit" />
           Donker
         </DropdownMenuItem>
       </DropdownMenuContent>

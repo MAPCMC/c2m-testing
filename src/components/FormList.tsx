@@ -37,7 +37,12 @@ const FormList = async ({
     return null;
   }
   return (
-    <section className={cn("space-y-3", className)}>
+    <section
+      className={cn(
+        "space-y-3 @container prose",
+        className
+      )}
+    >
       <h2 className="text-2xl font-bold">
         {user
           ? "Andere vragenlijsten"
@@ -59,7 +64,7 @@ const FormList = async ({
       {forms.map((form) => (
         <article
           key={form.id}
-          className="border px-4 py-3 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-2 bg-card"
+          className="border px-4 py-3 rounded-md flex flex-col @xl:flex-row @xl:items-center justify-between gap-2 bg-card not-prose"
         >
           <div className="flex flex-col gap-2 justify-center">
             <h3 className="text-lg font-semibold tracking-wide">

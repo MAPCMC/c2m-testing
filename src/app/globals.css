@@ -63,7 +63,7 @@
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-border, currentcolor);
+    border-color: var(--border, currentcolor);
   }
 
   :root {
@@ -80,8 +80,8 @@
     --c2m-text-black: oklch(0 0 0);
     --c2m-text-white: oklch(1 0 0);
 
-    --c2m-bg-default: oklch(0.9809 0.0001 0);
-    --c2m-bg-accent: oklch(1 0 0);
+    --c2m-bg-default: oklch(0.9926 0 0);
+    --c2m-bg-accent: oklch(0.9926 0 0);
     --c2m-bg-muted: oklch(0.9668 0.0188 67.6);
 
     --c2m-border: var(--c2m-blue-dark);
@@ -112,7 +112,7 @@
     --chart-3: var(--c2m-aqua);
     --chart-4: var(--c2m-blue);
     --chart-5: var(--c2m-blue-dark);
-    --sidebar: var(--c2m-bg-accent);
+    --sidebar: var(--c2m-bg-default);
     --sidebar-foreground: var(--foreground);
     --sidebar-primary: var(--c2m-bg-default);
     --sidebar-primary-foreground: var(--foreground);
@@ -125,9 +125,22 @@
   .dark {
     --foreground: var(--c2m-text-white);
     --c2m-bg-default: oklch(0.1912 0.0395 233.77);
-    --c2m-bg-accent: oklch(0.1912 0.0395 233.77);
-    --c2m-bg-muted: oklch(0.1912 0.0395 233.77);
-    --c2m-border: var(--c2m-aqua-dark);
+    --background: var(--c2m-blue-dark);
+    --c2m-bg-accent: oklch(0.7953 0.0395 233.77 / 10%);
+    --accent: var(--c2m-blue-light);
+    --accent-foreground: var(--c2m-text-black);
+    --c2m-bg-muted: oklch(0.1912 0.0395 233.77)
+    --c2m-border: oklch(0.9809 0.0001 0);
+    --border: oklch(0.9809 0.0001 0);
+    --input: oklch(0.9809 0.0001 0);
+    --ring: var(--c2m-yellow);
+    --primary: var(--c2m-yellow);
+    --primary-foreground: var(--c2m-text-black);
+    --sidebar: var(--c2m-blue-dark);
+    --sidebar-accent: var(--c2m-blue-light);
+    --sidebar-accent-foreground: var(--c2m-text-black);
+    --sidebar-ring: var(--c2m-yellow);
+    --secondary: var(--c2m-aqua);
   }
 
   html {
@@ -141,14 +154,14 @@
   }
 
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border ring-ring outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
   }
 
   .prose {
-    @apply space-y-2;
+    @apply space-y-2 *:max-w-[67ch] [&>.not-prose]:max-w-none;
 
     a {
       @apply text-primary underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-2;

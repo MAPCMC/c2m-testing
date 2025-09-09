@@ -23,7 +23,7 @@ const NavBar = async ({
   return (
     <div
       className={cn(
-        "py-2 border-b w-full bg-card dark:bg-background @container",
+        "py-2 border-b w-full bg-background @container",
         className
       )}
     >

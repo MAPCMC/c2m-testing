@@ -77,7 +77,10 @@ const InnerField = ({
     >
       <FieldLabel
         htmlFor={name}
-        className={cn("text-xl", labelClassName)}
+        className={cn(
+          "text-xl font-medium tracking-wide",
+          labelClassName
+        )}
         error={errors && errors.length > 0}
       >
         {label}{" "}

@@ -24,7 +24,7 @@ export function AppSidebar() {
     user?.role === "admin" || user?.role === "superadmin";
 
   return (
-    <Sidebar variant="sidebar">
+    <Sidebar variant="sidebar" className="p-2">
       <SidebarHeader className="p-4">Menu</SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

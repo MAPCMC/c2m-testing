@@ -32,7 +32,7 @@ async function LayoutAdmin({
       <Button asChild>
         <a
           href="#main-content"
-          className="fixed top-2 left-2 z-50 -translate-x-[calc(100%+2rem)] focus-visible:translate-x-0"
+          className="fixed top-2 left-4 z-50 -translate-x-[calc(100%+4rem)] focus-visible:translate-x-0"
         >
           Naar paginainhoud
         </a>
@@ -47,11 +47,11 @@ async function LayoutAdmin({
         {breadcrumb?.length && (
           <Breadcrumb items={breadcrumb} />
         )}
-        {formId && <ChooseFormMenu activeFormId={formId} />}
         <PageHeader
           className="text-center *:mx-auto"
           title={headerTitle ?? "Admin dashboard"}
         />
+        {formId && <ChooseFormMenu activeFormId={formId} />}
         {tabs?.length && <AdminTabs tabs={tabs} />}
         <PageMain
           id="main-content"

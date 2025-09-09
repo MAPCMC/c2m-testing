@@ -15,7 +15,7 @@ const PersonalFormList = async () => {
   });
 
   return (
-    <section className="space-y-3">
+    <section className="space-y-3 @container">
       <h2 className="text-2xl font-bold">
         Persoonlijke vragenlijsten
       </h2>
@@ -37,7 +37,7 @@ const PersonalFormList = async () => {
         return (
           <article
             key={form.id}
-            className="border px-4 py-3 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-2 bg-card"
+            className="border px-4 py-3 rounded-md flex flex-col @xl:flex-row @xl:items-center justify-between gap-2 bg-card"
           >
             <div className="flex flex-col gap-2 justify-center">
               <h3 className="text-lg font-semibold tracking-wide">

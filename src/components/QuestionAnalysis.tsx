@@ -176,7 +176,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{ width: `${percentage}%` }}
                       aria-label={`${count} keer`}
                     ></div>
@@ -297,7 +297,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{
                         width: `${
                           (count / numericValues.length) *
@@ -374,7 +374,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{ width: `${percentage}%` }}
                       aria-label={`${count} keer (${percentage.toFixed(
                         1
@@ -486,7 +486,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{ width: `${percentage}%` }}
                       aria-label={`${count} keer (${percentage.toFixed(
                         1
@@ -592,7 +592,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{ width: `${percentage}%` }}
                       aria-label={`${count} keer (${percentage.toFixed(
                         1

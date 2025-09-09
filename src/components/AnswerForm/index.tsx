@@ -205,7 +205,7 @@ export default function AnswerForm({
                   return (
                     <div
                       role="group"
-                      aria-labelledby={`${name}-label`}
+                      aria-labelledby={`${field.name}-label`}
                       className="space-y-3"
                     >
                       <h2
@@ -321,8 +321,8 @@ export default function AnswerForm({
                   return (
                     <div
                       role="group"
-                      aria-labelledby={`${name}-label`}
-                      className="space-y-4"
+                      aria-labelledby={`${field.name}-label`}
+                      className="space-y-3"
                     >
                       <h2
                         id={`${field.name}-label`}
