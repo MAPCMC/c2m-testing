@@ -33,6 +33,10 @@ export function ThemeToggle({
     }
   }, [user, setTheme, theme]);
 
+  if (!theme) {
+    return null;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
