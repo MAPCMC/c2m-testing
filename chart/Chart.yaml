@@ -1,6 +1,6 @@
 apiVersion: v2
-name: c2m-testing
-description: A Helm chart for deploying c2m-testing application
+name: feedback-app
+description: A Helm chart for deploying the Connect2Music feedback application
 type: application
 version: 0.1.0
 appVersion: "0.1.0"
@@ -11,5 +11,5 @@ keywords:
 maintainers:
   - name: Maarten Peene
     email: info@maartenpeene.nl
-# image:
-#   repository: your-registry/c2m-testing
+image:
+  repository: git@gitlab.apml.nl:connect2music/feedback-app
