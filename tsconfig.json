@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "tsBuildInfoFile": ".tsbuildcache/tsconfig.tsbuildinfo",
     "plugins": [
       {
         "name": "next"

@@ -62,3 +62,7 @@ secrets.auto.tfvars
 *.p12
 *.pfx
 *.cer
+
+# TypeScript incremental build info
+*.tsbuildinfo
+.tsbuildcache/
