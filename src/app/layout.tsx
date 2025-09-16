@@ -18,8 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" suppressHydrationWarning>
-      <body className={`${openSans.className} antialiased`}>
+    <html lang="nl">
+      <head>
+        <meta
+          name="apple-mobile-web-app-title"
+          content="Connect2Music"
+        />
+      </head>
+      <body
+        className={`${openSans.className} antialiased bg-c2m-yellow/10 dark:bg-background`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

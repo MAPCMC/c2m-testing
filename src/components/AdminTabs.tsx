@@ -29,8 +29,9 @@ export function AdminTabs({ tabs }: AdminTabsProps) {
         router.push(value);
       }}
       className="px-4"
+      activationMode="manual"
     >
-      <TabsList className="w-full">
+      <TabsList className="w-full bg-transparent">
         {tabs.map((tab) => (
           <TabsTrigger key={tab.href} value={tab.href}>
             {tab.title}

@@ -1,8 +1,13 @@
 import db from "@/db";
 import { getUser } from "@/lib/getUser";
 import FormSessionButton from "./FormSessionButton";
+import { cn } from "@/lib/utils";
 
-const FormList = async () => {
+const FormList = async ({
+  className,
+}: {
+  className?: string;
+}) => {
   const user = await getUser();
 
   const userCodes = await db.query.codes.findMany({
@@ -32,8 +37,13 @@ const FormList = async () => {
     return null;
   }
   return (
-    <section className="space-y-3">
-      <h2 className="text-2xl font-medium">
+    <section
+      className={cn(
+        "space-y-3 @container prose",
+        className
+      )}
+    >
+      <h2 className="text-2xl font-bold">
         {user
           ? "Andere vragenlijsten"
           : "Anonieme vragenlijsten"}
@@ -54,10 +64,10 @@ const FormList = async () => {
       {forms.map((form) => (
         <article
           key={form.id}
-          className="border px-4 py-3 rounded-md flex flex-col md:flex-row md:items-center justify-between gap-2"
+          className="border px-4 py-3 rounded-md flex flex-col @xl:flex-row @xl:items-center justify-between gap-2 bg-card not-prose"
         >
           <div className="flex flex-col gap-2 justify-center">
-            <h3 className="text-lg">
+            <h3 className="text-lg font-semibold tracking-wide">
               {form.app?.name && form.app.deletedAt === null
                 ? form.app.name + " | "
                 : ""}

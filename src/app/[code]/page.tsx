@@ -105,7 +105,7 @@ export default async function CodePage({
             </AlertDescription>
           </Alert>
         )}
-        <div className="space-y-3">
+        <div className="space-y-3 prose">
           {form?.description && (
             <div
               className="lg:col-span-2 prose"

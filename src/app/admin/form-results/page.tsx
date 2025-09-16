@@ -17,7 +17,7 @@ async function Admin() {
   return (
     <LayoutAdmin headerTitle="Resultaten">
       <>
-        <h2 className="text-2xl font-medium">
+        <h2 className="text-2xl font-bold">
           Resultaten inzien
         </h2>
         <p>

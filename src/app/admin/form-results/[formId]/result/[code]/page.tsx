@@ -120,6 +120,7 @@ export default async function AdminCodePage({
           active: true,
         },
       ]}
+      className="space-y-2"
     >
       <div className="flex justify-between flex-wrap gap-2">
         <ChooseCodeMenu
@@ -136,60 +137,65 @@ export default async function AdminCodePage({
           label="Exporteer antwoorden voor deze code (CSV)"
         />
       </div>
-      <Table>
-        <TableCaption>
-          Alle vragen en antwoorden met code {code}.
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="font-bold">
-              Vraag
-            </TableHead>
-            <TableHead className="font-bold">
-              Score
-            </TableHead>
-            <TableHead className="font-bold">
-              Antwoord
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {form.formChapters.map((chapter) =>
-            chapter.questions.map((question) => {
-              const answer = findQuestionAnswer(
-                question.key
-              );
-
-              return (
-                <TableRow key={question.id}>
-                  <TableCell className="font-medium w-1/3 whitespace-normal">
-                    {question.label}
-                  </TableCell>
-                  <TableCell>{answer?.score}</TableCell>
-                  <TableCell className="whitespace-normal w-full space-y-2">
-                    {!!answer?.answersToOptions?.length &&
-                      answer?.answersToOptions?.length >
-                        0 && (
-                        <ul className="list-disc list-inside">
-                          {answer?.answersToOptions.map(
-                            (a) => (
-                              <li key={a.option.id}>
-                                {a.option.text}
-                                {a.explanation ? ": " : ""}
-                                {a.explanation}
-                              </li>
-                            )
-                          )}
-                        </ul>
+      <div className="bg-card border rounded-md p-4">
+        <Table>
+          <TableCaption>
+            Alle vragen en antwoorden met code {code}.
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="font-bold">
+                Vraag
+              </TableHead>
+              <TableHead className="font-bold">
+                Score
+              </TableHead>
+              <TableHead className="font-bold">
+                Antwoord
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {form.formChapters.map((chapter) =>
+              chapter.questions.map((question) => {
+                const answer = findQuestionAnswer(
+                  question.key
+                );
+                return (
+                  <TableRow key={question.id}>
+                    <TableCell className="font-medium w-1/3 whitespace-normal">
+                      {question.label}
+                    </TableCell>
+                    <TableCell>{answer?.score}</TableCell>
+                    <TableCell className="whitespace-normal w-full space-y-2">
+                      {!!answer?.answersToOptions?.length &&
+                        answer?.answersToOptions?.length >
+                          0 && (
+                          <ul className="list-disc list-inside">
+                            {answer?.answersToOptions.map(
+                              (a) => (
+                                <li key={a.option.id}>
+                                  {a.option.text}
+                                  {a.explanation
+                                    ? ": "
+                                    : ""}
+                                  {a.explanation}
+                                </li>
+                              )
+                            )}
+                          </ul>
+                        )}
+                      {answer?.text && (
+                        <p>{answer?.text}</p>
                       )}
-                    {answer?.text && <p>{answer?.text}</p>}
-                  </TableCell>
-                </TableRow>
-              );
-            })
-          )}
-        </TableBody>
-      </Table>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
+          </TableBody>
+        </Table>
+      </div>
       <div className="flex justify-between gap-2">
         <Button
           asChild={!!prevCode}

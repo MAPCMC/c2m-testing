@@ -55,9 +55,10 @@ export default async function SuperUser() {
       </div>
       {addedCodes.length > 0 && (
         <>
-          <h2 className="text-2xl font-medium">
+          <h2 className="text-2xl font-bold">
             Klaargezette vragenlijsten
           </h2>
+
           <Table>
             <TableCaption>
               Een lijst van de vragenlijsten die je hebt
@@ -79,12 +80,19 @@ export default async function SuperUser() {
                   </TableCell>
                   <TableCell>{code.user?.email}</TableCell>
                   <TableCell className="space-x-2">
-                    <Button asChild>
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                    >
                       <Link href={`/${code.link}`}>
                         Inzien
                       </Link>
                     </Button>
-                    <CopyButton target={code.link}>
+                    <CopyButton
+                      target={code.link}
+                      size="sm"
+                    >
                       Kopieer {code.link}
                     </CopyButton>
                   </TableCell>

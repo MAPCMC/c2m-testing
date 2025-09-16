@@ -53,7 +53,7 @@ export default function EditUserForm({
       }}
       className="space-y-2 max-w-3xl mx-auto"
     >
-      <h2 className="text-2xl font-medium">
+      <h2 className="text-2xl font-bold">
         Gebruiker bewerken
       </h2>
       <p>Pas de rol van de gebruiker aan.</p>

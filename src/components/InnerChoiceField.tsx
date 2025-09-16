@@ -67,11 +67,11 @@ const InnerChoiceField = ({
   }
 
   return (
-    <WrapperComponent className="space-y-2">
+    <WrapperComponent className="space-y-3">
       <FieldLabel
         as="legend"
         id={`${name}-label`}
-        className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
+        className="font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xl"
         error={errors && errors.length > 0}
       >
         {label}
@@ -94,7 +94,7 @@ const InnerChoiceField = ({
         {options?.map((option) => (
           <div
             key={option.id}
-            className="flex items-center space-x-2 border rounded-md p-4 relative bg-input"
+            className="flex items-center space-x-3 border rounded-md p-4 relative bg-card"
           >
             <RadioGroupItem
               value={option.id.toString()}

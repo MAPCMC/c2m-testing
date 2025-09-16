@@ -108,7 +108,7 @@ const InnerSelectField = ({
         {...props}
       >
         <SelectTrigger
-          className="border-border bg-input"
+          className="border-border"
           {...accessibleInputStateProps}
         >
           <SelectValue placeholder="Maak een keuze" />

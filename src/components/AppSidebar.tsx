@@ -15,16 +15,17 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
+import C2MLogo from "./C2MLogo";
 
 export function AppSidebar() {
   const pathname = usePathname();
   const { user } = useUser();
   const isAdmin =
-    user?.role === "admin" || user?.role === "super-admin";
+    user?.role === "admin" || user?.role === "superadmin";
 
   return (
-    <Sidebar variant="sidebar">
-      <SidebarHeader>Menu</SidebarHeader>
+    <Sidebar variant="sidebar" className="p-2">
+      <SidebarHeader className="p-4">Menu</SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Admin</SidebarGroupLabel>
@@ -119,7 +120,9 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter className="p-4">
+        <C2MLogo className="w-20 md:w-24" />
+      </SidebarFooter>
     </Sidebar>
   );
 }

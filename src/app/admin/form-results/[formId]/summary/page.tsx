@@ -101,9 +101,9 @@ async function FormResultsAnalysis({
         },
       ]}
     >
-      <div className="space-y-6">
-        <div className="flex justify-between items-start">
-          <p className="text-muted-foreground">
+      <div className="space-y-4">
+        <div className="flex max-md:flex-wrap justify-end items-start gap-2">
+          <p className="text-muted-foreground grow">
             Analyseer en verken de verzamelde antwoorden
           </p>
           <ExportButton
@@ -117,10 +117,10 @@ async function FormResultsAnalysis({
 
         {form.formChapters.map((chapter) => (
           <div key={chapter.id} className="space-y-4">
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-xl font-semibold mt-6">
               {chapter.title}
             </h2>
-            <div className="space-y-8">
+            <div>
               {chapter.questions.map((question) => {
                 const questionAnswers =
                   answersByQuestion[question.key] || [];

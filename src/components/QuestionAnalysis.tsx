@@ -119,102 +119,99 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
 
     return (
       <div className="space-y-4 max-w-full">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+          <div className="border rounded-md p-2">
+            <h4 className="text-xs font-medium text-muted-foreground">
               Gemiddelde
-            </h3>
+            </h4>
             <p className="text-2xl font-bold">
               {numericValues.length > 0
                 ? avg.toFixed(2)
                 : "nvt"}
             </p>
           </div>
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+          <div className="border rounded-md p-2">
+            <h4 className="text-xs font-medium text-muted-foreground">
               Mediaan
-            </h3>
+            </h4>
             <p className="text-2xl font-bold">
               {numericValues.length > 0
                 ? median.toFixed(2)
                 : "nvt"}
             </p>
           </div>
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+          <div className="border rounded-md p-2">
+            <h4 className="text-xs font-medium text-muted-foreground">
               Laagste
-            </h3>
+            </h4>
             <p className="text-2xl font-bold">
               {numericValues.length > 0 ? min : "nvt"}
             </p>
           </div>
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+          <div className="border rounded-md p-2">
+            <h4 className="text-xs font-medium text-muted-foreground">
               Hoogste
-            </h3>
+            </h4>
             <p className="text-2xl font-bold">
               {numericValues.length > 0 ? max : "nvt"}
             </p>
           </div>
         </div>
 
-        <div className="space-y-4">
-          <h3 className="text-sm font-medium text-muted-foreground">
-            Scoreverdeling
-          </h3>
-
-          <div className="space-y-2">
-            {sortedScores.map(
-              ({
-                score,
-                count,
-                percentage,
-                explanations,
-              }) => (
-                <div key={score} className="space-y-2">
-                  <div className="flex items-center gap-4">
-                    <span className="w-12 font-medium">
-                      {score}
-                    </span>
-                    <div className="flex-1">
-                      <div
-                        className="h-6 bg-primary/10 rounded"
-                        style={{ width: `${percentage}%` }}
-                        aria-label={`${count} keer`}
-                      ></div>
-                    </div>
-                    <span className="w-8 text-right">
-                      {count}
-                    </span>
+        <h3 className="text-xs font-semibold tracking-wide text-muted-foreground mb-2">
+          Scoreverdeling
+        </h3>
+        <div className="space-y-2">
+          {sortedScores.map(
+            ({
+              score,
+              count,
+              percentage,
+              explanations,
+            }) => (
+              <div key={score} className="space-y-2">
+                <div className="flex items-center gap-4">
+                  <span className="w-12 font-medium">
+                    {score}
+                  </span>
+                  <div className="flex-1">
+                    <div
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
+                      style={{ width: `${percentage}%` }}
+                      aria-label={`${count} keer`}
+                    ></div>
                   </div>
-
-                  {explanations.length > 0 && (
-                    <div className="text-sm text-muted-foreground">
-                      <details>
-                        <summary className="cursor-pointer hover:text-foreground">
-                          Toon toelichtingen (
-                          {explanations.length})
-                        </summary>
-                        <ul className="mt-2 space-y-1 pl-4 border-l-2 border-muted">
-                          {explanations.map(
-                            (explanation, idx) => (
-                              <li
-                                key={idx}
-                                className="py-1"
-                              >
-                                {explanation ||
-                                  "(Lege toelichting)"}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </details>
-                    </div>
-                  )}
+                  <span className="w-8 text-right">
+                    {count}
+                  </span>
                 </div>
-              )
-            )}
-          </div>
+
+                {explanations.length > 0 && (
+                  <div className="text-xs text-muted-foreground">
+                    <details>
+                      <summary className="cursor-pointer hover:text-foreground">
+                        Toon toelichtingen (
+                        {explanations.length})
+                      </summary>
+                      <ul className="mt-2 space-y-1 pl-4 border-l-2 border-muted">
+                        {explanations.map(
+                          (explanation, idx) => (
+                            <li
+                              key={idx}
+                              className="py-1 text-sm"
+                            >
+                              {explanation ||
+                                "(Lege toelichting)"}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </details>
+                  </div>
+                )}
+              </div>
+            )
+          )}
         </div>
       </div>
     );
@@ -244,31 +241,31 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
 
     return (
       <div className="space-y-4 max-w-full">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+          <div className="border rounded-md p-2">
+            <h3 className="text-xs font-medium text-muted-foreground">
               Gemiddelde
             </h3>
             <p className="text-2xl font-bold">
               {avg.toFixed(2)}
             </p>
           </div>
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+          <div className="border rounded-md p-2">
+            <h3 className="text-xs font-medium text-muted-foreground">
               Mediaan
             </h3>
             <p className="text-2xl font-bold">
               {median.toFixed(2)}
             </p>
           </div>
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+          <div className="border rounded-md p-2">
+            <h3 className="text-xs font-medium text-muted-foreground">
               Min
             </h3>
             <p className="text-2xl font-bold">{min}</p>
           </div>
-          <div className="border rounded-lg p-4">
-            <h3 className="text-sm font-medium text-muted-foreground">
+          <div className="border rounded-md p-2">
+            <h3 className="text-xs font-medium text-muted-foreground">
               Max
             </h3>
             <p className="text-2xl font-bold">{max}</p>
@@ -276,7 +273,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
         </div>
 
         <div>
-          <h3 className="text-sm font-medium text-muted-foreground mb-2">
+          <h3 className="text-xs font-semibold tracking-wide text-muted-foreground mb-2">
             Waardeverdeling (aantal keren)
           </h3>
           <div className="space-y-2">
@@ -300,7 +297,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{
                         width: `${
                           (count / numericValues.length) *
@@ -359,8 +356,8 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
     if (data.length === 0) return null;
 
     return (
-      <div className="space-y-4 max-w-full">
-        <h3 className="text-sm font-medium text-muted-foreground">
+      <>
+        <h3 className="text-xs font-semibold tracking-wide text-muted-foreground mb-2">
           Antwoordverdeling
         </h3>
 
@@ -377,7 +374,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{ width: `${percentage}%` }}
                       aria-label={`${count} keer (${percentage.toFixed(
                         1
@@ -395,7 +392,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                 </div>
 
                 {explanations.length > 0 && (
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     <details>
                       <summary className="cursor-pointer hover:text-foreground">
                         Toon toelichtingen (
@@ -404,7 +401,10 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                       <ul className="mt-2 space-y-1 pl-4 border-l-2 border-muted">
                         {explanations.map(
                           (explanation, idx) => (
-                            <li key={idx} className="py-1">
+                            <li
+                              key={idx}
+                              className="py-1 text-sm"
+                            >
                               {explanation ||
                                 "(Lege toelichting)"}
                             </li>
@@ -418,7 +418,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
             )
           )}
         </div>
-      </div>
+      </>
     );
   };
 
@@ -469,8 +469,8 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
     if (data.length === 0) return null;
 
     return (
-      <div className="space-y-4">
-        <h3 className="text-sm font-medium text-muted-foreground">
+      <>
+        <h3 className="text-xs font-semibold tracking-wide text-muted-foreground mb-2">
           Antwoordverdeling
         </h3>
         <div className="space-y-2">
@@ -486,7 +486,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{ width: `${percentage}%` }}
                       aria-label={`${count} keer (${percentage.toFixed(
                         1
@@ -506,7 +506,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
             )
           )}
         </div>
-      </div>
+      </>
     );
   };
 
@@ -568,8 +568,8 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
     if (data.length === 0) return null;
 
     return (
-      <div className="space-y-4 max-w-full">
-        <h3 className="text-sm font-medium text-muted-foreground">
+      <>
+        <h3 className="text-xs font-semibold tracking-wide text-muted-foreground mb-2">
           Antwoordverdeling
         </h3>
 
@@ -592,7 +592,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                   </span>
                   <div className="flex-1">
                     <div
-                      className="h-6 bg-primary/10 rounded"
+                      className="h-6 bg-primary/10 rounded dark:bg-secondary"
                       style={{ width: `${percentage}%` }}
                       aria-label={`${count} keer (${percentage.toFixed(
                         1
@@ -610,7 +610,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                 </div>
 
                 {explanations.length > 0 && (
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     <details>
                       <summary className="cursor-pointer hover:text-foreground">
                         Toon toelichtingen (
@@ -619,7 +619,10 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
                       <ul className="mt-2 space-y-1 pl-4 border-l-2 border-muted">
                         {explanations.map(
                           (explanation, idx) => (
-                            <li key={idx} className="py-1">
+                            <li
+                              key={idx}
+                              className="py-1 text-sm"
+                            >
                               {explanation ||
                                 "(Lege toelichting)"}
                             </li>
@@ -633,7 +636,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
             )
           )}
         </div>
-      </div>
+      </>
     );
   };
 
@@ -645,8 +648,8 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
     if (validAnswers.length === 0) return null;
 
     return (
-      <div className="space-y-4">
-        <h3 className="text-sm font-medium text-muted-foreground">
+      <>
+        <h3 className="text-xs font-semibold tracking-wide text-muted-foreground mb-2">
           Antwoorden ({validAnswers.length})
         </h3>
 
@@ -680,7 +683,7 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
             </TableBody>
           </Table>
         </div>
-      </div>
+      </>
     );
   };
 
@@ -696,13 +699,15 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({
 
   return (
     <Card
-      className="mb-6 max-w-full"
+      className="mb-3 max-w-full"
       id={`question-${question.key}`}
     >
       <CardHeader className="pb-2 flex justify-between">
         <CardTitle className="text-base font-medium">
-          {question.label}
-          <span className="ml-2 text-sm font-normal text-muted-foreground">
+          <span className="font-semibold">
+            {question.label}
+          </span>
+          <span className="ml-2 text-xs font-normal text-muted-foreground">
             ({answers.length} antwoorden)
           </span>
         </CardTitle>

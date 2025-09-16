@@ -33,38 +33,45 @@ export function ThemeToggle({
     }
   }, [user, setTheme, theme]);
 
+  if (!theme) {
+    return null;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Wissel van thema</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        className="space-y-0.5"
+      >
         <DropdownMenuItem
           className={cn(
-            theme === "light" &&
-              "bg-accent text-accent-foreground"
+            theme === "light" && "bg-c2m-aqua/20"
           )}
           onClick={async () => {
             setTheme("light");
             setProfileTheme(user, "light");
           }}
         >
+          <Sun className="h-[1.5rem] w-[1.5rem] text-inherit" />
           Licht
         </DropdownMenuItem>
         <DropdownMenuItem
           className={cn(
-            theme === "dark" &&
-              "bg-accent text-accent-foreground"
+            theme === "dark" && "bg-c2m-aqua/20"
           )}
           onClick={async () => {
             setTheme("dark");
             setProfileTheme(user, "dark");
           }}
         >
+          <Moon className="h-[1.2rem] w-[1.2rem] text-inherit" />
           Donker
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -102,6 +102,7 @@ async function FormResultsQuestion({
           href: `/admin/form-results/${form.id}/result`,
         },
       ]}
+      className="space-y-2"
     >
       <div className="flex justify-between flex-wrap gap-2">
         <ChooseQuestionForm
@@ -123,59 +124,60 @@ async function FormResultsQuestion({
           label="Exporteer antwoorden voor deze vraag (CSV)"
         />
       </div>
-      <Table className="max-w-full">
-        <TableCaption>
-          Een lijst van alle antwoorden voor deze vraag.
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="font-bold">
-              Formulier
-            </TableHead>
-            <TableHead className="font-bold">
-              Score
-            </TableHead>
-            <TableHead className="font-bold">
-              Antwoord
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {answers.map((answer) => {
-            return (
-              <TableRow key={answer.id}>
-                <TableCell>
-                  <Link
-                    href={`/admin/form-results/${form.id}/result/${answer.code}`}
-                  >
-                    {answer?.code}
-                  </Link>
-                </TableCell>
-                <TableCell>{answer.score}</TableCell>
-                <TableCell className="whitespace-normal w-full space-y-2">
-                  {!!answer?.answersToOptions?.length &&
-                    answer?.answersToOptions?.length >
-                      0 && (
-                      <ul className="list-disc list-inside">
-                        {answer?.answersToOptions.map(
-                          (a) => (
-                            <li key={a.option.id}>
-                              {a.option.text}
-                              {a.explanation ? ": " : ""}
-                              {a.explanation}
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    )}
-                  {answer.text && <p>{answer?.text}</p>}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-
+      <div className="bg-card border rounded-md p-4">
+        <Table className="max-w-full">
+          <TableCaption>
+            Een lijst van alle antwoorden voor deze vraag.
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="font-bold">
+                Formulier
+              </TableHead>
+              <TableHead className="font-bold">
+                Score
+              </TableHead>
+              <TableHead className="font-bold">
+                Antwoord
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {answers.map((answer) => {
+              return (
+                <TableRow key={answer.id}>
+                  <TableCell>
+                    <Link
+                      href={`/admin/form-results/${form.id}/result/${answer.code}`}
+                    >
+                      {answer?.code}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{answer.score}</TableCell>
+                  <TableCell className="whitespace-normal w-full space-y-2">
+                    {!!answer?.answersToOptions?.length &&
+                      answer?.answersToOptions?.length >
+                        0 && (
+                        <ul className="list-disc list-inside">
+                          {answer?.answersToOptions.map(
+                            (a) => (
+                              <li key={a.option.id}>
+                                {a.option.text}
+                                {a.explanation ? ": " : ""}
+                                {a.explanation}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      )}
+                    {answer.text && <p>{answer?.text}</p>}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
       <div className="flex justify-between gap-2">
         <Button
           asChild={prevQuestion ? true : false}

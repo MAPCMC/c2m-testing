@@ -39,9 +39,9 @@ export default function PersonalForm() {
       onSubmit={() => {
         form.handleSubmit();
       }}
-      className="space-y-2 p-4 border rounded-md bg-accent/10"
+      className="space-y-3 prose"
     >
-      <h2 className="text-2xl font-medium">
+      <h2 className="text-2xl font-bold">
         Persoonlijke vragenlijst
       </h2>
       <p>
@@ -49,51 +49,53 @@ export default function PersonalForm() {
         de code hier in om direct naar jouw vragenlijst te
         gaan.
       </p>
-      {formErrors.map((error, i) => (
-        <p
-          key={i}
-          aria-live="assertive"
-          className="text-sm font-medium text-destructive"
+      <div className="space-y-2 p-4 border rounded-md bg-card not-prose">
+        {formErrors.map((error, i) => (
+          <p
+            key={i}
+            aria-live="assertive"
+            className="text-sm font-medium text-destructive"
+          >
+            {error}
+          </p>
+        ))}
+        <form.Field
+          name="link"
+          validators={{
+            onChange: ({ value }) =>
+              (value.length > 0 && value.length < 10) ||
+              value.length > 10
+                ? "De code heeft 10 tekens"
+                : undefined,
+          }}
         >
-          {error}
-        </p>
-      ))}
-      <form.Field
-        name="link"
-        validators={{
-          onChange: ({ value }) =>
-            (value.length > 0 && value.length < 10) ||
-            value.length > 10
-              ? "De code heeft 10 tekens"
-              : undefined,
-        }}
-      >
-        {(field) => (
-          <InnerField
-            className="max-w-md"
-            label="vragenlijstcode"
-            value={field.state.value}
-            name={field.name}
-            errors={field.state.meta.errors}
-            onBlur={field.handleBlur}
-            onChange={(e) =>
-              field.handleChange(e.target.value)
-            }
-          />
-        )}
-      </form.Field>
-      <form.Subscribe
-        selector={(formState) => [
-          formState.canSubmit,
-          formState.isSubmitting,
-        ]}
-      >
-        {([canSubmit, isSubmitting]) => (
-          <Button type="submit" disabled={!canSubmit}>
-            {isSubmitting ? "..." : "Ophalen"}
-          </Button>
-        )}
-      </form.Subscribe>
+          {(field) => (
+            <InnerField
+              className="max-w-md"
+              label="Vragenlijstcode"
+              value={field.state.value}
+              name={field.name}
+              errors={field.state.meta.errors}
+              onBlur={field.handleBlur}
+              onChange={(e) =>
+                field.handleChange(e.target.value)
+              }
+            />
+          )}
+        </form.Field>
+        <form.Subscribe
+          selector={(formState) => [
+            formState.canSubmit,
+            formState.isSubmitting,
+          ]}
+        >
+          {([canSubmit, isSubmitting]) => (
+            <Button type="submit" disabled={!canSubmit}>
+              {isSubmitting ? "..." : "Ophalen"}
+            </Button>
+          )}
+        </form.Subscribe>
+      </div>
     </form>
   );
 }

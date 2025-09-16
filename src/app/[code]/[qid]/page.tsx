@@ -156,12 +156,13 @@ export default async function AnswerPage({
             </p>
             {currentQuestionIndex === 0 &&
               !!currentChapter.description && (
-                <div
-                  className="lg:col-span-2 prose"
-                  dangerouslySetInnerHTML={{
-                    __html: currentChapter.description,
-                  }}
-                ></div>
+                <div className="prose lg:col-span-2">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: currentChapter.description,
+                    }}
+                  ></div>
+                </div>
               )}
           </article>
           <AnswerForm
