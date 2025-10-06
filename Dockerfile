@@ -36,8 +36,8 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY /start.sh /app/start.sh
-RUN chmod +x /app/start.sh
+COPY /docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Set the user to non-root
 USER nextjs
@@ -48,6 +48,7 @@ EXPOSE 3000
 # Set the hostname to 0.0.0.0 to allow external connections
 ENV HOSTNAME "0.0.0.0"
 
+ENTRYPOINT ["./docker-entrypoint.sh"]
 # Start the application
-#CMD ["node", "server.js"]
-CMD ["/app/start.sh"]
+CMD ["node", "server.js"]
+
