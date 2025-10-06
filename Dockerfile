@@ -36,6 +36,8 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY /start.sh /app/start.sh
+RUN chmod +x /app/start.sh
 
 # Set the user to non-root
 USER nextjs
@@ -47,4 +49,5 @@ EXPOSE 3000
 ENV HOSTNAME "0.0.0.0"
 
 # Start the application
-CMD ["node", "server.js"]
+#CMD ["node", "server.js"]
+CMD ["/app/start.sh"]

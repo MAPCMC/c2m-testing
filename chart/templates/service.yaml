@@ -1,19 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: { { include "feedback-app.fullname" . } }
-  labels:
-    { { - include "feedback-app.labels" . | nindent 4 } }
+  name: {{ .Values.serviceName }}
 spec:
-  type: { { .Values.service.type } }
   ports:
-    - port: { { .Values.service.port } }
-      targetPort: http
-      protocol: TCP
-      name: http
+    - port: 80
+      targetPort: 3000
   selector:
-    {
-      {
-        - include "feedback-app.selectorLabels" . | nindent 4,
-      },
-    }
+    app: {{ .Values.serviceName }}
