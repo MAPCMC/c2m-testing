@@ -15,11 +15,15 @@ export const env = createEnv({
     DB_URL: z.string().url(),
   },
   onValidationError: (issues) => {
-    console.error(
-      "❌ Invalid environment variables:",
-      issues
-    );
-    process.exit(1);
+    // present in any job started by gitlab CI
+    // to prevent failing builds
+    // if (!process.env.CI) {
+      console.error(
+        "❌ Invalid environment variables:",
+        issues
+      );
+      process.exit(1);
+    // }
   },
   emptyStringAsUndefined: true,
   experimental__runtimeEnv: process.env,

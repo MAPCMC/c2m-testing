@@ -12,10 +12,28 @@ stages:
   - deploy
 
 # build stage
-build:
+build-staging:
   stage: build
+  environment:
+    name: staging
+    url: ${STAGING_URL}
+  only:
+    - main
   image: node:20-alpine
   script:
+    - export
+    - npm install -g pnpm
+    - pnpm install --frozen-lockfile
+
+build-production:
+  stage: build
+  when: manual
+  environment:
+    name: production
+    url: ${PRODUCTION_URL}  
+  image: node:20-alpine
+  script:
+    - export
     - npm install -g pnpm
     - pnpm install --frozen-lockfile
 
@@ -38,6 +56,9 @@ build_docker_image_staging_amd64:
   extends: .docker_build_template
   only:
     - main
+  environment:
+    name: staging
+    url: ${STAGING_URL}  
   stage: dockerize
   tags:
     - amd64
@@ -56,6 +77,9 @@ build_docker_image_staging_arm64:
   only:
     - main
   stage: dockerize
+  environment:
+    name: staging
+    url: ${STAGING_URL}  
   tags:
     - arm64
     - privileged
@@ -75,6 +99,9 @@ build_docker_image_production_amd64:
     - privileged
   only:
     - production
+  environment:
+    name: production
+    url: ${PRODUCTION_URL}      
   stage: dockerize
   script:
     - echo "Building Docker image for Feedback app"
@@ -90,6 +117,9 @@ build_docker_image_production_arm64:
   only:
     - production
   stage: dockerize
+  environment:
+    name: production
+    url: ${PRODUCTION_URL}    
   script:
     - echo "Building Docker image for Feedback app"
     - IMAGE_TAG="production-${CI_COMMIT_TAG:-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}}"
@@ -102,6 +132,9 @@ create_manifest_staging:
   tags:
     - amd64
     - privileged
+  environment:
+    name: staging
+    url: ${STAGING_URL}
   script:
     - IMAGE_TAG="staging-${CI_COMMIT_TAG:-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}}"
     - IMAGE_NAME="${DOCKER_REGISTRY}/connect2music/feedback-app"
@@ -129,6 +162,9 @@ create_manifest_production:
   tags:
     - amd64
     - privileged
+  environment:
+    name: production
+    url: ${PRODUCTION_URL}    
   script:
     - IMAGE_TAG="production-${CI_COMMIT_TAG:-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}}"
     - IMAGE_NAME="${DOCKER_REGISTRY}/connect2music/feedback-app"
