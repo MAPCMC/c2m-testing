@@ -1,6 +1,6 @@
 "use server";
 
-import { ServerValidateError } from "@tanstack/react-form/nextjs";
+import { ServerValidateError } from "@tanstack/react-form-nextjs";
 import { serverValidate } from "@/components/AnswerForm/helpers/serverValidate";
 import { onSubmit } from "@/components/AnswerForm/helpers/onSubmit";
 

@@ -1,4 +1,4 @@
-import { createServerValidate } from "@tanstack/react-form/nextjs";
+import { createServerValidate } from "@tanstack/react-form-nextjs";
 import formOptions from "../formOptions";
 
 export const serverValidate = createServerValidate({

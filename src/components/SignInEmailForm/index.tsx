@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { useForm } from "@tanstack/react-form";
+import { useForm } from "@tanstack/react-form-nextjs";
 import { z } from "zod";
 
 import formOpts from "./formOptions";

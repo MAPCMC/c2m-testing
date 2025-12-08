@@ -1,4 +1,4 @@
-import { formOptions } from "@tanstack/react-form/nextjs";
+import { formOptions } from "@tanstack/react-form-nextjs";
 import { AnswerFull, QuestionFull } from "@/db/types";
 
 const formOpts = (data: {

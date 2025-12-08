@@ -3,7 +3,7 @@
 import {
   ServerValidateError,
   createServerValidate,
-} from "@tanstack/react-form/nextjs";
+} from "@tanstack/react-form-nextjs";
 
 import db from "@/db";
 import { options } from "@/db/schema";

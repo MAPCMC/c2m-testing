@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useActionState } from "react";
-import { initialFormState } from "@tanstack/react-form/nextjs";
+import { initialFormState } from "@tanstack/react-form-nextjs";
 import {
   mergeForm,
   useForm,
   useStore,
   useTransform,
-} from "@tanstack/react-form";
+} from "@tanstack/react-form-nextjs";
 
 import handlePersonalFormSubmit from "./action";
 import formOpts from "./formOptions";

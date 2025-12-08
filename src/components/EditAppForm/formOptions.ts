@@ -1,4 +1,4 @@
-import { formOptions } from "@tanstack/react-form/nextjs";
+import { formOptions } from "@tanstack/react-form-nextjs";
 import { apps } from "@/db/schema";
 
 const formOpts = (
