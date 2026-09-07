@@ -3,13 +3,14 @@ import postgres from "postgres";
 import { env } from "@/env/server";
 import * as schema from "./schema/index";
 
-const max = 10;
-
 const client =
   globalThis.__POSTGRES__ ??
   postgres(env.DB_URL, {
-    max,
-    idle_timeout: 60,
+    // Vercel functions use Supabase's transaction pooler.
+    max: 1,
+    prepare: false,
+    connect_timeout: 10,
+    idle_timeout: 20,
   });
 
 if (process.env.NODE_ENV !== "production") {
